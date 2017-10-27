@@ -65,9 +65,9 @@ namespace Bifrost.Repository
             where TEntity : class, IEntity;
 
         bool GetExists<TEntity>(Expression<Func<TEntity, bool>> filter = null)
-            where TEntity : class;
+            where TEntity : class, IEntity;
 
         Task<bool> GetExistsAsync<TEntity>(Expression<Func<TEntity, bool>> filter = null)
-            where TEntity : class;
+            where TEntity : class, IEntity;
     }
 }
