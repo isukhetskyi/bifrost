@@ -10,6 +10,13 @@ namespace Bifrost.Repository
     public class EntityFrameworkReadOnlyRepository<TContext> : IReadOnlyRepository
         where TContext : DbContext
     {
+        protected readonly TContext context;
+
+        public EntityFrameworkReadOnlyRepository(TContext context)
+        {
+            this.context = context;
+        }
+
         public IEnumerable<TEntity> Get<TEntity>(Expression<Func<TEntity, bool>> filter = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, string includeProperties = null, int? skip = null, int? take = null) where TEntity : class, IEntity
         {
             throw new NotImplementedException();
