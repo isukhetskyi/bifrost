@@ -10,9 +10,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bifrost.Repository", "Bifrost.Repository\Bifrost.Repository.csproj", "{E78B4F8C-47C2-4E31-9EB3-94B6420CC203}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bifrost.Services", "Bifrost.Services\Bifrost.Services.csproj", "{164BDA0B-EE96-4E92-96C5-B59BD7995417}"
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bifrost.Auth", "Bifrost.Auth\Bifrost.Auth.csproj", "{56C0E888-EBA1-4D2E-A4E4-D63CF3EDBEC7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bifrost.WebApp", "Bifrost.WebApp\Bifrost.WebApp.csproj", "{467C9A72-A025-475B-A24C-5EE80D6E64F8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bifrost.Web", "Bifrost.Web\Bifrost.Web.csproj", "{E30D495D-C0A7-4BC0-BF55-E24D8793F112}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -87,17 +86,17 @@ Global
 		{56C0E888-EBA1-4D2E-A4E4-D63CF3EDBEC7}.Release|x64.Build.0 = Release|x64
 		{56C0E888-EBA1-4D2E-A4E4-D63CF3EDBEC7}.Release|x86.ActiveCfg = Release|x86
 		{56C0E888-EBA1-4D2E-A4E4-D63CF3EDBEC7}.Release|x86.Build.0 = Release|x86
-		{467C9A72-A025-475B-A24C-5EE80D6E64F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{467C9A72-A025-475B-A24C-5EE80D6E64F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{467C9A72-A025-475B-A24C-5EE80D6E64F8}.Debug|x64.ActiveCfg = Debug|x64
-		{467C9A72-A025-475B-A24C-5EE80D6E64F8}.Debug|x64.Build.0 = Debug|x64
-		{467C9A72-A025-475B-A24C-5EE80D6E64F8}.Debug|x86.ActiveCfg = Debug|x86
-		{467C9A72-A025-475B-A24C-5EE80D6E64F8}.Debug|x86.Build.0 = Debug|x86
-		{467C9A72-A025-475B-A24C-5EE80D6E64F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{467C9A72-A025-475B-A24C-5EE80D6E64F8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{467C9A72-A025-475B-A24C-5EE80D6E64F8}.Release|x64.ActiveCfg = Release|x64
-		{467C9A72-A025-475B-A24C-5EE80D6E64F8}.Release|x64.Build.0 = Release|x64
-		{467C9A72-A025-475B-A24C-5EE80D6E64F8}.Release|x86.ActiveCfg = Release|x86
-		{467C9A72-A025-475B-A24C-5EE80D6E64F8}.Release|x86.Build.0 = Release|x86
+		{E30D495D-C0A7-4BC0-BF55-E24D8793F112}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E30D495D-C0A7-4BC0-BF55-E24D8793F112}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E30D495D-C0A7-4BC0-BF55-E24D8793F112}.Debug|x64.ActiveCfg = Debug|x64
+		{E30D495D-C0A7-4BC0-BF55-E24D8793F112}.Debug|x64.Build.0 = Debug|x64
+		{E30D495D-C0A7-4BC0-BF55-E24D8793F112}.Debug|x86.ActiveCfg = Debug|x86
+		{E30D495D-C0A7-4BC0-BF55-E24D8793F112}.Debug|x86.Build.0 = Debug|x86
+		{E30D495D-C0A7-4BC0-BF55-E24D8793F112}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E30D495D-C0A7-4BC0-BF55-E24D8793F112}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E30D495D-C0A7-4BC0-BF55-E24D8793F112}.Release|x64.ActiveCfg = Release|x64
+		{E30D495D-C0A7-4BC0-BF55-E24D8793F112}.Release|x64.Build.0 = Release|x64
+		{E30D495D-C0A7-4BC0-BF55-E24D8793F112}.Release|x86.ActiveCfg = Release|x86
+		{E30D495D-C0A7-4BC0-BF55-E24D8793F112}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 EndGlobal
