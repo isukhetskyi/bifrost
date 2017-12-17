@@ -2,6 +2,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Bifrost.Repository\Bifrost.Repository.csproj" />
+    <ProjectReference Include="..\Bifrost.Data\Bifrost.Data.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

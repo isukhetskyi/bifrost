@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bifrost.Services", "Bifrost
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bifrost.Web", "Bifrost.Web\Bifrost.Web.csproj", "{E30D495D-C0A7-4BC0-BF55-E24D8793F112}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bifrost.Domain", "Bifrost.Domain\Bifrost.Domain.csproj", "{D81BBD77-203A-4585-86CC-19131BA33ADA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -98,5 +100,17 @@ Global
 		{E30D495D-C0A7-4BC0-BF55-E24D8793F112}.Release|x64.Build.0 = Release|x64
 		{E30D495D-C0A7-4BC0-BF55-E24D8793F112}.Release|x86.ActiveCfg = Release|x86
 		{E30D495D-C0A7-4BC0-BF55-E24D8793F112}.Release|x86.Build.0 = Release|x86
+		{D81BBD77-203A-4585-86CC-19131BA33ADA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D81BBD77-203A-4585-86CC-19131BA33ADA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D81BBD77-203A-4585-86CC-19131BA33ADA}.Debug|x64.ActiveCfg = Debug|x64
+		{D81BBD77-203A-4585-86CC-19131BA33ADA}.Debug|x64.Build.0 = Debug|x64
+		{D81BBD77-203A-4585-86CC-19131BA33ADA}.Debug|x86.ActiveCfg = Debug|x86
+		{D81BBD77-203A-4585-86CC-19131BA33ADA}.Debug|x86.Build.0 = Debug|x86
+		{D81BBD77-203A-4585-86CC-19131BA33ADA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D81BBD77-203A-4585-86CC-19131BA33ADA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D81BBD77-203A-4585-86CC-19131BA33ADA}.Release|x64.ActiveCfg = Release|x64
+		{D81BBD77-203A-4585-86CC-19131BA33ADA}.Release|x64.Build.0 = Release|x64
+		{D81BBD77-203A-4585-86CC-19131BA33ADA}.Release|x86.ActiveCfg = Release|x86
+		{D81BBD77-203A-4585-86CC-19131BA33ADA}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 EndGlobal

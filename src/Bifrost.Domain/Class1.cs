@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Bifrost.Data
+namespace Bifrost.Domain
 {
     public class Class1
     {

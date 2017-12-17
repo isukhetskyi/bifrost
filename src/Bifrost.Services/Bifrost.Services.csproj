@@ -1,5 +1,12 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
+  <ItemGroup>
+    <ProjectReference Include="..\Bifrost.Data\Bifrost.Data.csproj" />
+    <ProjectReference Include="..\Bifrost.Repository\Bifrost.Repository.csproj" />
+    <ProjectReference Include="..\Bifrost.Domain\Bifrost.Domain.csproj" />
+    <ProjectReference Include="..\Bifrost.Core\Bifrost.Core.csproj" />
+  </ItemGroup>
+
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
