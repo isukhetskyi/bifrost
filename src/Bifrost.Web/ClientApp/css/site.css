@@ -72,3 +72,11 @@ textarea {
         text-overflow: ellipsis;
     }
 }
+
+.no-answer-radio-btn {
+    margin-left: 15px;
+}
+
+.centered {
+    align-content: center;
+}

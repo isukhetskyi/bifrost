@@ -41,7 +41,7 @@ export class Survey extends React.Component<RouteComponentProps<{}>, {}> {
                                     value="yes"/> Yes
                             </label>
                         </div>
-                        <div className="com-md-6 form-check form-check-inline">
+                        <div className="com-md-6 form-check form-check-inline no-answer-radio-btn">
                             <label className="form-check-label">
                                 <input className="radio-inline"
                                     type="radio"
@@ -91,7 +91,83 @@ export class Survey extends React.Component<RouteComponentProps<{}>, {}> {
         <div className="panel panel-default">
           <div className="panel-heading">Work experiance</div>
           <div className="panel-body">
-            //TODO
+            <div className="row">
+                <div className="col-md-4">
+                    <h4>
+                        Programming languages
+                    </h4>
+                    <div className="custom-control custom-checkbox">
+                        <input type="checkbox" className="custom-control-input" id="customCheck1"/>
+                        <label className="custom-control-label" htmlFor="customCheck1">Check this custom checkbox</label>
+                    </div>
+                    <div className="custom-control custom-checkbox">
+                        <input type="checkbox" className="custom-control-input" id="customCheck2"/>
+                        <label className="custom-control-label" htmlFor="customCheck2">Check this custom checkbox</label>
+                    </div>
+                    <div className="custom-control custom-checkbox">
+                        <input type="checkbox" className="custom-control-input" id="customCheck3"/>
+                        <label className="custom-control-label" htmlFor="customCheck3">Check this custom checkbox</label>
+                    </div>
+                    <div className="custom-control custom-checkbox">
+                        <input type="checkbox" className="custom-control-input" id="customCheck4"/>
+                        <label className="custom-control-label" htmlFor="customCheck4">Check this custom checkbox</label>
+                    </div>
+                    <div className="custom-control custom-checkbox">
+                        <input type="checkbox" className="custom-control-input" id="customCheck5"/>
+                        <label className="custom-control-label" htmlFor="customCheck5">Check this custom checkbox</label>
+                    </div>
+                </div>
+                <div className="col-md-4">
+                    <h4>
+                        Databases
+                    </h4>
+                    <div className="custom-control custom-checkbox">
+                        <input type="checkbox" className="custom-control-input" id="customCheck11"/>
+                        <label className="custom-control-label" htmlFor="customCheck11">Check this custom checkbox</label>
+                    </div>
+                    <div className="custom-control custom-checkbox">
+                        <input type="checkbox" className="custom-control-input" id="customCheck21"/>
+                        <label className="custom-control-label" htmlFor="customCheck21">Check this custom checkbox</label>
+                    </div>
+                    <div className="custom-control custom-checkbox">
+                        <input type="checkbox" className="custom-control-input" id="customCheck31"/>
+                        <label className="custom-control-label" htmlFor="customCheck31">Check this custom checkbox</label>
+                    </div>
+                    <div className="custom-control custom-checkbox">
+                        <input type="checkbox" className="custom-control-input" id="customCheck41"/>
+                        <label className="custom-control-label" htmlFor="customCheck41">Check this custom checkbox</label>
+                    </div>
+                    <div className="custom-control custom-checkbox">
+                        <input type="checkbox" className="custom-control-input" id="customCheck51"/>
+                        <label className="custom-control-label" htmlFor="customCheck51">Check this custom checkbox</label>
+                    </div>
+                </div>
+                <div className="col-md-4">
+                    <h4>
+                        Programming languages
+                    </h4>
+                    <div className="custom-control custom-checkbox">
+                        <input type="checkbox" className="custom-control-input" id="customCheck12"/>
+                        <label className="custom-control-label" htmlFor="customCheck12">Check this custom checkbox</label>
+                    </div>
+                    <div className="custom-control custom-checkbox">
+                        <input type="checkbox" className="custom-control-input" id="customCheck22"/>
+                        <label className="custom-control-label" htmlFor="customCheck22">Check this custom checkbox</label>
+                    </div>
+                    <div className="custom-control custom-checkbox">
+                        <input type="checkbox" className="custom-control-input" id="customCheck32"/>
+                        <label className="custom-control-label" htmlFor="customCheck32">Check this custom checkbox</label>
+                    </div>
+                    <div className="custom-control custom-checkbox">
+                        <input type="checkbox" className="custom-control-input" id="customCheck42"/>
+                        <label className="custom-control-label" htmlFor="customCheck42">Check this custom checkbox</label>
+                    </div>
+                    <div className="custom-control custom-checkbox">
+                        <input type="checkbox" className="custom-control-input" id="customCheck52"/>
+                        <label className="custom-control-label" htmlFor="customCheck52">Check this custom checkbox</label>
+                    </div>
+                </div>
+            </div>
           </div>
         </div>
         <div className="panel panel-default">
