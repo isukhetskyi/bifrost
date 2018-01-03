@@ -1,70 +1,85 @@
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
+import ReactTable from "react-table";
+import "react-table/react-table.css";
 
 interface RespondentsState {
-    // forecasts: WeatherForecast[];
-    // loading: boolean;
+    data: any
 }
 
 export class Respondents extends React.Component<RouteComponentProps<{}>, RespondentsState> {
-
-    public render(){
+    constructor() {
+        super();
+        this.state = {
+            data: {}
+        }
+    }
+    public render() {
+        const { data } = this.state.data;
         return <div>
-            <div></div>
+            <ReactTable
+                data={data}
+                filterable
+                defaultFilterMethod={(filter, row) =>
+                    String(row[filter.id]) === filter.value}
+                columns={[
+                    {
+                        Header: "ID",
+                        accessor: "respondentId"
+                    },
+                    {
+                        Header: "First Name",
+                        accessor: "firstName",
+                        filterMethod: (filter: any, row: any) =>
+                            row[filter.id].startsWith(filter.value)
+                    },
+                    {
+                        Header: "Last Name",
+                        accessor: "lastName",
+                        filterMethod: (filter: any, row: any) =>
+                            row[filter.id].startsWith(filter.value)
+                    },
+                    {
+                        Header: "Age",
+                        accessor: "age"
+                    },
+                    {
+                        Header: "Is employed?",
+                        accessor: "isEmployed",
+                        id: "isEmployed",
+                        Cell: ({ value }) => (value == true ? "Yes" : "No"),
+                        filterMethod: (filter: any, row: any) => {
+                            if (filter.value === "all") {
+                                return true;
+                            }
+                            if (filter.value === "true") {
+                                return row[filter.id] == true;
+                            }
+                            return row[filter.id] == false;
+                        }
+                    },
+                    {
+                        Header: "Phone",
+                        accessor: "phone",
+                        filterMethod: (filter: any, row: any) =>
+                            row[filter.id].startsWith(filter.value)
+                    },
+                    {
+                        Header: "Email",
+                        accessor: "email",
+                        filterMethod: (filter: any, row: any) =>
+                            row[filter.id].startsWith(filter.value)
+                    },
+                    {
+                        Header: "Skype",
+                        accessor: "skype",
+                        filterMethod: (filter: any, row: any) =>
+                            row[filter.id].startsWith(filter.value)
+                    }
+                ]}
+                defaultPageSize={10}
+                className="-striped -highlight"
+            />
         </div>
     }
-
-
-    // constructor() {
-    //     super();
-    //     this.state = { forecasts: [], loading: true };
-
-    //     fetch('api/SampleData/WeatherForecasts')
-    //         .then(response => response.json() as Promise<WeatherForecast[]>)
-    //         .then(data => {
-    //             this.setState({ forecasts: data, loading: false });
-    //         });
-    // }
-
-    // public render() {
-    //     let contents = this.state.loading
-    //         ? <p><em>Loading...</em></p>
-    //         : Respondents.renderForecastsTable(this.state.forecasts);
-
-    //     return <div>
-    //         <h1>Weather forecast</h1>
-    //         <p>This component demonstrates fetching data from the server.</p>
-    //         { contents }
-    //     </div>;
-    // }
-
-    // private static renderForecastsTable(forecasts: WeatherForecast[]) {
-    //     return <table className='table'>
-    //         <thead>
-    //             <tr>
-    //                 <th>Date</th>
-    //                 <th>Temp. (C)</th>
-    //                 <th>Temp. (F)</th>
-    //                 <th>Summary</th>
-    //             </tr>
-    //         </thead>
-    //         <tbody>
-    //         {forecasts.map(forecast =>
-    //             <tr key={ forecast.dateFormatted }>
-    //                 <td>{ forecast.dateFormatted }</td>
-    //                 <td>{ forecast.temperatureC }</td>
-    //                 <td>{ forecast.temperatureF }</td>
-    //                 <td>{ forecast.summary }</td>
-    //             </tr>
-    //         )}
-    //         </tbody>
-    //     </table>;
-    // }
 }
-
-// interface WeatherForecast {
-//     dateFormatted: string;
-//     temperatureC: number;
-//     temperatureF: number;
-//     summary: string;
-// }

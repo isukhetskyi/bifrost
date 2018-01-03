@@ -181,6 +181,7 @@ export class Survey extends React.Component<RouteComponentProps<{}>, {}> {
             </div>
           </div>
         </div>
+        <button type="submit">Submit</button>
       </div>;
     }
 }

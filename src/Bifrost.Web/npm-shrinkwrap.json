@@ -2,11 +2,6 @@
   "name": "Bifrost_Web",
   "version": "0.0.0",
   "dependencies": {
-    "@types/ag-grid": {
-      "version": "3.2.0",
-      "from": "@types/ag-grid@latest",
-      "resolved": "https://registry.npmjs.org/@types/ag-grid/-/ag-grid-3.2.0.tgz"
-    },
     "@types/history": {
       "version": "4.6.0",
       "from": "@types/history@4.6.0",
@@ -16,8 +11,7 @@
     "@types/react": {
       "version": "15.0.35",
       "from": "@types/react@15.0.35",
-      "resolved": "https://registry.npmjs.org/@types/react/-/react-15.0.35.tgz",
-      "dev": true
+      "resolved": "https://registry.npmjs.org/@types/react/-/react-15.0.35.tgz"
     },
     "@types/react-dom": {
       "version": "15.5.1",
@@ -48,6 +42,11 @@
       "from": "@types/react-router-dom@4.0.5",
       "resolved": "https://registry.npmjs.org/@types/react-router-dom/-/react-router-dom-4.0.5.tgz",
       "dev": true
+    },
+    "@types/react-table": {
+      "version": "6.7.0",
+      "from": "@types/react-table@latest",
+      "resolved": "https://registry.npmjs.org/@types/react-table/-/react-table-6.7.0.tgz"
     },
     "@types/webpack-env": {
       "version": "1.13.0",
@@ -667,6 +666,11 @@
           "dev": true
         }
       }
+    },
+    "classnames": {
+      "version": "2.2.5",
+      "from": "classnames@>=2.2.5 <3.0.0",
+      "resolved": "https://registry.npmjs.org/classnames/-/classnames-2.2.5.tgz"
     },
     "cliui": {
       "version": "2.1.0",
@@ -2738,6 +2742,11 @@
       "from": "react-router-dom@4.1.1",
       "resolved": "https://registry.npmjs.org/react-router-dom/-/react-router-dom-4.1.1.tgz",
       "dev": true
+    },
+    "react-table": {
+      "version": "6.7.6",
+      "from": "https://registry.npmjs.org/react-table/-/react-table-6.7.6.tgz",
+      "resolved": "https://registry.npmjs.org/react-table/-/react-table-6.7.6.tgz"
     },
     "read-pkg": {
       "version": "1.1.0",
