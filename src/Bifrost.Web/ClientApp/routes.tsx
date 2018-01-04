@@ -6,7 +6,7 @@ import { Respondents } from './components/Respondents';
 import { Statistics } from './components/Statistics';
 
 export const routes = <Layout>
-    <Route exact path='/' component={ Survey } />
+    <Route exact path='/survey' component={ Survey } />
     <Route path='/statistics' component={ Statistics } />
     <Route path='/respondents' component={ Respondents } />
 </Layout>;

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Bifrost.Web.Controllers
@@ -12,5 +13,13 @@ namespace Bifrost.Web.Controllers
         {
             return View();
         }
+
+        [HttpPost]
+        public IActionResult Survey(object model)
+        {
+            return View();
+        }
     }
+
+
 }

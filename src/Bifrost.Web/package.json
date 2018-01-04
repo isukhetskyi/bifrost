@@ -33,9 +33,11 @@
     "webpack-hot-middleware": "2.18.2"
   },
   "dependencies": {
+    "@types/node-fetch": "^1.6.7",
     "@types/react-table": "^6.7.0",
     "ag-grid": "https://registry.npmjs.org/ag-grid/-/ag-grid-15.0.0.tgz",
     "ag-grid-react": "https://registry.npmjs.org/ag-grid-react/-/ag-grid-react-15.0.0.tgz",
+    "node-fetch": "https://registry.npmjs.org/node-fetch/-/node-fetch-1.7.1.tgz",
     "react-dom-factories": "^1.0.2",
     "react-easy-chart": "^1.0.0",
     "react-table": "https://registry.npmjs.org/react-table/-/react-table-6.7.6.tgz"

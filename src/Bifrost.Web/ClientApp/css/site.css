@@ -80,3 +80,14 @@ textarea {
 .centered {
     align-content: center;
 }
+
+.btn-wrapper {
+    text-align: center;
+}
+
+.btn-custom {
+    position: absolute;
+    left: 45%;
+    width: 140px;
+    height: 40px;
+}

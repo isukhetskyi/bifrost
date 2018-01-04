@@ -8,6 +8,16 @@
       "resolved": "https://registry.npmjs.org/@types/history/-/history-4.6.0.tgz",
       "dev": true
     },
+    "@types/node": {
+      "version": "8.5.5",
+      "from": "@types/node@*",
+      "resolved": "https://registry.npmjs.org/@types/node/-/node-8.5.5.tgz"
+    },
+    "@types/node-fetch": {
+      "version": "1.6.7",
+      "from": "@types/node-fetch@latest",
+      "resolved": "https://registry.npmjs.org/@types/node-fetch/-/node-fetch-1.6.7.tgz"
+    },
     "@types/react": {
       "version": "15.0.35",
       "from": "@types/react@15.0.35",
@@ -1983,7 +1993,7 @@
     },
     "node-fetch": {
       "version": "1.7.1",
-      "from": "node-fetch@>=1.0.1 <2.0.0",
+      "from": "https://registry.npmjs.org/node-fetch/-/node-fetch-1.7.1.tgz",
       "resolved": "https://registry.npmjs.org/node-fetch/-/node-fetch-1.7.1.tgz"
     },
     "node-libs-browser": {
