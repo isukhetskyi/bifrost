@@ -12,13 +12,13 @@ export class NavMenu extends React.Component<{}, {}> {
                         <span className='icon-bar'></span>
                         <span className='icon-bar'></span>
                     </button>
-                    <Link className='navbar-brand' to={ '/survey' }>Bifrost Project</Link>
+                    <Link className='navbar-brand' to={ '/' }>Bifrost Project</Link>
                 </div>
                 <div className='clearfix'></div>
                 <div className='navbar-collapse collapse'>
                     <ul className='nav navbar-nav'>
                         <li>
-                            <NavLink to={ '/' } exact activeClassName='active'>
+                            <NavLink to={ '/survey' } exact activeClassName='active'>
                                 <span className='glyphicon glyphicon-home'></span> Take a Survey
                             </NavLink>
                         </li>
