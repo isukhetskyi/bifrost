@@ -2,33 +2,37 @@ import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
 import * as fetch from 'node-fetch';
 
-interface SurveyProps{
+interface SurveyProps {
 
 }
 
-interface SurveyState{
-        // general info
-        FirstName?: string;
-        LastName?: string;
-        Age?: number;
-        Address?: string;
-        IsEmployed?: boolean;
-        CurrentPosition?: string;
-        Phone?: string;
-        Skype?: string;
-        Email?: string;
+interface SurveyState {
+    // general info
+    FirstName?: string;
+    LastName?: string;
+    Age?: number;
+    Address?: string;
+    IsEmployed?: boolean;
+    CurrentPosition?: string;
+    Phone?: string;
+    Skype?: string;
+    Email?: string;
 
-        //education
-        PlaceOfStudying?: string;
-        Speciality?: string;
+    //education
+    PlaceOfStudying?: string;
+    Speciality?: string;
 
-        //work experience
-        ProgrammingLanguages?: Array<number>;
-        Frameworks?: Array<number>;
-        Databases?: Array<number>;
+    //work experience
+    ProgrammingLanguagesCheckboxes?: Array<[number, string]>;
+    FrameworksCheckboxes?: Array<[number, string]>;
+    DatabasesCheckboxes?: Array<[number, string]>;
 
-        //other info
-        OtherInfo?: string;
+    ProgrammingLanguages?: Array<number>;
+    Databases?: Array<number>;
+    Frameworks?: Array<number>;
+
+    //other info
+    OtherInfo?: string;
 }
 
 
@@ -49,39 +53,213 @@ export class Survey extends React.Component<RouteComponentProps<SurveyProps>, Su
             Skype: "",
             PlaceOfStudying: "",
             Speciality: "",
+            ProgrammingLanguagesCheckboxes: [],
+            FrameworksCheckboxes: [],
+            DatabasesCheckboxes: [],
             ProgrammingLanguages: [],
-            Frameworks: [],
             Databases: [],
-            OtherInfo: "",
+            Frameworks: [],
+
+            OtherInfo: ""
         }
 
         this.handleSubmit = this.handleSubmit.bind(this);
         this.validate = this.validate.bind(this);
-        this.handleChange = this.handleChange.bind(this);
+        this.handleInputChange = this.handleInputChange.bind(this);
+        this.handleRadioButtonChange = this.handleRadioButtonChange.bind(this);
+        this.renderCheckboxes = this.renderCheckboxes.bind(this);
+
+    }
+
+    renderCheckboxes(collectionName: string) {
+
+        let ProgrammingLanguagesCheckboxes = new Array<[number, string]>(
+            [0, "C#"],
+            [1, "JavaScript"],
+            [2, "TypeScript"],
+            [3, "C++"],
+            [4, "C"],
+            [5, "Java"],
+            [6, "ObjectiveC"],
+            [7, "GoLang"],
+            [8, "Ruby"],
+            [9, "Python"],
+            [10, "PHP"],
+            [11, "shell"],
+        );
+
+        let FrameworksCheckboxes = new Array<[number, string]>(
+            [0, "ASP.Net"],
+            [1, "ASP.Net Core"],
+            [2, "EntityFramework"],
+            [3, "AngularJS"],
+            [4, "Angular"],
+            [5, "Xamarin"],
+            [6, "Xamarin.Forms"],
+            [7, "NUnit"],
+            [8, "Ruby on Rails"],
+            [9, "Yii"],
+            [10, "Spring"],
+            [11, "MicroORM"]
+        );
+
+        let DatabasesCheckboxes = new Array<[number, string]>(
+            [0, "MS SQL"],
+            [1, "Oracle"],
+            [2, "PostgreSQL"],
+            [3, "Mongo"],
+            [4, "Redis"],
+            [5, "MariaDB"],
+            [6, "MySQL"],
+            [7, "Azure SQL"]
+        );
+
+        let elements: any;
+        let collection = new Array<[number, string]>();
+        let datatype = "checkbox-"
+        if (collectionName === "ProgrammingLanguagesCheckboxes") {
+            collection = ProgrammingLanguagesCheckboxes;
+            datatype += "programminglanguage"
+        }
+        if (collectionName === "FrameworksCheckboxes") {
+            collection = FrameworksCheckboxes;
+            datatype += "framework"
+        }
+        if (collectionName === "DatabasesCheckboxes") {
+            collection = DatabasesCheckboxes;
+            datatype += "database"
+        }
+
+        elements = collection.map((checkbox: [number, string], index: number) =>
+            <div className="custom-control custom-checkbox">
+                <input type="checkbox"
+                    className="custom-control-input"
+                    id={checkbox[1]}
+                    value={checkbox[0]}
+                    datatype={datatype}
+                    onChange={e => this.handleCheckboxChange(e)}
+                />
+                <label className="custom-control-label" htmlFor="customCheck1">{checkbox[1]}</label>
+            </div>);
+        return elements;
     }
 
     handleSubmit(event: any) {
+        let body = JSON.stringify(this.state);
+        console.log(body)
+
         const request = fetch.default("http://localhost:5000/api/Survey/Survey")
-                        .then(res => console.log(res.body));
+            .then(res => console.log(res.body));
         event.preventDefault();
     }
 
-    validate(e: any){
+    validate(e: any): boolean {
         // todo add here type retrievement to know which field we validating also add validation message;
+        let result = false;
         let inputType = e.target.attributes.getNamedItem('datatype').value;
-        let minLength = e.target.attributes.getNamedItem('data-min-length').value;
-        let maxLength = e.target.attributes.getNamedItem('data-max-length').value;
-        if((e.target.value as string).length > minLength && (e.target.value as string).length < maxLength)
-        {
-            console.log((e.target.value))
+        if (inputType as string === "general-info-text") {
+            let pattern = e.target.attributes.getNamedItem("data-regex").value;
+            let regex = new RegExp(pattern);
+
+            return regex.test(e.target.value as string);
         }
+        else if (inputType as string === "general-info-number") {
+            let pattern = e.target.attributes.getNamedItem("data-regex").value;
+            let regex = new RegExp(pattern);
+            return regex.test(e.target.value as string);
+        }
+
+        e.preventDefault();
+        return result;
+    }
+
+    handleInputChange(e: any) {
+        if (this.validate(e)) {
+            this.setState({ [(e.target.attributes.id.value as string)]: e.target.value as string })
+        }
+
+        e.preventDefault();
+        console.log(this.state);
+    }
+
+    handleRadioButtonChange(e: any) {
+        if (e.target.id === "isEmployedYes") {
+            this.setState({ IsEmployed: true });
+        } else {
+            this.setState({ IsEmployed: false });
+        }
+
         e.preventDefault();
     }
 
-    handleChange(e: any){
-        this.setState({ [(e.target.attributes.id.value as string)]: e.target.value as string})
-        console.log(this.state);
-        e.preventDefault();
+    handleCheckboxChange(e: any) {
+        let inputType = e.target.attributes.getNamedItem('datatype').value;
+        if (inputType as string === "checkbox-programminglanguage") {
+            if (e.target.checked) {
+                let newArray = this.state.ProgrammingLanguages;
+                if (newArray == undefined) {
+                    newArray = new Array<number>();
+                }
+
+                newArray.push(e.target.value);
+                this.setState({ ProgrammingLanguages: newArray });
+            } else {
+
+                if (this.state.ProgrammingLanguages != null) {
+                    let newArray = this.state.ProgrammingLanguages;
+                    let index = this.state.ProgrammingLanguages.indexOf(e.target.value, 0);
+                    if (index > -1) {
+                        newArray.splice(index, 1);
+                    }
+                    this.setState({ ProgrammingLanguages: newArray });
+                }
+            }
+            console.log(this.state.ProgrammingLanguages)
+        }
+        if (inputType as string === "checkbox-database") {
+            if (e.target.checked) {
+                let newArray = this.state.Databases;
+                if (newArray == undefined) {
+                    newArray = new Array<number>();
+                }
+
+                newArray.push(e.target.value);
+                this.setState({ Databases: newArray });
+            } else {
+
+                if (this.state.Databases != null) {
+                    let newArray = this.state.Databases;
+                    let index = this.state.Databases.indexOf(e.target.value, 0);
+                    if (index > -1) {
+                        newArray.splice(index, 1);
+                    }
+                    this.setState({ Databases: newArray });
+                }
+            }
+            console.log(this.state.Databases)
+        }
+        if (inputType as string === "checkbox-framework") {
+            if (e.target.checked) {
+                let newArray = this.state.Frameworks;
+                if (newArray == undefined) {
+                    newArray = new Array<number>();
+                }
+
+                newArray.push(e.target.value);
+                this.setState({ Frameworks: newArray });
+            } else {
+
+                if (this.state.Frameworks != null) {
+                    let newArray = this.state.Frameworks;
+                    let index = this.state.Frameworks.indexOf(e.target.value, 0);
+                    if (index > -1) {
+                        newArray.splice(index, 1);
+                    }
+                    this.setState({ Frameworks: newArray });
+                }
+            }
+            console.log(this.state.Frameworks)
+        }
     }
 
     public render() {
@@ -95,27 +273,48 @@ export class Survey extends React.Component<RouteComponentProps<SurveyProps>, Su
                             <div className="col-md-4 form-group">
                                 <label>First Name</label>
                                 <input className="form-control"
-                                onBlur={ e => this.validate(e)}
-                                onChange={ e => this.handleChange(e)}
-                                datatype="general-info-text"
-                                data-min-length="2"
-                                data-max-length="100"
-                                type="text"
-                                id="FirstName" />
+                                    onBlur={e => this.handleInputChange(e)}
+                                    datatype="general-info-text"
+                                    data-min-length="2"
+                                    data-max-length="100"
+                                    data-regex="[a-z ,.'-]{2,100}"
+                                    type="text"
+                                    id="FirstName" />
                             </div>
                             <div className="col-md-4 form-group">
                                 <label>Last Name</label>
-                                <input className="form-control" onChange={e => this.validate(e)} datatype="general-info-text" type="number" id="lastName" />
+                                <input className="form-control"
+                                    onBlur={e => this.handleInputChange(e)}
+                                    datatype="general-info-text"
+                                    data-min-length="2"
+                                    data-max-length="100"
+                                    data-regex="[a-z ,.'-]{2,100}"
+                                    type="text"
+                                    id="LastName" />
                             </div>
                             <div className="col-md-4 form-group">
                                 <label>Age</label>
-                                <input className="form-control" onChange={e => this.validate(e)} datatype="general-info-text" type="text" id="age" />
+                                <input className="form-control"
+                                    onBlur={e => this.handleInputChange(e)}
+                                    datatype="general-info-number"
+                                    data-min-value="18"
+                                    data-max-value="90"
+                                    data-regex="\\d{2}"
+                                    type="number"
+                                    id="Age" />
                             </div>
                         </div>
                         <div className="row">
                             <div className="col-md-12 form-group">
                                 <label>Address</label>
-                                <input className="form-control" onChange={e => this.validate(e)} datatype="general-info-text" type="text" id="address" />
+                                <input className="form-control"
+                                    onBlur={e => this.handleInputChange(e)}
+                                    datatype="general-info-text"
+                                    data-min-length="2"
+                                    data-max-length="100"
+                                    data-regex="(\\w[a-zA-Z- ,.0-9]{1,})"
+                                    type="text"
+                                    id="Address" />
                             </div>
                         </div>
                         <div className="row">
@@ -127,8 +326,9 @@ export class Survey extends React.Component<RouteComponentProps<SurveyProps>, Su
                                             <input className="radio-inline"
                                                 type="radio"
                                                 name="inlineRadioOptions"
-                                                id="inlineRadio1"
-                                                value="yes" /> Yes
+                                                id="isEmployedYes"
+                                                onClick={e => this.handleRadioButtonChange(e)}
+                                            /> Yes
                                 </label>
                                     </div>
                                     <div className="com-md-6 form-check form-check-inline no-answer-radio-btn">
@@ -136,29 +336,56 @@ export class Survey extends React.Component<RouteComponentProps<SurveyProps>, Su
                                             <input className="radio-inline"
                                                 type="radio"
                                                 name="inlineRadioOptions"
-                                                id="inlineRadio2"
-                                                value="no" /> No
+                                                id="isEmployedNo"
+                                                onClick={e => this.handleRadioButtonChange(e)}
+                                            /> No
                                 </label>
                                     </div>
                                 </div>
                             </div>
                             <div className="col-md-8 form-group">
                                 <label>Current position</label>
-                                <input className="form-control" onChange={e => this.validate(e)} datatype="general-info-text" type="text" id="currentPosition" />
+                                <input className="form-control"
+                                    onBlur={e => this.handleInputChange(e)}
+                                    datatype="general-info-text"
+                                    disabled={!this.state.IsEmployed}
+
+                                    data-min-length="2"
+                                    data-max-length="100"
+                                    data-regex="[a-zA-Z][a-zA-Z0-9\\.,\\-_]{5,31}"
+                                    type="text"
+                                    id="CurrentPosition" />
                             </div>
                         </div>
                         <div className="row">
                             <div className="col-md-4 form-group">
                                 <label>Skype</label>
-                                <input className="form-control" onChange={e => this.validate(e)} datatype="general-info-text" type="text" id="skype" />
+                                <input className="form-control"
+                                    onBlur={e => this.handleInputChange(e)}
+                                    datatype="general-info-text"
+                                    data-min-length="6"
+                                    data-max-length="100"
+                                    data-regex="[a-zA-Z][a-zA-Z0-9\\.,\\-_]{5,31}"
+                                    type="text"
+                                    id="Skype" />
                             </div>
                             <div className="col-md-4 form-group">
                                 <label>Phone</label>
-                                <input className="form-control" onChange={e => this.validate(e)} datatype="general-info-text" type="text" id="phone" />
+                                <input className="form-control"
+                                    onBlur={e => this.handleInputChange(e)}
+                                    datatype="general-info-text"
+                                    data-regex="\\d{10,12}"
+                                    type="number"
+                                    id="Phone" />
                             </div>
                             <div className="col-md-4 form-group">
                                 <label>Email</label>
-                                <input className="form-control" onChange={e => this.validate(e)} datatype="general-info-text" type="text" id="emailAddress" />
+                                <input className="form-control"
+                                    onBlur={e => this.handleInputChange(e)}
+                                    datatype="general-info-text"
+                                    data-regex="\\w+([-+.']\\w+)*@\\w+([-.]\\w+)*\\.\\w{2,5}"
+                                    type="text"
+                                    id="Email" />
                             </div>
                         </div>
                     </div>
@@ -169,11 +396,21 @@ export class Survey extends React.Component<RouteComponentProps<SurveyProps>, Su
                         <div className="row">
                             <div className="col-md-6 form-group">
                                 <label>Place of studying</label>
-                                <input className="form-control" onChange={e => this.validate(e)} datatype="general-info-text" type="text" id="placeOfStudying" />
+                                <input className="form-control"
+                                    onBlur={e => this.handleInputChange(e)}
+                                    datatype="general-info-text"
+                                    data-regex="[a-zA-Z ,.'-]{2,100}"
+                                    type="text"
+                                    id="PlaceOfStudying" />
                             </div>
                             <div className="col-md-6 form-group">
                                 <label>Speciality</label>
-                                <input className="form-control" onChange={e => this.validate(e)} datatype="general-info-text" type="text" id="speciality" />
+                                <input className="form-control"
+                                    onBlur={e => this.handleInputChange(e)}
+                                    datatype="general-info-text"
+                                    data-regex="[a-z ,.'-]{2,100}"
+                                    type="text"
+                                    id="Speciality" />
                             </div>
                         </div>
                     </div>
@@ -185,77 +422,20 @@ export class Survey extends React.Component<RouteComponentProps<SurveyProps>, Su
                             <div className="col-md-4">
                                 <h4>
                                     Programming languages
-                        </h4>
-                                <div className="custom-control custom-checkbox">
-                                    <input type="checkbox" className="custom-control-input" id="customCheck1" />
-                                    <label className="custom-control-label" htmlFor="customCheck1">Check this custom checkbox</label>
-                                </div>
-                                <div className="custom-control custom-checkbox">
-                                    <input type="checkbox" className="custom-control-input" id="customCheck2" />
-                                    <label className="custom-control-label" htmlFor="customCheck2">Check this custom checkbox</label>
-                                </div>
-                                <div className="custom-control custom-checkbox">
-                                    <input type="checkbox" className="custom-control-input" id="customCheck3" />
-                                    <label className="custom-control-label" htmlFor="customCheck3">Check this custom checkbox</label>
-                                </div>
-                                <div className="custom-control custom-checkbox">
-                                    <input type="checkbox" className="custom-control-input" id="customCheck4" />
-                                    <label className="custom-control-label" htmlFor="customCheck4">Check this custom checkbox</label>
-                                </div>
-                                <div className="custom-control custom-checkbox">
-                                    <input type="checkbox" className="custom-control-input" id="customCheck5" />
-                                    <label className="custom-control-label" htmlFor="customCheck5">Check this custom checkbox</label>
-                                </div>
+                                </h4>
+                                {this.renderCheckboxes.call(this, "ProgrammingLanguagesCheckboxes")}
                             </div>
                             <div className="col-md-4">
                                 <h4>
                                     Databases
-                        </h4>
-                                <div className="custom-control custom-checkbox">
-                                    <input type="checkbox" className="custom-control-input" id="customCheck11" />
-                                    <label className="custom-control-label" htmlFor="customCheck11">Check this custom checkbox</label>
-                                </div>
-                                <div className="custom-control custom-checkbox">
-                                    <input type="checkbox" className="custom-control-input" id="customCheck21" />
-                                    <label className="custom-control-label" htmlFor="customCheck21">Check this custom checkbox</label>
-                                </div>
-                                <div className="custom-control custom-checkbox">
-                                    <input type="checkbox" className="custom-control-input" id="customCheck31" />
-                                    <label className="custom-control-label" htmlFor="customCheck31">Check this custom checkbox</label>
-                                </div>
-                                <div className="custom-control custom-checkbox">
-                                    <input type="checkbox" className="custom-control-input" id="customCheck41" />
-                                    <label className="custom-control-label" htmlFor="customCheck41">Check this custom checkbox</label>
-                                </div>
-                                <div className="custom-control custom-checkbox">
-                                    <input type="checkbox" className="custom-control-input" id="customCheck51" />
-                                    <label className="custom-control-label" htmlFor="customCheck51">Check this custom checkbox</label>
-                                </div>
+                                </h4>
+                                {this.renderCheckboxes.call(this, "DatabasesCheckboxes")}
                             </div>
                             <div className="col-md-4">
                                 <h4>
-                                    Programming languages
-                        </h4>
-                                <div className="custom-control custom-checkbox">
-                                    <input type="checkbox" className="custom-control-input" id="customCheck12" />
-                                    <label className="custom-control-label" htmlFor="customCheck12">Check this custom checkbox</label>
-                                </div>
-                                <div className="custom-control custom-checkbox">
-                                    <input type="checkbox" className="custom-control-input" id="customCheck22" />
-                                    <label className="custom-control-label" htmlFor="customCheck22">Check this custom checkbox</label>
-                                </div>
-                                <div className="custom-control custom-checkbox">
-                                    <input type="checkbox" className="custom-control-input" id="customCheck32" />
-                                    <label className="custom-control-label" htmlFor="customCheck32">Check this custom checkbox</label>
-                                </div>
-                                <div className="custom-control custom-checkbox">
-                                    <input type="checkbox" className="custom-control-input" id="customCheck42" />
-                                    <label className="custom-control-label" htmlFor="customCheck42">Check this custom checkbox</label>
-                                </div>
-                                <div className="custom-control custom-checkbox">
-                                    <input type="checkbox" className="custom-control-input" id="customCheck52" />
-                                    <label className="custom-control-label" htmlFor="customCheck52">Check this custom checkbox</label>
-                                </div>
+                                    Frameworks
+                                </h4>
+                                {this.renderCheckboxes.call(this, "FrameworksCheckboxes")}
                             </div>
                         </div>
                     </div>
@@ -266,7 +446,12 @@ export class Survey extends React.Component<RouteComponentProps<SurveyProps>, Su
                         <div className="row">
                             <div className="col-md-12 form-group">
                                 <label>Tell me more :)</label>
-                                <textarea className="form-control" onChange={e => this.validate(e)} datatype="general-info-text" type="text" id="placeOfStudying" />
+                                <textarea className="form-control"
+                                    onBlur={e => this.handleInputChange(e)}
+                                    datatype="general-info-text"
+                                    data-regex="[a-z0-9 ,.'-]{2,1000}"
+                                    type="text"
+                                    id="OtherInfo" />
                             </div>
                         </div>
                     </div>

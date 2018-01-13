@@ -3,16 +3,17 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Bifrost.Web.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Bifrost_Web.Controllers
 {
     public class HomeController : Controller
     {
-        public IActionResult Index()
+        public IActionResult Index(SurveyViewModel model)
         {
-            var model = InitializeViewModel();
-            return View(new {model});
+            //var model = InitializeViewModel();
+            return View();
         }
 
         public IActionResult Error()
