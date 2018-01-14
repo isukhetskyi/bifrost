@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
 import * as fetch from 'node-fetch';
+import { join } from 'path';
 
 interface SurveyProps {
 
@@ -23,9 +24,9 @@ interface SurveyState {
     Speciality?: string;
 
     //work experience
-    ProgrammingLanguagesCheckboxes?: Array<[number, string]>;
-    FrameworksCheckboxes?: Array<[number, string]>;
-    DatabasesCheckboxes?: Array<[number, string]>;
+    ProgrammingLanguagesCheckboxes?: Array<object>;
+    FrameworksCheckboxes?: Array<object>;
+    DatabasesCheckboxes?: Array<object>;
 
     ProgrammingLanguages?: Array<number>;
     Databases?: Array<number>;
@@ -68,78 +69,53 @@ export class Survey extends React.Component<RouteComponentProps<SurveyProps>, Su
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleRadioButtonChange = this.handleRadioButtonChange.bind(this);
         this.renderCheckboxes = this.renderCheckboxes.bind(this);
+        this.componentWillMount = this.componentWillMount.bind(this);
+    }
 
+    componentWillMount(){
+        let data: any;
+        let thisContext = this;
+        const request = fetch.default("http://localhost:5000/Survey/GetTechnologies")
+            .then(function(res){return res.json()})
+            .then(function(json){
+                data = json.data;
+                thisContext.setState({ProgrammingLanguagesCheckboxes: data.languages})
+                thisContext.setState({FrameworksCheckboxes: data.frameworks})
+                thisContext.setState({DatabasesCheckboxes: data.databases})
+            });
     }
 
     renderCheckboxes(collectionName: string) {
-
-        let ProgrammingLanguagesCheckboxes = new Array<[number, string]>(
-            [0, "C#"],
-            [1, "JavaScript"],
-            [2, "TypeScript"],
-            [3, "C++"],
-            [4, "C"],
-            [5, "Java"],
-            [6, "ObjectiveC"],
-            [7, "GoLang"],
-            [8, "Ruby"],
-            [9, "Python"],
-            [10, "PHP"],
-            [11, "shell"],
-        );
-
-        let FrameworksCheckboxes = new Array<[number, string]>(
-            [0, "ASP.Net"],
-            [1, "ASP.Net Core"],
-            [2, "EntityFramework"],
-            [3, "AngularJS"],
-            [4, "Angular"],
-            [5, "Xamarin"],
-            [6, "Xamarin.Forms"],
-            [7, "NUnit"],
-            [8, "Ruby on Rails"],
-            [9, "Yii"],
-            [10, "Spring"],
-            [11, "MicroORM"]
-        );
-
-        let DatabasesCheckboxes = new Array<[number, string]>(
-            [0, "MS SQL"],
-            [1, "Oracle"],
-            [2, "PostgreSQL"],
-            [3, "Mongo"],
-            [4, "Redis"],
-            [5, "MariaDB"],
-            [6, "MySQL"],
-            [7, "Azure SQL"]
-        );
-
         let elements: any;
-        let collection = new Array<[number, string]>();
+        let collection: Array<object>|undefined;
         let datatype = "checkbox-"
         if (collectionName === "ProgrammingLanguagesCheckboxes") {
-            collection = ProgrammingLanguagesCheckboxes;
+            collection = this.state.ProgrammingLanguagesCheckboxes;
             datatype += "programminglanguage"
         }
         if (collectionName === "FrameworksCheckboxes") {
-            collection = FrameworksCheckboxes;
+            collection = this.state.FrameworksCheckboxes;
             datatype += "framework"
         }
         if (collectionName === "DatabasesCheckboxes") {
-            collection = DatabasesCheckboxes;
+            collection = this.state.DatabasesCheckboxes;
             datatype += "database"
         }
 
-        elements = collection.map((checkbox: [number, string], index: number) =>
+        if(collection == undefined){
+            collection = new Array<[number, string]>();
+        }
+        console.log(collection)
+        elements = collection.map((checkbox: any, index: number) =>
             <div className="custom-control custom-checkbox">
                 <input type="checkbox"
                     className="custom-control-input"
-                    id={checkbox[1]}
-                    value={checkbox[0]}
+                    id={checkbox.id}
+                    value={checkbox.value}
                     datatype={datatype}
                     onChange={e => this.handleCheckboxChange(e)}
                 />
-                <label className="custom-control-label" htmlFor="customCheck1">{checkbox[1]}</label>
+                <label className="custom-control-label" htmlFor="customCheck1">{checkbox.value}</label>
             </div>);
         return elements;
     }
@@ -148,7 +124,8 @@ export class Survey extends React.Component<RouteComponentProps<SurveyProps>, Su
         let body = JSON.stringify(this.state);
         console.log(body)
 
-        const request = fetch.default("http://localhost:5000/api/Survey/Survey")
+        const request = fetch.default("http://localhost:5000/Survey",
+        {method: "POST", body: JSON.stringify(this.state), headers: {"Content-Type":"application/json"}})
             .then(res => console.log(res.body));
         event.preventDefault();
     }
@@ -279,6 +256,7 @@ export class Survey extends React.Component<RouteComponentProps<SurveyProps>, Su
                                     data-max-length="100"
                                     data-regex="[a-z ,.'-]{2,100}"
                                     type="text"
+                                    value="Ivan"
                                     id="FirstName" />
                             </div>
                             <div className="col-md-4 form-group">
@@ -290,6 +268,7 @@ export class Survey extends React.Component<RouteComponentProps<SurveyProps>, Su
                                     data-max-length="100"
                                     data-regex="[a-z ,.'-]{2,100}"
                                     type="text"
+                                    value="Sukhetskyi"
                                     id="LastName" />
                             </div>
                             <div className="col-md-4 form-group">
@@ -301,6 +280,7 @@ export class Survey extends React.Component<RouteComponentProps<SurveyProps>, Su
                                     data-max-value="90"
                                     data-regex="\\d{2}"
                                     type="number"
+                                    value="33"
                                     id="Age" />
                             </div>
                         </div>
@@ -314,6 +294,7 @@ export class Survey extends React.Component<RouteComponentProps<SurveyProps>, Su
                                     data-max-length="100"
                                     data-regex="(\\w[a-zA-Z- ,.0-9]{1,})"
                                     type="text"
+                                    value="Ivano-Frankivsk"
                                     id="Address" />
                             </div>
                         </div>
@@ -327,6 +308,7 @@ export class Survey extends React.Component<RouteComponentProps<SurveyProps>, Su
                                                 type="radio"
                                                 name="inlineRadioOptions"
                                                 id="isEmployedYes"
+                                                value="on"
                                                 onClick={e => this.handleRadioButtonChange(e)}
                                             /> Yes
                                 </label>
@@ -354,6 +336,7 @@ export class Survey extends React.Component<RouteComponentProps<SurveyProps>, Su
                                     data-max-length="100"
                                     data-regex="[a-zA-Z][a-zA-Z0-9\\.,\\-_]{5,31}"
                                     type="text"
+                                    value="Developer"
                                     id="CurrentPosition" />
                             </div>
                         </div>
@@ -367,6 +350,7 @@ export class Survey extends React.Component<RouteComponentProps<SurveyProps>, Su
                                     data-max-length="100"
                                     data-regex="[a-zA-Z][a-zA-Z0-9\\.,\\-_]{5,31}"
                                     type="text"
+                                    value="syhestkiy"
                                     id="Skype" />
                             </div>
                             <div className="col-md-4 form-group">
@@ -376,6 +360,7 @@ export class Survey extends React.Component<RouteComponentProps<SurveyProps>, Su
                                     datatype="general-info-text"
                                     data-regex="\\d{10,12}"
                                     type="number"
+                                    value="0593456862"
                                     id="Phone" />
                             </div>
                             <div className="col-md-4 form-group">
@@ -385,6 +370,7 @@ export class Survey extends React.Component<RouteComponentProps<SurveyProps>, Su
                                     datatype="general-info-text"
                                     data-regex="\\w+([-+.']\\w+)*@\\w+([-.]\\w+)*\\.\\w{2,5}"
                                     type="text"
+                                    value="ivan.sukhetskyi@gmail.com"
                                     id="Email" />
                             </div>
                         </div>
@@ -401,6 +387,7 @@ export class Survey extends React.Component<RouteComponentProps<SurveyProps>, Su
                                     datatype="general-info-text"
                                     data-regex="[a-zA-Z ,.'-]{2,100}"
                                     type="text"
+                                    value="IFNTUOG"
                                     id="PlaceOfStudying" />
                             </div>
                             <div className="col-md-6 form-group">
@@ -410,6 +397,7 @@ export class Survey extends React.Component<RouteComponentProps<SurveyProps>, Su
                                     datatype="general-info-text"
                                     data-regex="[a-z ,.'-]{2,100}"
                                     type="text"
+                                    value="Computer Systems and Networks"
                                     id="Speciality" />
                             </div>
                         </div>
@@ -451,6 +439,7 @@ export class Survey extends React.Component<RouteComponentProps<SurveyProps>, Su
                                     datatype="general-info-text"
                                     data-regex="[a-z0-9 ,.'-]{2,1000}"
                                     type="text"
+                                    value="Somethisng reaally important"
                                     id="OtherInfo" />
                             </div>
                         </div>

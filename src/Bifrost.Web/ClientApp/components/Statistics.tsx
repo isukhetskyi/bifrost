@@ -14,14 +14,15 @@ export class Statistics extends React.Component<RouteComponentProps<{}>, Statist
                 <div className="panel-heading">Programming languages</div>
                 <div className="panel-body">
                     <div className="row">
-                        <div>
+                        <div className="col-md-3"></div>
+                        <div className="col-md-4">
                             <PieChart
                                 labels
                                 size={400}
                                 data={[
-                                    { key: 'JavaScript', value: 100 },
-                                    { key: 'CSharp', value: 200 },
-                                    { key: 'TypeScript', value: 50 }
+                                    { key: 'JavaScript', value: 10 },
+                                    { key: 'CSharp', value: 3 },
+                                    { key: 'TypeScript', value: 2 }
                                 ]}
                                 styles={{
                                     '.chart_text': {
@@ -31,6 +32,40 @@ export class Statistics extends React.Component<RouteComponentProps<{}>, Statist
                                 }}
                             />
                         </div>
+                        <div className="col-md-4">
+                            sumple text
+                        </div>
+                        <div className="col-md-1"></div>
+                    </div>
+                </div>
+            </div>
+            <div className="panel panel-default">
+                <div className="panel-heading">Databases</div>
+                <div className="panel-body">
+                    <div className="row">
+                    <div className="col-md-3"></div>
+                        <div className="col-md-4">
+                            <PieChart
+                                labels
+                                size={400}
+                                data={[
+                                    { key: 'SQL Server', value: 3 },
+                                    { key: 'MySQL', value: 5 },
+                                    { key: 'PostgreSQL', value: 2 },
+                                    { key: 'MongoDB', value: 4}
+                                ]}
+                                styles={{
+                                    '.chart_text': {
+                                        fontSize: '1em',
+                                        fill: '#fff'
+                                    }
+                                }}
+                            />
+                        </div>
+                        <div className="col-md-4">
+                            sumple text
+                        </div>
+                        <div className="col-md-1"></div>
                     </div>
                 </div>
             </div>
@@ -38,14 +73,15 @@ export class Statistics extends React.Component<RouteComponentProps<{}>, Statist
                 <div className="panel-heading">Programming languages</div>
                 <div className="panel-body">
                     <div className="row">
-                        <div>
+                    <div className="col-md-3"></div>
+                        <div className="col-md-4">
                             <PieChart
                                 labels
                                 size={400}
                                 data={[
-                                    { key: 'SQL Server', value: 100 },
-                                    { key: 'MySQL', value: 200 },
-                                    { key: 'PostgreSQL', value: 50 }
+                                    { key: 'ASP.Net Core', value: 3 },
+                                    { key: 'Entity Framework Core', value: 3 },
+                                    { key: 'React', value: 4 }
                                 ]}
                                 styles={{
                                     '.chart_text': {
@@ -55,30 +91,10 @@ export class Statistics extends React.Component<RouteComponentProps<{}>, Statist
                                 }}
                             />
                         </div>
-                    </div>
-                </div>
-            </div>
-            <div className="panel panel-default">
-                <div className="panel-heading">Programming languages</div>
-                <div className="panel-body">
-                    <div className="row">
-                        <div>
-                            <PieChart
-                                labels
-                                size={400}
-                                data={[
-                                    { key: 'ASP.Net Core', value: 100 },
-                                    { key: 'Entity Framework Core', value: 200 },
-                                    { key: 'React', value: 50 }
-                                ]}
-                                styles={{
-                                    '.chart_text': {
-                                        fontSize: '1em',
-                                        fill: '#fff'
-                                    }
-                                }}
-                            />
+                        <div className="col-md-4">
+                            sumple text
                         </div>
+                        <div className="col-md-1"></div>
                     </div>
                 </div>
             </div>
