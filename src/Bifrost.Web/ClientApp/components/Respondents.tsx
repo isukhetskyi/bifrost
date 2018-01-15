@@ -49,7 +49,8 @@ export class Respondents extends React.Component<RouteComponentProps<{}>, Respon
 
     public render() {
         const data = this.state.data;
-        return <div>
+        return <div className="container" style={{width:"100%"}}>
+            <h2 className="text-center">Respondents</h2>
             <ReactTable
                 data={data as any}
                 filterable

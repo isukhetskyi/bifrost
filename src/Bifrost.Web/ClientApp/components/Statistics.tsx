@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
-import { PieChart } from 'react-easy-chart';
+import { PieChart, Legend } from 'react-easy-chart';
 import * as fetch from 'node-fetch';
 
 interface StatisticsState {
@@ -30,7 +30,8 @@ export class Statistics extends React.Component<RouteComponentProps<{}>, Statist
     }
 
     public render() {
-        return <div>
+        return <div className="container">
+        <h2 className="text-center">Statistics</h2>
             <div className="panel panel-default">
                 <div className="panel-heading">Programming languages</div>
                 <div className="panel-body">
@@ -40,17 +41,18 @@ export class Statistics extends React.Component<RouteComponentProps<{}>, Statist
                             <PieChart
                                 labels
                                 size={400}
+                                innerHoleSize={1}
                                 data={this.state.data.languages}
                                 styles={{
                                     '.chart_text': {
                                         fontSize: '1em',
                                         fill: '#fff'
                                     }
-                                }}
-                            />
+                                }
+                            }
+                            ></PieChart>
                         </div>
                         <div className="col-md-4">
-                            sumple text
                         </div>
                         <div className="col-md-1"></div>
                     </div>
@@ -65,6 +67,7 @@ export class Statistics extends React.Component<RouteComponentProps<{}>, Statist
                             <PieChart
                                 labels
                                 size={400}
+                                innerHoleSize={2}
                                 data={this.state.data.databases}
                                 styles={{
                                     '.chart_text': {
@@ -75,7 +78,6 @@ export class Statistics extends React.Component<RouteComponentProps<{}>, Statist
                             />
                         </div>
                         <div className="col-md-4">
-                            sumple text
                         </div>
                         <div className="col-md-1"></div>
                     </div>
@@ -90,6 +92,7 @@ export class Statistics extends React.Component<RouteComponentProps<{}>, Statist
                             <PieChart
                                 labels
                                 size={400}
+                                innerHoleSize={3}
                                 data={this.state.data.frameworks}
                                 styles={{
                                     '.chart_text': {
@@ -100,7 +103,6 @@ export class Statistics extends React.Component<RouteComponentProps<{}>, Statist
                             />
                         </div>
                         <div className="col-md-4">
-                            sumple text
                         </div>
                         <div className="col-md-1"></div>
                     </div>

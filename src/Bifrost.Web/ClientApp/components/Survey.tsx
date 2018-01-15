@@ -10,18 +10,28 @@ interface SurveyProps {
 interface SurveyState {
     // general info
     FirstName?: string;
+    FirstNameError?: boolean;
     LastName?: string;
+    LastNameError?: boolean;
     Age?: number;
+    AgeError?: boolean;
     Address?: string;
+    AddressError?: boolean;
     IsEmployed?: boolean;
     CurrentPosition?: string;
+    CurrentPositionError?: boolean;
     Phone?: string;
+    PhoneError?: boolean;
     Skype?: string;
+    SkypeError?: boolean;
     Email?: string;
+    EmailError?: boolean;
 
     //education
     PlaceOfStudying?: string;
+    PlaceOfStudyingError?: boolean;
     Speciality?: string;
+    SpecialityError?: boolean;
 
     //work experience
     ProgrammingLanguagesCheckboxes?: Array<object>;
@@ -34,6 +44,9 @@ interface SurveyState {
 
     //other info
     OtherInfo?: string;
+    OtherInfoError?: boolean;
+
+    FormError?: boolean;
 }
 
 
@@ -44,16 +57,26 @@ export class Survey extends React.Component<RouteComponentProps<SurveyProps>, Su
 
         this.state = {
             FirstName: "",
+            FirstNameError: false,
             LastName: "",
+            LastNameError: false,
             Age: 0,
+            AgeError: false,
             Address: "",
+            AddressError: false,
             IsEmployed: false,
             CurrentPosition: "",
+            CurrentPositionError: false,
             Phone: "",
+            PhoneError: false,
             Email: "",
+            EmailError: false,
             Skype: "",
+            SkypeError: false,
             PlaceOfStudying: "",
+            PlaceOfStudyingError: false,
             Speciality: "",
+            SpecialityError: false,
             ProgrammingLanguagesCheckboxes: [],
             FrameworksCheckboxes: [],
             DatabasesCheckboxes: [],
@@ -61,7 +84,10 @@ export class Survey extends React.Component<RouteComponentProps<SurveyProps>, Su
             Databases: [],
             Frameworks: [],
 
-            OtherInfo: ""
+            OtherInfo: "",
+            OtherInfoError: false,
+
+            FormError: false
         }
 
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -70,24 +96,25 @@ export class Survey extends React.Component<RouteComponentProps<SurveyProps>, Su
         this.handleRadioButtonChange = this.handleRadioButtonChange.bind(this);
         this.renderCheckboxes = this.renderCheckboxes.bind(this);
         this.componentWillMount = this.componentWillMount.bind(this);
+        this.isFormValid = this.isFormValid.bind(this);
     }
 
-    componentWillMount(){
+    componentWillMount() {
         let data: any;
         let thisContext = this;
         const request = fetch.default("http://localhost:5000/Survey/GetTechnologies")
-            .then(function(res){return res.json()})
-            .then(function(json){
+            .then(function (res) { return res.json() })
+            .then(function (json) {
                 data = json.data;
-                thisContext.setState({ProgrammingLanguagesCheckboxes: data.languages})
-                thisContext.setState({FrameworksCheckboxes: data.frameworks})
-                thisContext.setState({DatabasesCheckboxes: data.databases})
+                thisContext.setState({ ProgrammingLanguagesCheckboxes: data.languages })
+                thisContext.setState({ FrameworksCheckboxes: data.frameworks })
+                thisContext.setState({ DatabasesCheckboxes: data.databases })
             });
     }
 
     renderCheckboxes(collectionName: string) {
         let elements: any;
-        let collection: Array<object>|undefined;
+        let collection: Array<object> | undefined;
         let datatype = "checkbox-"
         if (collectionName === "ProgrammingLanguagesCheckboxes") {
             collection = this.state.ProgrammingLanguagesCheckboxes;
@@ -102,32 +129,55 @@ export class Survey extends React.Component<RouteComponentProps<SurveyProps>, Su
             datatype += "database"
         }
 
-        if(collection == undefined){
+        if (collection == undefined) {
             collection = new Array<[number, string]>();
         }
-        console.log(collection)
         elements = collection.map((checkbox: any, index: number) =>
-            <div className="custom-control custom-checkbox">
-                <input type="checkbox"
-                    className="custom-control-input"
-                    id={checkbox.id}
-                    value={checkbox.technologyName}
-                    datatype={datatype}
-                    onChange={e => this.handleCheckboxChange(e)}
-                />
-                <label className="custom-control-label" htmlFor="customCheck1">{checkbox.technologyName}</label>
+            <div className="custom-control checkbox">
+                <label htmlFor={checkbox.id}>
+                    <input type="checkbox"
+                        className="custom-control-input"
+                        id={checkbox.id}
+                        value={checkbox.technologyName}
+                        datatype={datatype}
+                        onChange={e => this.handleCheckboxChange(e)}
+                    />
+                    {checkbox.technologyName}
+                </label>
+                {/* <label className="custom-control-label" htmlFor={checkbox.id}>{checkbox.technologyName}</label> */}
             </div>);
         return elements;
     }
 
     handleSubmit(event: any) {
-        let body = JSON.stringify(this.state);
-        console.log(body)
+        if(this.isFormValid())
+        {
+            this.setState({FormError: false});
+            let body = JSON.stringify(this.state);
+            console.log(body)
 
-        const request = fetch.default("http://localhost:5000/Survey",
-        {method: "POST", body: JSON.stringify(this.state), headers: {"Content-Type":"application/json"}})
-            .then(res => console.log(res.body));
+            const request = fetch.default("http://localhost:5000/Survey",
+                { method: "POST", body: JSON.stringify(this.state), headers: { "Content-Type": "application/json" } })
+                .then(res => console.log(res.body));
+        }else{
+            this.setState({FormError: true});
+        }
+
         event.preventDefault();
+    }
+
+    isFormValid(){
+        return (!this.state.AddressError
+            && !this.state.AgeError
+            && !this.state.CurrentPositionError
+            && !this.state.EmailError
+            && !this.state.FirstNameError
+            && !this.state.LastNameError
+            && !this.state.OtherInfoError
+            && !this.state.PhoneError
+            && !this.state.PlaceOfStudyingError
+            && !this.state.SkypeError
+            && !this.state.SpecialityError)
     }
 
     validate(e: any): boolean {
@@ -138,7 +188,7 @@ export class Survey extends React.Component<RouteComponentProps<SurveyProps>, Su
             let pattern = e.target.attributes.getNamedItem("data-regex").value;
             let regex = new RegExp(pattern);
 
-            return regex.test(e.target.value as string);
+            return regex.test((e.target.value as string).trim());
         }
         else if (inputType as string === "general-info-number") {
             let pattern = e.target.attributes.getNamedItem("data-regex").value;
@@ -153,10 +203,13 @@ export class Survey extends React.Component<RouteComponentProps<SurveyProps>, Su
     handleInputChange(e: any) {
         if (this.validate(e)) {
             this.setState({ [(e.target.attributes.id.value as string)]: e.target.value as string })
+            this.setState({[(e.target.attributes.id.value as string) + "Error"]: false})
+            this.setState({FormError: false})
+        }else{
+            this.setState({[(e.target.attributes.id.value as string) + "Error"]: true})
         }
 
         e.preventDefault();
-        console.log(this.state);
     }
 
     handleRadioButtonChange(e: any) {
@@ -191,7 +244,6 @@ export class Survey extends React.Component<RouteComponentProps<SurveyProps>, Su
                     this.setState({ ProgrammingLanguages: newArray });
                 }
             }
-            console.log(this.state.ProgrammingLanguages)
         }
         if (inputType as string === "checkbox-database") {
             if (e.target.checked) {
@@ -213,7 +265,6 @@ export class Survey extends React.Component<RouteComponentProps<SurveyProps>, Su
                     this.setState({ Databases: newArray });
                 }
             }
-            console.log(this.state.Databases)
         }
         if (inputType as string === "checkbox-framework") {
             if (e.target.checked) {
@@ -235,67 +286,103 @@ export class Survey extends React.Component<RouteComponentProps<SurveyProps>, Su
                     this.setState({ Frameworks: newArray });
                 }
             }
-            console.log(this.state.Frameworks)
         }
     }
 
     public render() {
-        return <div className="container">
+        return <div className="container" style={{width:"100%"}}>
             <h2 className="text-center">Take a Survey</h2>
             <form onSubmit={this.handleSubmit}>
                 <div className="panel panel-default">
-                    <div className="panel-heading">Personal info</div>
+                    <div className="panel-heading"><h3>Personal info</h3></div>
                     <div className="panel-body">
                         <div className="row">
                             <div className="col-md-4 form-group">
-                                <label>First Name</label>
-                                <input className="form-control"
-                                    onBlur={e => this.handleInputChange(e)}
-                                    datatype="general-info-text"
-                                    data-min-length="2"
-                                    data-max-length="100"
-                                    data-regex="[a-z ,.'-]{2,100}"
-                                    type="text"
-                                    value="Ivan"
-                                    id="FirstName" />
+                                <div className="row">
+                                    <div className="col-md-12">
+                                        <label>First Name</label>
+                                        <input className="form-control"
+                                            onChange={e => this.handleInputChange(e)}
+                                            onBlur={e => this.handleInputChange(e)}
+                                            datatype="general-info-text"
+                                            data-min-length="2"
+                                            data-max-length="100"
+                                            data-regex="[a-z ,.'-]{2,100}"
+                                            type="text"
+                                            id="FirstName" />
+                                    </div>
+                                </div>
+                                <div className="row" id="FirstNameError" style={{ display: this.state.FirstNameError ? "block": "none"}}>
+                                    <div className="col-md-12">
+                                        <label className="text-danger">First name can contain only letters and be 2-100 chars long</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="col-md-4 form-group">
+                                <div className="row">
+                                    <div className="col-md-12">
+                                        <label>Last Name</label>
+                                        <input className="form-control"
+                                            onChange={e => this.handleInputChange(e)}
+                                            onBlur={e => this.handleInputChange(e)}
+                                            datatype="general-info-text"
+                                            data-min-length="2"
+                                            data-max-length="100"
+                                            data-regex="[a-z ,.'-]{2,100}"
+                                            type="text"
+                                            id="LastName" />
+                                    </div>
+                                    <div className="row" id="LastNameError" style={{ display: this.state.LastNameError ? "block" : "none" }}>
+                                        <div className="col-md-12">
+                                            <label className="text-danger">First name can contain only letters and be 2-100 chars long</label>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             <div className="col-md-4 form-group">
-                                <label>Last Name</label>
-                                <input className="form-control"
-                                    onBlur={e => this.handleInputChange(e)}
-                                    datatype="general-info-text"
-                                    data-min-length="2"
-                                    data-max-length="100"
-                                    data-regex="[a-z ,.'-]{2,100}"
-                                    type="text"
-                                    value="Sukhetskyi"
-                                    id="LastName" />
-                            </div>
-                            <div className="col-md-4 form-group">
-                                <label>Age</label>
-                                <input className="form-control"
-                                    onBlur={e => this.handleInputChange(e)}
-                                    datatype="general-info-number"
-                                    data-min-value="18"
-                                    data-max-value="90"
-                                    data-regex="\\d{2}"
-                                    type="number"
-                                    value="33"
-                                    id="Age" />
+                                <div className="row">
+                                    <div className="col-md-12">
+                                        <label>Age</label>
+                                        <input className="form-control"
+                                            onChange={e => this.handleInputChange(e)}
+                                            onBlur={e => this.handleInputChange(e)}
+                                            datatype="general-info-number"
+                                            data-min-value="18"
+                                            data-max-value="90"
+                                            data-regex="\\d{2}"
+                                            type="number"
+                                            id="Age" />
+                                    </div>
+                                </div>
+                                <div className="row" id="AgeError" style={{ display: this.state.AgeError ? "block" : "none" }}>
+                                    <div className="col-md-12">
+                                        <label className="text-danger">Ivanlid age value, valid age is from 18 to 90</label>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div className="row">
                             <div className="col-md-12 form-group">
-                                <label>Address</label>
-                                <input className="form-control"
-                                    onBlur={e => this.handleInputChange(e)}
-                                    datatype="general-info-text"
-                                    data-min-length="2"
-                                    data-max-length="100"
-                                    data-regex="(\\w[a-zA-Z- ,.0-9]{1,})"
-                                    type="text"
-                                    value="Ivano-Frankivsk"
-                                    id="Address" />
+                                <div className="row">
+                                    <div className="col-md-12">
+                                        <label>Address</label>
+                                        <input className="form-control"
+                                            onChange={e => this.handleInputChange(e)}
+                                            onBlur={e => this.handleInputChange(e)}
+                                            datatype="general-info-text"
+                                            data-min-length="2"
+                                            data-max-length="100"
+                                            data-regex="(\\w[a-zA-Z- ,.0-9]{1,})"
+                                            type="text"
+                                            id="Address" />
+                                    </div>
+                                </div>
+                                <div className="row" id="AddressError" style={{ display: this.state.AddressError ? "block" : "none" }}>
+                                    <div className="col-md-12">
+                                        <label className="text-danger">Invalid address</label>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div className="row">
@@ -308,10 +395,9 @@ export class Survey extends React.Component<RouteComponentProps<SurveyProps>, Su
                                                 type="radio"
                                                 name="inlineRadioOptions"
                                                 id="isEmployedYes"
-                                                value="on"
                                                 onClick={e => this.handleRadioButtonChange(e)}
                                             /> Yes
-                                </label>
+                                        </label>
                                     </div>
                                     <div className="com-md-6 form-check form-check-inline no-answer-radio-btn">
                                         <label className="form-check-label">
@@ -326,88 +412,150 @@ export class Survey extends React.Component<RouteComponentProps<SurveyProps>, Su
                                 </div>
                             </div>
                             <div className="col-md-8 form-group">
-                                <label>Current position</label>
-                                <input className="form-control"
-                                    onBlur={e => this.handleInputChange(e)}
-                                    datatype="general-info-text"
-                                    disabled={!this.state.IsEmployed}
+                                <div className="row">
+                                    <div className="col-md-12">
+                                        <label>Current position</label>
+                                        <input className="form-control"
+                                            onChange={e => this.handleInputChange(e)}
+                                            onBlur={e => this.handleInputChange(e)}
+                                            datatype="general-info-text"
+                                            disabled={!this.state.IsEmployed}
 
-                                    data-min-length="2"
-                                    data-max-length="100"
-                                    data-regex="[a-zA-Z][a-zA-Z0-9\\.,\\-_]{5,31}"
-                                    type="text"
-                                    value="Developer"
-                                    id="CurrentPosition" />
+                                            data-min-length="2"
+                                            data-max-length="100"
+                                            data-regex="[a-zA-Z][a-zA-Z0-9\\.,\\-_]{5,31}"
+                                            type="text"
+                                            id="CurrentPosition" />
+                                    </div>
+                                </div>
+                                <div className="row" id="CurrentPositionError" style={{ display: this.state.CurrentPosition ? "block" : "none" }}>
+                                    <div className="col-md-12">
+                                        <label className="text-danger">Ivanlid value of position, it either to short or to long, or contains forbidden chars</label>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div className="row">
                             <div className="col-md-4 form-group">
-                                <label>Skype</label>
-                                <input className="form-control"
-                                    onBlur={e => this.handleInputChange(e)}
-                                    datatype="general-info-text"
-                                    data-min-length="6"
-                                    data-max-length="100"
-                                    data-regex="[a-zA-Z][a-zA-Z0-9\\.,\\-_]{5,31}"
-                                    type="text"
-                                    value="syhestkiy"
-                                    id="Skype" />
+                                <div className="row">
+                                    <div className="col-md-12">
+                                        <label>Skype</label>
+                                        <input className="form-control"
+                                            onChange={e => this.handleInputChange(e)}
+                                            onBlur={e => this.handleInputChange(e)}
+                                            datatype="general-info-text"
+                                            data-min-length="6"
+                                            data-max-length="100"
+                                            data-regex="[a-zA-Z][a-zA-Z0-9\\.,\\-_]{5,31}"
+                                            type="text"
+                                            id="Skype" />
+                                    </div>
+                                </div>
+                                <div className="row" id="SkypeError" style={{ display: this.state.SkypeError ? "block" : "none" }}>
+                                    <div className="col-md-12">
+                                        <label className="text-danger">Ivanlid skype name</label>
+                                    </div>
+                                </div>
                             </div>
                             <div className="col-md-4 form-group">
-                                <label>Phone</label>
-                                <input className="form-control"
-                                    onBlur={e => this.handleInputChange(e)}
-                                    datatype="general-info-text"
-                                    data-regex="\\d{10,12}"
-                                    type="number"
-                                    value="0593456862"
-                                    id="Phone" />
+                                <div className="row">
+                                    <div className="col-md-12">
+                                        <label>Phone</label>
+                                        <input className="form-control"
+                                            onChange={e => this.handleInputChange(e)}
+                                            onBlur={e => this.handleInputChange(e)}
+                                            datatype="general-info-text"
+                                            data-regex="\\d{10,12}"
+                                            type="number"
+                                            id="Phone" />
+                                    </div>
+                                </div>
+                                <div className="row" id="PhoneError" style={{ display: this.state.PhoneError ? "block" : "none" }}>
+                                    <div className="col-md-12">
+                                        <label className="text-danger">Invalid phone value(Example: "0961234567")</label>
+                                    </div>
+                                </div>
                             </div>
                             <div className="col-md-4 form-group">
-                                <label>Email</label>
-                                <input className="form-control"
-                                    onBlur={e => this.handleInputChange(e)}
-                                    datatype="general-info-text"
-                                    data-regex="\\w+([-+.']\\w+)*@\\w+([-.]\\w+)*\\.\\w{2,5}"
-                                    type="text"
-                                    value="ivan.sukhetskyi@gmail.com"
-                                    id="Email" />
+                                <div className="row">
+                                    <div className="col-md-12">
+                                        <label>Email</label>
+                                        <input className="form-control"
+                                            onChange={e => this.handleInputChange(e)}
+                                            onBlur={e => this.handleInputChange(e)}
+                                            datatype="general-info-text"
+                                            data-regex="\\w+([-+.']\\w+)*@\\w+([-.]\\w+)*\\.\\w{2,5}"
+                                            type="text"
+                                            id="Email" />
+                                    </div>
+                                </div>
+                                <div className="row" id="EmailError" style={{ display: this.state.EmailError ? "block" : "none" }}>
+                                    <div className="col-md-12">
+                                        <label className="text-danger">Invalid email</label>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div className="panel panel-default">
-                    <div className="panel-heading">Education</div>
+                    <div className="panel-heading">
+                        <h3>
+                            Education
+                    </h3>
+                    </div>
                     <div className="panel-body">
                         <div className="row">
                             <div className="col-md-6 form-group">
-                                <label>Place of studying</label>
-                                <input className="form-control"
-                                    onBlur={e => this.handleInputChange(e)}
-                                    datatype="general-info-text"
-                                    data-regex="[a-zA-Z ,.'-]{2,100}"
-                                    type="text"
-                                    value="IFNTUOG"
-                                    id="PlaceOfStudying" />
+                                <div className="row">
+                                    <div className="col-md-12">
+                                        <label>Place of studying</label>
+                                        <input className="form-control"
+                                            onChange={e => this.handleInputChange(e)}
+                                            onBlur={e => this.handleInputChange(e)}
+                                            datatype="general-info-text"
+                                            data-regex="[a-zA-Z ,.'-]{2,100}"
+                                            type="text"
+                                            id="PlaceOfStudying" />
+                                    </div>
+                                </div>
+                                <div className="row" id="PlaceOfStudyingError" style={{ display: this.state.PlaceOfStudyingError ? "block" : "none" }}>
+                                    <div className="col-md-12">
+                                        <label className="text-danger">Must be at least 2 chars long and less than 100, and contains only letters</label>
+                                    </div>
+                                </div>
                             </div>
                             <div className="col-md-6 form-group">
-                                <label>Speciality</label>
-                                <input className="form-control"
-                                    onBlur={e => this.handleInputChange(e)}
-                                    datatype="general-info-text"
-                                    data-regex="[a-z ,.'-]{2,100}"
-                                    type="text"
-                                    value="Computer Systems and Networks"
-                                    id="Speciality" />
+                                <div className="row">
+                                    <div className="col-md-12">
+                                        <label>Speciality</label>
+                                        <input className="form-control"
+                                            onChange={e => this.handleInputChange(e)}
+                                            onBlur={e => this.handleInputChange(e)}
+                                            datatype="general-info-text"
+                                            data-regex="[a-z ,.'-]{2,100}"
+                                            type="text"
+                                            id="Speciality" />
+                                    </div>
+                                </div>
+                                <div className="row" id="SpecialityError" style={{ display: this.state.SpecialityError ? "block" : "none" }}>
+                                    <div className="col-md-12">
+                                        <label className="text-danger">Must be at least 2 chars long and less than 100, and contains only letters</label>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div className="panel panel-default">
-                    <div className="panel-heading">Work experiance</div>
+                    <div className="panel-heading">
+                        <h3>
+                            Work experiance
+                        </h3>
+                    </div>
                     <div className="panel-body">
                         <div className="row">
-                            <div className="col-md-4">
+                            <div className="col-md-4 content-center">
                                 <h4>
                                     Programming languages
                                 </h4>
@@ -429,25 +577,47 @@ export class Survey extends React.Component<RouteComponentProps<SurveyProps>, Su
                     </div>
                 </div>
                 <div className="panel panel-default">
-                    <div className="panel-heading">Other</div>
+                    <div className="panel-heading">
+                        <h3>
+                            Other
+                        </h3>
+                    </div>
                     <div className="panel-body">
                         <div className="row">
                             <div className="col-md-12 form-group">
-                                <label>Tell me more :)</label>
-                                <textarea className="form-control"
-                                    onBlur={e => this.handleInputChange(e)}
-                                    datatype="general-info-text"
-                                    data-regex="[a-z0-9 ,.'-]{2,1000}"
-                                    type="text"
-                                    value="Somethisng reaally important"
-                                    id="OtherInfo" />
+                                <div className="row">
+                                    <div className="col-md-12">
+                                        <label>Tell me more :)</label>
+                                        <textarea className="form-control"
+                                            onChange={e => this.handleInputChange(e)}
+                                            onBlur={e => {this.handleInputChange(e)}}
+                                            datatype="general-info-text"
+                                            data-regex="[a-z0-9 ,.'-]{2,1000}"
+                                            type="text"
+                                            id="OtherInfo" />
+                                    </div>
+                                </div>
+                                <div className="row" id="OtherInfoError" style={{ display: this.state.OtherInfoError ? "block" : "none" }}>
+                                    <div className="col-md-12">
+                                        <label className="text-danger">Must be at least 2 chars long and less than 1000</label>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div className="btn-wrapper">
-                    <button type="submit" className="btn btn-primary btn-custom">Submit</button>
+                <div className="row">
+                    <div className="col-md-12">
+                        <div className="btn-wrapper">
+                            <button type="submit" disabled={this.state.FormError} className="btn btn-primary btn-custom">Submit</button>
+                        </div>
+                    </div>
                 </div>
+                <div className="row" id="FormError" style={{ display: this.state.FormError ? "block" : "none" }}>
+                                    <div className="col-md-12 btn-wrapper">
+                                        <label className="text-danger" style={{marginTop: "50px"}}>You can's submit form while it contains errors</label>
+                                    </div>
+                                </div>
             </form>
         </div>;
     }
