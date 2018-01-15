@@ -5,10 +5,11 @@ namespace Bifrost.Domain
 {
     public class RespondentModel
     {
-        public RespondentModel()
+        public RespondentModel ()
         {
-            this.Technologies = new HashSet<TechnologyModel>();
+            this.RespondentsTechnologies = new List<RespondentTechnologyModel> ();
         }
+        public int Id { get; set; }
 
         public string FirstName { get; set; }
         public string LastName { get; set; }
@@ -23,6 +24,6 @@ namespace Bifrost.Domain
         public string Speciality { get; set; }
         public string OtherInfo { get; set; }
 
-        public virtual ICollection<TechnologyModel> Technologies {get; set;}
+        public virtual List<RespondentTechnologyModel> RespondentsTechnologies { get; set; }
     }
 }

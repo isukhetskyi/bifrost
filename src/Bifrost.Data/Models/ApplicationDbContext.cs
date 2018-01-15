@@ -6,6 +6,7 @@ namespace Bifrost.Data.Models
     {
         public DbSet<Respondent> Respondents {get;set;}
         public DbSet<Technology> Technologies {get;set;}
+        public DbSet<RespondentTechnology> RespondentTechnology {get; set;}
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {

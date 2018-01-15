@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
 import ReactTable from "react-table";
+import * as fetch from 'node-fetch';
 import "react-table/react-table.css";
 
 class Respondent {
@@ -22,17 +23,30 @@ export class Respondents extends React.Component<RouteComponentProps<{}>, Respon
     constructor() {
         super();
 
-        let respondents = new Array<Respondent>(
-            { Id: 1, FirstName: "John", LastName: "Snow", Age: 33, IsEmployed: false, Phone: "0502354721", Skype: "starkson", Email: "stark@son.com" }
-            , { Id: 2, FirstName: "Aria", LastName: "Stark", Age: 20, IsEmployed: true, Phone: "0971537050", Skype: "savage", Email: "savagegirl@son.com" }
-            , { Id: 3, FirstName: "Bary", LastName: "Alen", Age: 18, IsEmployed: true, Phone: "0955555555", Skype: "flash", Email: "fastestmanalive@fu.com" }
+        // let respondents = new Array<Respondent>(
+        //     { Id: 1, FirstName: "John", LastName: "Snow", Age: 33, IsEmployed: false, Phone: "0502354721", Skype: "starkson", Email: "stark@son.com" }
+        //     , { Id: 2, FirstName: "Aria", LastName: "Stark", Age: 20, IsEmployed: true, Phone: "0971537050", Skype: "savage", Email: "savagegirl@son.com" }
+        //     , { Id: 3, FirstName: "Bary", LastName: "Alen", Age: 18, IsEmployed: true, Phone: "0955555555", Skype: "flash", Email: "fastestmanalive@fu.com" }
 
-        );
+        // );
 
         this.state = {
-            data: respondents
+            data: []
         }
     }
+
+    componentWillMount(){
+        let respondents: any;
+        let thisContext = this;
+        const request = fetch.default("http://localhost:5000/Respondents/All")
+            .then(function(res){return res.json()})
+            .then(function(json){
+                console.log(json.data);
+                respondents = json.data;
+                thisContext.setState({data: respondents});
+            });
+    }
+
     public render() {
         const data = this.state.data;
         return <div>
@@ -44,7 +58,7 @@ export class Respondents extends React.Component<RouteComponentProps<{}>, Respon
                 columns={[
                     {
                         Header: "ID",
-                        accessor: "Id",
+                        accessor: "id",
                         filterable: false,
                         sortable: true,
                         maxWidth: 50,
@@ -52,21 +66,21 @@ export class Respondents extends React.Component<RouteComponentProps<{}>, Respon
                     },
                     {
                         Header: "First Name",
-                        accessor: "FirstName",
+                        accessor: "firstName",
                         style: { "textAlign": "center" },
                         filterMethod: (filter: any, row: any) =>
                             row[filter.id].toLowerCase().startsWith(filter.value.toLowerCase())
                     },
                     {
                         Header: "Last Name",
-                        accessor: "LastName",
+                        accessor: "lastName",
                         style: { "textAlign": "center" },
                         filterMethod: (filter: any, row: any) =>
                             row[filter.id].toLowerCase().startsWith(filter.value.toLowerCase())
                     },
                     {
                         Header: "Age",
-                        accessor: "Age",
+                        accessor: "age",
                         maxWidth: 50,
                         style: { "textAlign": "center" },
                         filterMethod: (filter: any, row: any) =>
@@ -74,7 +88,7 @@ export class Respondents extends React.Component<RouteComponentProps<{}>, Respon
                     },
                     {
                         Header: "Is employed?",
-                        accessor: "IsEmployed",
+                        accessor: "isEmployed",
                         id: "isEmployed",
                         maxWidth: 100,
                         filterable: false,
@@ -84,7 +98,7 @@ export class Respondents extends React.Component<RouteComponentProps<{}>, Respon
                     },
                     {
                         Header: "Phone",
-                        accessor: "Phone",
+                        accessor: "phone",
                         style: { "textAlign": "center" },
                         maxWidth: 120,
                         filterMethod: (filter: any, row: any) =>
@@ -93,14 +107,14 @@ export class Respondents extends React.Component<RouteComponentProps<{}>, Respon
                     },
                     {
                         Header: "Email",
-                        accessor: "Email",
+                        accessor: "email",
                         style: { "textAlign": "center" },
                         filterMethod: (filter: any, row: any) =>
                             row[filter.id].toLowerCase().startsWith(filter.value.toLowerCase())
                     },
                     {
                         Header: "Skype",
-                        accessor: "Skype",
+                        accessor: "skype",
                         style: { "textAlign": "center" },
                         filterMethod: (filter: any, row: any) =>
                             row[filter.id].toLowerCase().startsWith(filter.value.toLowerCase())

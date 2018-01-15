@@ -6,8 +6,10 @@ namespace Bifrost.Domain
     {
         public TechnologyModel()
         {
-            this.Respondents = new HashSet<RespondentModel>();
+            this.RespondentsTechnologies = new List<RespondentTechnologyModel>();
         }
+
+        public int Id { get; set; }
 
         /// <summary>
         /// Technology type
@@ -17,8 +19,8 @@ namespace Bifrost.Domain
         /// </summary>
         /// <returns></returns>
         public int TechnologyType { get; set; }
-        public string TechonologyName { get; set; }
+        public string TechnologyName { get; set; }
 
-        public ICollection<RespondentModel> Respondents {get;set;}
+        public List<RespondentTechnologyModel> RespondentsTechnologies {get;set;}
     }
 }

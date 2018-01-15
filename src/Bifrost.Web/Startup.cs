@@ -7,7 +7,10 @@ using Bifrost.Data.Models;
 using Bifrost.Domain;
 using Bifrost.Repository;
 using Bifrost.Services.RespondentService;
-using Bifrost.Web.ViewModels;
+using Bifrost.Services.RespondentTechnologyService;
+using Bifrost.Services.TechnologyService;
+using Bifrost.Web.ViewModels.Respondent;
+using Bifrost.Web.ViewModels.Survey;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SpaServices.Webpack;
@@ -36,6 +39,8 @@ namespace Bifrost_Web
             services.AddTransient<IRepository, EntityFrameworkRepository<ApplicationDbContext>>();
             services.AddTransient<IMapper, Mapper>();
             services.AddTransient<IRespondentService, RespondentService>();
+            services.AddTransient<ITechnologyService, TechnologyService>();
+            services.AddTransient<IRespondentTechnologyService, RespondentTechnologyService>();
 
             var config = new AutoMapper.MapperConfiguration(cfg =>
             {
@@ -46,9 +51,15 @@ namespace Bifrost_Web
                 cfg.CreateMap<Technology, TechnologyModel>();
                 cfg.CreateMap<TechnologyModel, Technology>();
 
+                cfg.CreateMap<RespondentTechnology, RespondentTechnologyModel>();
+                cfg.CreateMap<RespondentTechnologyModel, RespondentTechnology>();
+
                 // domain models to view models mappings
                 cfg.CreateMap<RespondentModel, SurveyViewModel>();
                 cfg.CreateMap<SurveyViewModel, RespondentModel>();
+
+                cfg.CreateMap<RespondentModel, RespondentViewModel>();
+                cfg.CreateMap<RespondentViewModel, RespondentModel>();
             });
 
             var mapper = config.CreateMapper();

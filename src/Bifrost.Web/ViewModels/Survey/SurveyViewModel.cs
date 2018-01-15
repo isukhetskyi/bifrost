@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Bifrost.Web.ViewModels
+namespace Bifrost.Web.ViewModels.Survey
 {
     public class SurveyViewModel
     {
@@ -18,9 +18,9 @@ namespace Bifrost.Web.ViewModels
         public List<object> ProgrammingLanguagesCheckboxes { get; set; }
         public List<object> FrameworksCheckboxes { get; set; }
         public List<object> DatabasesCheckboxes { get; set; }
-        public List<string> ProgrammingLanguages { get; set; }
-        public List<string> Databases { get; set; }
-        public List<string> Frameworks { get; set; }
+        public List<int> ProgrammingLanguages { get; set; }
+        public List<int> Databases { get; set; }
+        public List<int> Frameworks { get; set; }
         public string OtherInfo { get; set; }
     }
 }

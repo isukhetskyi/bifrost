@@ -10,8 +10,6 @@ namespace Bifrost.Repository
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public T Id { get; set; }
 
-        public string Name { get; set; }
-
         private DateTime? createdDate;
         [DataType(DataType.DateTime)]
         public DateTime CreatedDate

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using AutoMapper;
 using Bifrost.Data.Models;
 using Bifrost.Domain;
@@ -32,6 +33,11 @@ namespace Bifrost.Services.RespondentService
             }
 
             return result;
+        }
+
+        public List<RespondentModel> GetAll()
+        {
+            return this.mapper.Map<List<RespondentModel>>(this.repository.GetAll<Respondent>());
         }
     }
 }

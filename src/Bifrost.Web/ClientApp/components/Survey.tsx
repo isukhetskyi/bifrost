@@ -111,11 +111,11 @@ export class Survey extends React.Component<RouteComponentProps<SurveyProps>, Su
                 <input type="checkbox"
                     className="custom-control-input"
                     id={checkbox.id}
-                    value={checkbox.value}
+                    value={checkbox.technologyName}
                     datatype={datatype}
                     onChange={e => this.handleCheckboxChange(e)}
                 />
-                <label className="custom-control-label" htmlFor="customCheck1">{checkbox.value}</label>
+                <label className="custom-control-label" htmlFor="customCheck1">{checkbox.technologyName}</label>
             </div>);
         return elements;
     }
@@ -178,13 +178,13 @@ export class Survey extends React.Component<RouteComponentProps<SurveyProps>, Su
                     newArray = new Array<number>();
                 }
 
-                newArray.push(e.target.value);
+                newArray.push(e.target.id);
                 this.setState({ ProgrammingLanguages: newArray });
             } else {
 
                 if (this.state.ProgrammingLanguages != null) {
                     let newArray = this.state.ProgrammingLanguages;
-                    let index = this.state.ProgrammingLanguages.indexOf(e.target.value, 0);
+                    let index = this.state.ProgrammingLanguages.indexOf(e.target.id, 0);
                     if (index > -1) {
                         newArray.splice(index, 1);
                     }
@@ -200,13 +200,13 @@ export class Survey extends React.Component<RouteComponentProps<SurveyProps>, Su
                     newArray = new Array<number>();
                 }
 
-                newArray.push(e.target.value);
+                newArray.push(e.target.id);
                 this.setState({ Databases: newArray });
             } else {
 
                 if (this.state.Databases != null) {
                     let newArray = this.state.Databases;
-                    let index = this.state.Databases.indexOf(e.target.value, 0);
+                    let index = this.state.Databases.indexOf(e.target.id, 0);
                     if (index > -1) {
                         newArray.splice(index, 1);
                     }
@@ -222,13 +222,13 @@ export class Survey extends React.Component<RouteComponentProps<SurveyProps>, Su
                     newArray = new Array<number>();
                 }
 
-                newArray.push(e.target.value);
+                newArray.push(e.target.id);
                 this.setState({ Frameworks: newArray });
             } else {
 
                 if (this.state.Frameworks != null) {
                     let newArray = this.state.Frameworks;
-                    let index = this.state.Frameworks.indexOf(e.target.value, 0);
+                    let index = this.state.Frameworks.indexOf(e.target.id, 0);
                     if (index > -1) {
                         newArray.splice(index, 1);
                     }

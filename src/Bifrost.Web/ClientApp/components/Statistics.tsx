@@ -1,12 +1,33 @@
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
 import { PieChart } from 'react-easy-chart';
+import * as fetch from 'node-fetch';
 
 interface StatisticsState {
-    //currentCount: number;
+    data: any;
 }
 
 export class Statistics extends React.Component<RouteComponentProps<{}>, StatisticsState> {
+    constructor(props: any) {
+        super(props);
+
+        this.state = {
+            data: {}
+        }
+
+        this.componentWillMount = this.componentWillMount.bind(this);
+    }
+    componentWillMount(){
+        let statistics: any;
+        let thisContext = this;
+        const request = fetch.default("http://localhost:5000/Statistics/All")
+            .then(function(res){return res.json()})
+            .then(function(json){
+                console.log(json.data);
+                statistics = json.data;
+                thisContext.setState({data: statistics});
+            });
+    }
 
     public render() {
         return <div>
@@ -19,11 +40,7 @@ export class Statistics extends React.Component<RouteComponentProps<{}>, Statist
                             <PieChart
                                 labels
                                 size={400}
-                                data={[
-                                    { key: 'JavaScript', value: 10 },
-                                    { key: 'CSharp', value: 3 },
-                                    { key: 'TypeScript', value: 2 }
-                                ]}
+                                data={this.state.data.languages}
                                 styles={{
                                     '.chart_text': {
                                         fontSize: '1em',
@@ -48,12 +65,7 @@ export class Statistics extends React.Component<RouteComponentProps<{}>, Statist
                             <PieChart
                                 labels
                                 size={400}
-                                data={[
-                                    { key: 'SQL Server', value: 3 },
-                                    { key: 'MySQL', value: 5 },
-                                    { key: 'PostgreSQL', value: 2 },
-                                    { key: 'MongoDB', value: 4}
-                                ]}
+                                data={this.state.data.databases}
                                 styles={{
                                     '.chart_text': {
                                         fontSize: '1em',
@@ -70,7 +82,7 @@ export class Statistics extends React.Component<RouteComponentProps<{}>, Statist
                 </div>
             </div>
             <div className="panel panel-default">
-                <div className="panel-heading">Programming languages</div>
+                <div className="panel-heading">Frameworks</div>
                 <div className="panel-body">
                     <div className="row">
                     <div className="col-md-3"></div>
@@ -78,11 +90,7 @@ export class Statistics extends React.Component<RouteComponentProps<{}>, Statist
                             <PieChart
                                 labels
                                 size={400}
-                                data={[
-                                    { key: 'ASP.Net Core', value: 3 },
-                                    { key: 'Entity Framework Core', value: 3 },
-                                    { key: 'React', value: 4 }
-                                ]}
+                                data={this.state.data.frameworks}
                                 styles={{
                                     '.chart_text': {
                                         fontSize: '1em',
