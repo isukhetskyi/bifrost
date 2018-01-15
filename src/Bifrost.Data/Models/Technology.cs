@@ -18,7 +18,7 @@ namespace Bifrost.Data.Models
         /// </summary>
         /// <returns></returns>
         public int TechnologyType { get; set; }
-        public string TechonologyName { get; set; }
+        public string TechnologyName { get; set; }
 
         public List<RespondentTechnology> RespondentsTechnologies {get;set;}
     }

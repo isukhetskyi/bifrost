@@ -10,9 +10,8 @@ namespace Bifrost_Web.Controllers
 {
     public class HomeController : Controller
     {
-        public IActionResult Index(SurveyViewModel model)
+        public IActionResult Index()
         {
-            //var model = InitializeViewModel();
             return View();
         }
 
