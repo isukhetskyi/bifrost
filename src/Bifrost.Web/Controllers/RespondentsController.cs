@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using AutoMapper;
+using Bifrost.Domain;
 using Bifrost.Services.RespondentService;
 using Bifrost.Web.ViewModels.Respondent;
 using Microsoft.AspNetCore.Mvc;
@@ -26,7 +28,15 @@ namespace Bifrost.Web.Controllers
         [HttpGet]
         public JsonResult All()
         {
-            var respondents = this.respondentService.GetAll();
+            List<RespondentModel> respondents = new List<RespondentModel>();
+            try
+            {
+                respondents = this.respondentService.GetAll();
+            }
+            catch(Exception e)
+            {
+                //todo do some logging here
+            }
 
             return Json(new {data = this.mapper.Map<List<RespondentViewModel>>(respondents)});
         }

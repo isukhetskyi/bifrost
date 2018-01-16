@@ -47,6 +47,7 @@ interface SurveyState {
     OtherInfoError?: boolean;
 
     FormError?: boolean;
+    isDone?: boolean;
 }
 
 
@@ -87,7 +88,8 @@ export class Survey extends React.Component<RouteComponentProps<SurveyProps>, Su
             OtherInfo: "",
             OtherInfoError: false,
 
-            FormError: false
+            FormError: false,
+            isDone: false
         }
 
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -159,6 +161,7 @@ export class Survey extends React.Component<RouteComponentProps<SurveyProps>, Su
             const request = fetch.default("http://localhost:5000/Survey",
                 { method: "POST", body: JSON.stringify(this.state), headers: { "Content-Type": "application/json" } })
                 .then(res => console.log(res.body));
+            this.setState({isDone: true})
         }else{
             this.setState({FormError: true});
         }
@@ -290,335 +293,342 @@ export class Survey extends React.Component<RouteComponentProps<SurveyProps>, Su
     }
 
     public render() {
-        return <div className="container" style={{width:"100%"}}>
-            <h2 className="text-center">Take a Survey</h2>
-            <form onSubmit={this.handleSubmit}>
-                <div className="panel panel-default">
-                    <div className="panel-heading"><h3>Personal info</h3></div>
-                    <div className="panel-body">
-                        <div className="row">
-                            <div className="col-md-4 form-group">
-                                <div className="row">
-                                    <div className="col-md-12">
-                                        <label>First Name</label>
-                                        <input className="form-control"
-                                            onChange={e => this.handleInputChange(e)}
-                                            onBlur={e => this.handleInputChange(e)}
-                                            datatype="general-info-text"
-                                            data-min-length="2"
-                                            data-max-length="100"
-                                            data-regex="[a-z ,.'-]{2,100}"
-                                            type="text"
-                                            id="FirstName" />
+        if(!this.state.isDone)
+        {
+            return <div className="container" style={{width:"100%"}}>
+                <h2 className="text-center">Take a Survey</h2>
+                <form onSubmit={this.handleSubmit}>
+                    <div className="panel panel-default">
+                        <div className="panel-heading"><h3>Personal info</h3></div>
+                        <div className="panel-body">
+                            <div className="row">
+                                <div className="col-md-4 form-group">
+                                    <div className="row">
+                                        <div className="col-md-12">
+                                            <label>First Name</label>
+                                            <input className="form-control"
+                                                onChange={e => this.handleInputChange(e)}
+                                                onBlur={e => this.handleInputChange(e)}
+                                                datatype="general-info-text"
+                                                data-min-length="2"
+                                                data-max-length="100"
+                                                data-regex="[a-z ,.'-]{2,100}"
+                                                type="text"
+                                                id="FirstName" />
+                                        </div>
                                     </div>
-                                </div>
-                                <div className="row" id="FirstNameError" style={{ display: this.state.FirstNameError ? "block": "none"}}>
-                                    <div className="col-md-12">
-                                        <label className="text-danger">First name can contain only letters and be 2-100 chars long</label>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="col-md-4 form-group">
-                                <div className="row">
-                                    <div className="col-md-12">
-                                        <label>Last Name</label>
-                                        <input className="form-control"
-                                            onChange={e => this.handleInputChange(e)}
-                                            onBlur={e => this.handleInputChange(e)}
-                                            datatype="general-info-text"
-                                            data-min-length="2"
-                                            data-max-length="100"
-                                            data-regex="[a-z ,.'-]{2,100}"
-                                            type="text"
-                                            id="LastName" />
-                                    </div>
-                                    <div className="row" id="LastNameError" style={{ display: this.state.LastNameError ? "block" : "none" }}>
+                                    <div className="row" id="FirstNameError" style={{ display: this.state.FirstNameError ? "block": "none"}}>
                                         <div className="col-md-12">
                                             <label className="text-danger">First name can contain only letters and be 2-100 chars long</label>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div className="col-md-4 form-group">
-                                <div className="row">
-                                    <div className="col-md-12">
-                                        <label>Age</label>
-                                        <input className="form-control"
-                                            onChange={e => this.handleInputChange(e)}
-                                            onBlur={e => this.handleInputChange(e)}
-                                            datatype="general-info-number"
-                                            data-min-value="18"
-                                            data-max-value="90"
-                                            data-regex="\\d{2}"
-                                            type="number"
-                                            id="Age" />
-                                    </div>
-                                </div>
-                                <div className="row" id="AgeError" style={{ display: this.state.AgeError ? "block" : "none" }}>
-                                    <div className="col-md-12">
-                                        <label className="text-danger">Ivanlid age value, valid age is from 18 to 90</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="row">
-                            <div className="col-md-12 form-group">
-                                <div className="row">
-                                    <div className="col-md-12">
-                                        <label>Address</label>
-                                        <input className="form-control"
-                                            onChange={e => this.handleInputChange(e)}
-                                            onBlur={e => this.handleInputChange(e)}
-                                            datatype="general-info-text"
-                                            data-min-length="2"
-                                            data-max-length="100"
-                                            data-regex="(\\w[a-zA-Z- ,.0-9]{1,})"
-                                            type="text"
-                                            id="Address" />
-                                    </div>
-                                </div>
-                                <div className="row" id="AddressError" style={{ display: this.state.AddressError ? "block" : "none" }}>
-                                    <div className="col-md-12">
-                                        <label className="text-danger">Invalid address</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="row">
-                            <div className="col-md-4 form-group">
-                                <label>Are you currently employed?</label>
-                                <div className="row">
-                                    <div className="col-md-6 form-check form-check-inline">
-                                        <label className="form-check-label">
-                                            <input className="radio-inline"
-                                                type="radio"
-                                                name="inlineRadioOptions"
-                                                id="isEmployedYes"
-                                                onClick={e => this.handleRadioButtonChange(e)}
-                                            /> Yes
-                                        </label>
-                                    </div>
-                                    <div className="com-md-6 form-check form-check-inline no-answer-radio-btn">
-                                        <label className="form-check-label">
-                                            <input className="radio-inline"
-                                                type="radio"
-                                                name="inlineRadioOptions"
-                                                id="isEmployedNo"
-                                                onClick={e => this.handleRadioButtonChange(e)}
-                                            /> No
-                                </label>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col-md-8 form-group">
-                                <div className="row">
-                                    <div className="col-md-12">
-                                        <label>Current position</label>
-                                        <input className="form-control"
-                                            onChange={e => this.handleInputChange(e)}
-                                            onBlur={e => this.handleInputChange(e)}
-                                            datatype="general-info-text"
-                                            disabled={!this.state.IsEmployed}
 
-                                            data-min-length="2"
-                                            data-max-length="100"
-                                            data-regex="[a-zA-Z][a-zA-Z0-9\\.,\\-_]{5,31}"
-                                            type="text"
-                                            id="CurrentPosition" />
+                                <div className="col-md-4 form-group">
+                                    <div className="row">
+                                        <div className="col-md-12">
+                                            <label>Last Name</label>
+                                            <input className="form-control"
+                                                onChange={e => this.handleInputChange(e)}
+                                                onBlur={e => this.handleInputChange(e)}
+                                                datatype="general-info-text"
+                                                data-min-length="2"
+                                                data-max-length="100"
+                                                data-regex="[a-z ,.'-]{2,100}"
+                                                type="text"
+                                                id="LastName" />
+                                        </div>
+                                        <div className="row" id="LastNameError" style={{ display: this.state.LastNameError ? "block" : "none" }}>
+                                            <div className="col-md-12">
+                                                <label className="text-danger">First name can contain only letters and be 2-100 chars long</label>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                                <div className="row" id="CurrentPositionError" style={{ display: this.state.CurrentPosition ? "block" : "none" }}>
-                                    <div className="col-md-12">
-                                        <label className="text-danger">Ivanlid value of position, it either to short or to long, or contains forbidden chars</label>
+                                <div className="col-md-4 form-group">
+                                    <div className="row">
+                                        <div className="col-md-12">
+                                            <label>Age</label>
+                                            <input className="form-control"
+                                                onChange={e => this.handleInputChange(e)}
+                                                onBlur={e => this.handleInputChange(e)}
+                                                datatype="general-info-number"
+                                                data-min-value="18"
+                                                data-max-value="90"
+                                                data-regex="\\d{2}"
+                                                type="number"
+                                                id="Age" />
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="row">
-                            <div className="col-md-4 form-group">
-                                <div className="row">
-                                    <div className="col-md-12">
-                                        <label>Skype</label>
-                                        <input className="form-control"
-                                            onChange={e => this.handleInputChange(e)}
-                                            onBlur={e => this.handleInputChange(e)}
-                                            datatype="general-info-text"
-                                            data-min-length="6"
-                                            data-max-length="100"
-                                            data-regex="[a-zA-Z][a-zA-Z0-9\\.,\\-_]{5,31}"
-                                            type="text"
-                                            id="Skype" />
-                                    </div>
-                                </div>
-                                <div className="row" id="SkypeError" style={{ display: this.state.SkypeError ? "block" : "none" }}>
-                                    <div className="col-md-12">
-                                        <label className="text-danger">Ivanlid skype name</label>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col-md-4 form-group">
-                                <div className="row">
-                                    <div className="col-md-12">
-                                        <label>Phone</label>
-                                        <input className="form-control"
-                                            onChange={e => this.handleInputChange(e)}
-                                            onBlur={e => this.handleInputChange(e)}
-                                            datatype="general-info-text"
-                                            data-regex="\\d{10,12}"
-                                            type="number"
-                                            id="Phone" />
-                                    </div>
-                                </div>
-                                <div className="row" id="PhoneError" style={{ display: this.state.PhoneError ? "block" : "none" }}>
-                                    <div className="col-md-12">
-                                        <label className="text-danger">Invalid phone value(Example: "0961234567")</label>
+                                    <div className="row" id="AgeError" style={{ display: this.state.AgeError ? "block" : "none" }}>
+                                        <div className="col-md-12">
+                                            <label className="text-danger">Ivanlid age value, valid age is from 18 to 90</label>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                            <div className="col-md-4 form-group">
-                                <div className="row">
-                                    <div className="col-md-12">
-                                        <label>Email</label>
-                                        <input className="form-control"
-                                            onChange={e => this.handleInputChange(e)}
-                                            onBlur={e => this.handleInputChange(e)}
-                                            datatype="general-info-text"
-                                            data-regex="\\w+([-+.']\\w+)*@\\w+([-.]\\w+)*\\.\\w{2,5}"
-                                            type="text"
-                                            id="Email" />
+                            <div className="row">
+                                <div className="col-md-12 form-group">
+                                    <div className="row">
+                                        <div className="col-md-12">
+                                            <label>Address</label>
+                                            <input className="form-control"
+                                                onChange={e => this.handleInputChange(e)}
+                                                onBlur={e => this.handleInputChange(e)}
+                                                datatype="general-info-text"
+                                                data-min-length="2"
+                                                data-max-length="100"
+                                                data-regex="(\\w[a-zA-Z- ,.0-9]{1,})"
+                                                type="text"
+                                                id="Address" />
+                                        </div>
+                                    </div>
+                                    <div className="row" id="AddressError" style={{ display: this.state.AddressError ? "block" : "none" }}>
+                                        <div className="col-md-12">
+                                            <label className="text-danger">Invalid address</label>
+                                        </div>
                                     </div>
                                 </div>
-                                <div className="row" id="EmailError" style={{ display: this.state.EmailError ? "block" : "none" }}>
-                                    <div className="col-md-12">
-                                        <label className="text-danger">Invalid email</label>
+                            </div>
+                            <div className="row">
+                                <div className="col-md-4 form-group">
+                                    <label>Are you currently employed?</label>
+                                    <div className="row">
+                                        <div className="col-md-6 form-check form-check-inline">
+                                            <label className="form-check-label">
+                                                <input className="radio-inline"
+                                                    type="radio"
+                                                    name="inlineRadioOptions"
+                                                    id="isEmployedYes"
+                                                    onClick={e => this.handleRadioButtonChange(e)}
+                                                /> Yes
+                                            </label>
+                                        </div>
+                                        <div className="com-md-6 form-check form-check-inline no-answer-radio-btn">
+                                            <label className="form-check-label">
+                                                <input className="radio-inline"
+                                                    type="radio"
+                                                    name="inlineRadioOptions"
+                                                    id="isEmployedNo"
+                                                    onClick={e => this.handleRadioButtonChange(e)}
+                                                /> No
+                                    </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="col-md-8 form-group">
+                                    <div className="row">
+                                        <div className="col-md-12">
+                                            <label>Current position</label>
+                                            <input className="form-control"
+                                                onChange={e => this.handleInputChange(e)}
+                                                onBlur={e => this.handleInputChange(e)}
+                                                datatype="general-info-text"
+                                                disabled={!this.state.IsEmployed}
+
+                                                data-min-length="2"
+                                                data-max-length="100"
+                                                data-regex="[a-zA-Z][a-zA-Z0-9\\.,\\-_]{5,31}"
+                                                type="text"
+                                                id="CurrentPosition" />
+                                        </div>
+                                    </div>
+                                    <div className="row" id="CurrentPositionError" style={{ display: this.state.CurrentPositionError ? "block" : "none" }}>
+                                        <div className="col-md-12">
+                                            <label className="text-danger">Ivanlid value of position, it either to short or to long, or contains forbidden chars</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="row">
+                                <div className="col-md-4 form-group">
+                                    <div className="row">
+                                        <div className="col-md-12">
+                                            <label>Skype</label>
+                                            <input className="form-control"
+                                                onChange={e => this.handleInputChange(e)}
+                                                onBlur={e => this.handleInputChange(e)}
+                                                datatype="general-info-text"
+                                                data-min-length="6"
+                                                data-max-length="100"
+                                                data-regex="[a-zA-Z][a-zA-Z0-9\\.,\\-_]{5,31}"
+                                                type="text"
+                                                id="Skype" />
+                                        </div>
+                                    </div>
+                                    <div className="row" id="SkypeError" style={{ display: this.state.SkypeError ? "block" : "none" }}>
+                                        <div className="col-md-12">
+                                            <label className="text-danger">Ivanlid skype name</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="col-md-4 form-group">
+                                    <div className="row">
+                                        <div className="col-md-12">
+                                            <label>Phone</label>
+                                            <input className="form-control"
+                                                onChange={e => this.handleInputChange(e)}
+                                                onBlur={e => this.handleInputChange(e)}
+                                                datatype="general-info-text"
+                                                data-regex="\\d{10,12}"
+                                                type="number"
+                                                id="Phone" />
+                                        </div>
+                                    </div>
+                                    <div className="row" id="PhoneError" style={{ display: this.state.PhoneError ? "block" : "none" }}>
+                                        <div className="col-md-12">
+                                            <label className="text-danger">Invalid phone value(Example: "0961234567")</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="col-md-4 form-group">
+                                    <div className="row">
+                                        <div className="col-md-12">
+                                            <label>Email</label>
+                                            <input className="form-control"
+                                                onChange={e => this.handleInputChange(e)}
+                                                onBlur={e => this.handleInputChange(e)}
+                                                datatype="general-info-text"
+                                                data-regex="\\w+([-+.']\\w+)*@\\w+([-.]\\w+)*\\.\\w{2,5}"
+                                                type="text"
+                                                id="Email" />
+                                        </div>
+                                    </div>
+                                    <div className="row" id="EmailError" style={{ display: this.state.EmailError ? "block" : "none" }}>
+                                        <div className="col-md-12">
+                                            <label className="text-danger">Invalid email</label>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div className="panel panel-default">
-                    <div className="panel-heading">
-                        <h3>
-                            Education
-                    </h3>
-                    </div>
-                    <div className="panel-body">
-                        <div className="row">
-                            <div className="col-md-6 form-group">
-                                <div className="row">
-                                    <div className="col-md-12">
-                                        <label>Place of studying</label>
-                                        <input className="form-control"
-                                            onChange={e => this.handleInputChange(e)}
-                                            onBlur={e => this.handleInputChange(e)}
-                                            datatype="general-info-text"
-                                            data-regex="[a-zA-Z ,.'-]{2,100}"
-                                            type="text"
-                                            id="PlaceOfStudying" />
-                                    </div>
-                                </div>
-                                <div className="row" id="PlaceOfStudyingError" style={{ display: this.state.PlaceOfStudyingError ? "block" : "none" }}>
-                                    <div className="col-md-12">
-                                        <label className="text-danger">Must be at least 2 chars long and less than 100, and contains only letters</label>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col-md-6 form-group">
-                                <div className="row">
-                                    <div className="col-md-12">
-                                        <label>Speciality</label>
-                                        <input className="form-control"
-                                            onChange={e => this.handleInputChange(e)}
-                                            onBlur={e => this.handleInputChange(e)}
-                                            datatype="general-info-text"
-                                            data-regex="[a-z ,.'-]{2,100}"
-                                            type="text"
-                                            id="Speciality" />
-                                    </div>
-                                </div>
-                                <div className="row" id="SpecialityError" style={{ display: this.state.SpecialityError ? "block" : "none" }}>
-                                    <div className="col-md-12">
-                                        <label className="text-danger">Must be at least 2 chars long and less than 100, and contains only letters</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div className="panel panel-default">
-                    <div className="panel-heading">
-                        <h3>
-                            Work experiance
+                    <div className="panel panel-default">
+                        <div className="panel-heading">
+                            <h3>
+                                Education
                         </h3>
-                    </div>
-                    <div className="panel-body">
-                        <div className="row">
-                            <div className="col-md-4 content-center">
-                                <h4>
-                                    Programming languages
-                                </h4>
-                                {this.renderCheckboxes.call(this, "ProgrammingLanguagesCheckboxes")}
-                            </div>
-                            <div className="col-md-4">
-                                <h4>
-                                    Databases
-                                </h4>
-                                {this.renderCheckboxes.call(this, "DatabasesCheckboxes")}
-                            </div>
-                            <div className="col-md-4">
-                                <h4>
-                                    Frameworks
-                                </h4>
-                                {this.renderCheckboxes.call(this, "FrameworksCheckboxes")}
-                            </div>
                         </div>
-                    </div>
-                </div>
-                <div className="panel panel-default">
-                    <div className="panel-heading">
-                        <h3>
-                            Other
-                        </h3>
-                    </div>
-                    <div className="panel-body">
-                        <div className="row">
-                            <div className="col-md-12 form-group">
-                                <div className="row">
-                                    <div className="col-md-12">
-                                        <label>Tell me more :)</label>
-                                        <textarea className="form-control"
-                                            onChange={e => this.handleInputChange(e)}
-                                            onBlur={e => {this.handleInputChange(e)}}
-                                            datatype="general-info-text"
-                                            data-regex="[a-z0-9 ,.'-]{2,1000}"
-                                            type="text"
-                                            id="OtherInfo" />
+                        <div className="panel-body">
+                            <div className="row">
+                                <div className="col-md-6 form-group">
+                                    <div className="row">
+                                        <div className="col-md-12">
+                                            <label>Place of studying</label>
+                                            <input className="form-control"
+                                                onChange={e => this.handleInputChange(e)}
+                                                onBlur={e => this.handleInputChange(e)}
+                                                datatype="general-info-text"
+                                                data-regex="[a-zA-Z ,.'-]{2,100}"
+                                                type="text"
+                                                id="PlaceOfStudying" />
+                                        </div>
+                                    </div>
+                                    <div className="row" id="PlaceOfStudyingError" style={{ display: this.state.PlaceOfStudyingError ? "block" : "none" }}>
+                                        <div className="col-md-12">
+                                            <label className="text-danger">Must be at least 2 chars long and less than 100, and contains only letters</label>
+                                        </div>
                                     </div>
                                 </div>
-                                <div className="row" id="OtherInfoError" style={{ display: this.state.OtherInfoError ? "block" : "none" }}>
-                                    <div className="col-md-12">
-                                        <label className="text-danger">Must be at least 2 chars long and less than 1000</label>
+                                <div className="col-md-6 form-group">
+                                    <div className="row">
+                                        <div className="col-md-12">
+                                            <label>Speciality</label>
+                                            <input className="form-control"
+                                                onChange={e => this.handleInputChange(e)}
+                                                onBlur={e => this.handleInputChange(e)}
+                                                datatype="general-info-text"
+                                                data-regex="[a-z ,.'-]{2,100}"
+                                                type="text"
+                                                id="Speciality" />
+                                        </div>
+                                    </div>
+                                    <div className="row" id="SpecialityError" style={{ display: this.state.SpecialityError ? "block" : "none" }}>
+                                        <div className="col-md-12">
+                                            <label className="text-danger">Must be at least 2 chars long and less than 100, and contains only letters</label>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div className="row">
-                    <div className="col-md-12">
-                        <div className="btn-wrapper">
-                            <button type="submit" disabled={this.state.FormError} className="btn btn-primary btn-custom">Submit</button>
+                    <div className="panel panel-default">
+                        <div className="panel-heading">
+                            <h3>
+                                Work experiance
+                            </h3>
+                        </div>
+                        <div className="panel-body">
+                            <div className="row">
+                                <div className="col-md-4 content-center">
+                                    <h4>
+                                        Programming languages
+                                    </h4>
+                                    {this.renderCheckboxes.call(this, "ProgrammingLanguagesCheckboxes")}
+                                </div>
+                                <div className="col-md-4">
+                                    <h4>
+                                        Databases
+                                    </h4>
+                                    {this.renderCheckboxes.call(this, "DatabasesCheckboxes")}
+                                </div>
+                                <div className="col-md-4">
+                                    <h4>
+                                        Frameworks
+                                    </h4>
+                                    {this.renderCheckboxes.call(this, "FrameworksCheckboxes")}
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div className="row" id="FormError" style={{ display: this.state.FormError ? "block" : "none" }}>
-                                    <div className="col-md-12 btn-wrapper">
-                                        <label className="text-danger" style={{marginTop: "50px"}}>You can's submit form while it contains errors</label>
+                    <div className="panel panel-default">
+                        <div className="panel-heading">
+                            <h3>
+                                Other
+                            </h3>
+                        </div>
+                        <div className="panel-body">
+                            <div className="row">
+                                <div className="col-md-12 form-group">
+                                    <div className="row">
+                                        <div className="col-md-12">
+                                            <label>Tell me more :)</label>
+                                            <textarea className="form-control"
+                                                onChange={e => this.handleInputChange(e)}
+                                                onBlur={e => {this.handleInputChange(e)}}
+                                                datatype="general-info-text"
+                                                data-regex="[a-z0-9 ,.'-]{2,1000}"
+                                                type="text"
+                                                id="OtherInfo" />
+                                        </div>
+                                    </div>
+                                    <div className="row" id="OtherInfoError" style={{ display: this.state.OtherInfoError ? "block" : "none" }}>
+                                        <div className="col-md-12">
+                                            <label className="text-danger">Must be at least 2 chars long and less than 1000</label>
+                                        </div>
                                     </div>
                                 </div>
-            </form>
-        </div>;
+                            </div>
+                        </div>
+                    </div>
+                    <div className="row">
+                        <div className="col-md-12">
+                            <div className="btn-wrapper">
+                                <button type="submit" disabled={this.state.FormError} className="btn btn-primary btn-custom">Submit</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="row" id="FormError" style={{ display: this.state.FormError ? "block" : "none" }}>
+                                        <div className="col-md-12 btn-wrapper">
+                                            <label className="text-danger" style={{marginTop: "50px"}}>You can's submit form while it contains errors</label>
+                                        </div>
+                                    </div>
+                </form>
+            </div>;
+        }else{
+            return <div className="container content-center">
+                <h1>Success!</h1>
+            </div>;
+        }
     }
 }
