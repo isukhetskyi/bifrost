@@ -23,6 +23,7 @@ namespace Bifrost.Domain
         public string PlaceOfStudying { get; set; }
         public string Speciality { get; set; }
         public string OtherInfo { get; set; }
+        public DateTime CreatedDate { get; set; }
 
         public virtual List<RespondentTechnologyModel> RespondentsTechnologies { get; set; }
     }

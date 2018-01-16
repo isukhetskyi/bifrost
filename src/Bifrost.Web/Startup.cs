@@ -13,6 +13,7 @@ using Bifrost.Web.ViewModels.Respondent;
 using Bifrost.Web.ViewModels.Survey;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SpaServices.Webpack;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -36,6 +37,9 @@ namespace Bifrost_Web
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
+            services.AddIdentity<ApplicationUser, IdentityRole>()
+                    .AddEntityFrameworkStores<ApplicationDbContext>()
+                    .AddDefaultTokenProviders();
             services.AddTransient<IRepository, EntityFrameworkRepository<ApplicationDbContext>>();
             services.AddTransient<IMapper, Mapper>();
             services.AddTransient<IRespondentService, RespondentService>();
@@ -84,6 +88,7 @@ namespace Bifrost_Web
             }
 
             app.UseStaticFiles();
+            app.UseAuthentication();
 
             app.UseMvc(routes =>
             {

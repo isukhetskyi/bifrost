@@ -13,6 +13,7 @@ class Respondent {
     Phone?: string;
     Skype?: string;
     Email?: string;
+    CreatedDate?: string;
 }
 
 interface RespondentsState {
@@ -116,6 +117,13 @@ export class Respondents extends React.Component<RouteComponentProps<{}>, Respon
                     {
                         Header: "Skype",
                         accessor: "skype",
+                        style: { "textAlign": "center" },
+                        filterMethod: (filter: any, row: any) =>
+                            row[filter.id].toLowerCase().startsWith(filter.value.toLowerCase())
+                    },
+                    {
+                        Header: "Date of submition",
+                        accessor: "createdDate",
                         style: { "textAlign": "center" },
                         filterMethod: (filter: any, row: any) =>
                             row[filter.id].toLowerCase().startsWith(filter.value.toLowerCase())
