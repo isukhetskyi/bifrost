@@ -3,7 +3,7 @@ import { Link, NavLink } from 'react-router-dom';
 
 export class NavMenu extends React.Component<{}, {}> {
     public render() {
-        return <div className='main-nav'>
+        return <div className='main-nav' style={{zIndex: 15}}>
                 <div className='navbar navbar-inverse'>
                 <div className='navbar-header'>
                     <button type='button' className='navbar-toggle' data-toggle='collapse' data-target='.navbar-collapse'>
@@ -12,7 +12,7 @@ export class NavMenu extends React.Component<{}, {}> {
                         <span className='icon-bar'></span>
                         <span className='icon-bar'></span>
                     </button>
-                    <Link className='navbar-brand' to={ '/' }>Bifrost Project</Link>
+                    <Link className='navbar-brand' to={ '/' }>Bifrost</Link>
                 </div>
                 <div className='clearfix'></div>
                 <div className='navbar-collapse collapse'>
@@ -30,6 +30,16 @@ export class NavMenu extends React.Component<{}, {}> {
                         <li>
                             <NavLink to={ '/respondents' } activeClassName='active'>
                                 <span className='glyphicon glyphicon-th-list'></span> Respondents
+                            </NavLink>
+                        </li>
+                        <li>
+                            <NavLink to={ '/account/login' } activeClassName='active'>
+                                <span className='glyphicon glyphicon-log-in'></span> Login
+                            </NavLink>
+                        </li>
+                        <li>
+                            <NavLink to={ '/account/register' } activeClassName='active'>
+                                <span className='glyphicon glyphicon-plus-sign'></span> Register
                             </NavLink>
                         </li>
                     </ul>

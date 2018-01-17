@@ -37,26 +37,18 @@ namespace Bifrost.Web.Controllers
         public IActionResult Register(string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
-            return View();
+            return View("~/Views/Home/Index.cshtml");
         }
 
         [HttpPost]
         [AllowAnonymous]
-        //[ValidateAntiForgeryToken]
-        public async Task<IActionResult> Register(RegisterViewModel model, string returnUrl = null)
+        public async Task<IActionResult> Register([FromBody]RegisterViewModel model, string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
-            var userr = new RegisterViewModel
+            if (ModelState.IsValid)
             {
-                Email = "ivan.sukhetskyi@gmail.com",
-                Password = "Fib0nach|",
-                ConfirmPassword = "Fib0nach|"
-            };
-
-            if (true)
-            {
-                var user = new ApplicationUser { UserName = userr.Email, Email = userr.Email };
-                var result = await _userManager.CreateAsync(user, userr.Password);
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
@@ -69,7 +61,7 @@ namespace Bifrost.Web.Controllers
             }
 
             // If we got this far, something failed, redisplay form
-            return View(model);
+            return View("~/Views/Home/Index.cshtml", model);
         }
 
         [HttpGet]
@@ -80,13 +72,12 @@ namespace Bifrost.Web.Controllers
             await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
 
             ViewData["ReturnUrl"] = returnUrl;
-            return View();
+            return View("~/Views/Home/Index.cshtml");
         }
 
         [HttpPost]
         [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(LoginViewModel model, string returnUrl = null)
+        public async Task<IActionResult> Login([FromBody]LoginViewModel model, string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
@@ -112,7 +103,7 @@ namespace Bifrost.Web.Controllers
             }
 
             // If we got this far, something failed, redisplay form
-            return View(model);
+            return View("~/Views/Home/Index.cshtml", model);
         }
 
         [HttpGet]
@@ -122,7 +113,7 @@ namespace Bifrost.Web.Controllers
             return View();
         }
 
-         
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Logout()

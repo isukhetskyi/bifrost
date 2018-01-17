@@ -13,7 +13,7 @@ class Respondent {
     Phone?: string;
     Skype?: string;
     Email?: string;
-    CreatedDate?: string;
+    CreatedShortDate?: string;
 }
 
 interface RespondentsState {
@@ -123,7 +123,7 @@ export class Respondents extends React.Component<RouteComponentProps<{}>, Respon
                     },
                     {
                         Header: "Date of submition",
-                        accessor: "createdDate",
+                        accessor: "createdShortDate",
                         style: { "textAlign": "center" },
                         filterMethod: (filter: any, row: any) =>
                             row[filter.id].toLowerCase().startsWith(filter.value.toLowerCase())

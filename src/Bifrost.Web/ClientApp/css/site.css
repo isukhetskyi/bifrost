@@ -32,6 +32,9 @@ textarea {
     body {
         padding-top: 50px;
     }
+    .header-top {
+        display: none;
+    }
 }
 
 @media (min-width: 768px) {
@@ -93,12 +96,22 @@ textarea {
 }
 
 .footer-bottom {
-    background-color: #363636;
+    background-color: #222;
     position: fixed;
     bottom: -5px;
     width: 100%;
     height: 60px;
     line-height: 60px;
+}
+
+.header-top {
+    background-color: #222;
+    position: fixed;
+    top: -5px;
+    width: 100%;
+    height: 55px;
+    z-index: 10;
+    line-height: 55px;
 }
 
 .copyright {

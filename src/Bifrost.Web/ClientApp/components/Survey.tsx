@@ -184,7 +184,6 @@ export class Survey extends React.Component<RouteComponentProps<SurveyProps>, Su
     }
 
     validate(e: any): boolean {
-        // todo add here type retrievement to know which field we validating also add validation message;
         let result = false;
         let inputType = e.target.attributes.getNamedItem('datatype').value;
         if (inputType as string === "general-info-text") {
@@ -619,14 +618,14 @@ export class Survey extends React.Component<RouteComponentProps<SurveyProps>, Su
                         </div>
                     </div>
                     <div className="row" id="FormError" style={{ display: this.state.FormError ? "block" : "none" }}>
-                                        <div className="col-md-12 btn-wrapper">
-                                            <label className="text-danger" style={{marginTop: "50px"}}>You can's submit form while it contains errors</label>
-                                        </div>
-                                    </div>
+                        <div className="col-md-12 btn-wrapper">
+                            <label className="text-danger" style={{marginTop: "50px"}}>You can's submit form while it contains errors</label>
+                        </div>
+                    </div>
                 </form>
             </div>;
         }else{
-            return <div className="container content-center">
+            return <div className="container content-center" style={{textAlign: "center"}}>
                 <h1>Success!</h1>
             </div>;
         }
