@@ -53,7 +53,7 @@ namespace Bifrost.Web.Controllers
                                                                     Value = r.RespondentsTechnologies.Count()
                                                                 };
                                                             })
-                                                    .Where(f => f.Value > 0).ToList();
+                                                    .Where(f => f.Value > 0).OrderByDescending(t => t.Value).ToList();
 
                     result.Frameworks = technologies.Where(t => t.TechnologyType == 2)
                                                     .Select(r =>
@@ -64,7 +64,7 @@ namespace Bifrost.Web.Controllers
                                                                     Value = r.RespondentsTechnologies.Count()
                                                                 };
                                                             })
-                                                    .Where(f => f.Value > 0).ToList();
+                                                    .Where(f => f.Value > 0).OrderByDescending(t => t.Value).ToList();
                     result.Databases = technologies.Where(t => t.TechnologyType == 3)
                                                     .Select(r =>
                                                             {
@@ -74,7 +74,14 @@ namespace Bifrost.Web.Controllers
                                                                     Value = r.RespondentsTechnologies.Count()
                                                                 };
                                                             })
-                                                    .Where(f => f.Value > 0).ToList();
+                                                    .Where(f => f.Value > 0).OrderByDescending(t => t.Value).ToList();
+
+                    var frameworksTotalCount = result.Frameworks.Sum(f => f.Value);
+                    result.Frameworks = result.Frameworks.Select(t => { t.TotalCount = frameworksTotalCount; return t; }).ToList();
+                    var databaseTotalCount = result.Databases.Sum(f => f.Value);
+                    result.Databases = result.Databases.Select(t => { t.TotalCount = databaseTotalCount; return t; }).ToList();
+                    var languagesTotalCount = result.Languages.Sum(f => f.Value);
+                    result.Languages = result.Languages.Select(t => { t.TotalCount = languagesTotalCount; return t; }).ToList();
                 }
             }
             catch(Exception e)

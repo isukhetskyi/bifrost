@@ -16,8 +16,10 @@ export class Statistics extends React.Component<RouteComponentProps<{}>, Statist
         }
 
         this.componentWillMount = this.componentWillMount.bind(this);
+        this.renderTextualStatistics = this.renderTextualStatistics.bind(this);
     }
-    componentWillMount(){
+
+    componentWillMount() {
         let statistics: any;
         let thisContext = this;
         const request = fetch.default("http://localhost:5000/Statistics/All")
@@ -27,6 +29,33 @@ export class Statistics extends React.Component<RouteComponentProps<{}>, Statist
                 statistics = json.data;
                 thisContext.setState({data: statistics});
             });
+    }
+
+    renderTextualStatistics(category: string) {
+        let elements: any;
+        let collection: Array<object> | undefined;
+
+        if (category === "languages") {
+            collection = this.state.data.languages;
+        }
+        if (category === "databases") {
+            collection = this.state.data.databases;
+        }
+        if (category === "frameworks") {
+            collection = this.state.data.frameworks;
+        }
+
+        if (collection == undefined) {
+            collection = new Array<[number, string]>();
+        }
+
+        elements = collection.map((item: any, index: number) =>
+            //<li> {item.key} - {item.percentage}%</li>
+            <li> {item.key} - {item.value} respondent(s)</li>
+            //<li> {item.key} - {item.value} respondent(s) or {item.percentage}% of total number of respondents</li>
+        );
+        console.log(elements);
+        return elements;
     }
 
     public render() {
@@ -53,6 +82,9 @@ export class Statistics extends React.Component<RouteComponentProps<{}>, Statist
                             ></PieChart>
                         </div>
                         <div className="col-md-4">
+                            <ul className="center-container">
+                                {this.renderTextualStatistics("languages")}
+                            </ul>
                         </div>
                         <div className="col-md-1"></div>
                     </div>
@@ -78,6 +110,9 @@ export class Statistics extends React.Component<RouteComponentProps<{}>, Statist
                             />
                         </div>
                         <div className="col-md-4">
+                            <ul>
+                                {this.renderTextualStatistics("databases")}
+                            </ul>
                         </div>
                         <div className="col-md-1"></div>
                     </div>
@@ -103,6 +138,9 @@ export class Statistics extends React.Component<RouteComponentProps<{}>, Statist
                             />
                         </div>
                         <div className="col-md-4">
+                            <ul>
+                                {this.renderTextualStatistics("frameworks")}
+                            </ul>
                         </div>
                         <div className="col-md-1"></div>
                     </div>
@@ -110,29 +148,4 @@ export class Statistics extends React.Component<RouteComponentProps<{}>, Statist
             </div>
         </div>
     }
-
-
-
-    // constructor() {
-    //     super();
-    //     this.state = { currentCount: 0 };
-    // }
-
-    // public render() {
-    //     return <div>
-    //         <h1>Statistics</h1>
-
-    //         <p>This is a simple example of a React component.</p>
-
-    //         <p>Current count: <strong>{ this.state.currentCount }</strong></p>
-
-    //         <button onClick={ () => { this.incrementStatistics() } }>Increment</button>
-    //     </div>;
-    // }
-
-    // incrementStatistics() {
-    //     this.setState({
-    //         currentCount: this.state.currentCount + 1
-    //     });
-    // }
 }

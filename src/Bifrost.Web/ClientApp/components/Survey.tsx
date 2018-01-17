@@ -46,6 +46,8 @@ interface SurveyState {
     OtherInfo?: string;
     OtherInfoError?: boolean;
 
+    selectedOption?: string;
+
     FormError?: boolean;
     isDone?: boolean;
 }
@@ -88,6 +90,8 @@ export class Survey extends React.Component<RouteComponentProps<SurveyProps>, Su
             OtherInfo: "",
             OtherInfoError: false,
 
+            selectedOption: "",
+
             FormError: false,
             isDone: false
         }
@@ -97,11 +101,11 @@ export class Survey extends React.Component<RouteComponentProps<SurveyProps>, Su
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleRadioButtonChange = this.handleRadioButtonChange.bind(this);
         this.renderCheckboxes = this.renderCheckboxes.bind(this);
-        this.componentWillMount = this.componentWillMount.bind(this);
+        this.componentWillMount = this.componentDidMount.bind(this);
         this.isFormValid = this.isFormValid.bind(this);
     }
 
-    componentWillMount() {
+    componentDidMount() {
         let data: any;
         let thisContext = this;
         const request = fetch.default("http://localhost:5000/Survey/GetTechnologies")
@@ -215,13 +219,14 @@ export class Survey extends React.Component<RouteComponentProps<SurveyProps>, Su
     }
 
     handleRadioButtonChange(e: any) {
+        console.log(e.target.value)
         if (e.target.id === "isEmployedYes") {
             this.setState({ IsEmployed: true });
+            this.setState({ selectedOption: e.target.value })
         } else {
             this.setState({ IsEmployed: false });
+            this.setState({ selectedOption: e.target.value })
         }
-
-        e.preventDefault();
     }
 
     handleCheckboxChange(e: any) {
@@ -375,8 +380,6 @@ export class Survey extends React.Component<RouteComponentProps<SurveyProps>, Su
                                                 onChange={e => this.handleInputChange(e)}
                                                 onBlur={e => this.handleInputChange(e)}
                                                 datatype="general-info-text"
-                                                data-min-length="2"
-                                                data-max-length="100"
                                                 data-regex="(\\w[a-zA-Z- ,.0-9]{1,})"
                                                 type="text"
                                                 id="Address" />
@@ -394,24 +397,28 @@ export class Survey extends React.Component<RouteComponentProps<SurveyProps>, Su
                                     <label>Are you currently employed?</label>
                                     <div className="row">
                                         <div className="col-md-6 form-check form-check-inline">
-                                            <label className="form-check-label">
+                                            <label className="form-check-label" htmlFor="isEmployedYes">
                                                 <input className="radio-inline"
                                                     type="radio"
                                                     name="inlineRadioOptions"
                                                     id="isEmployedYes"
+                                                    value="yes"
+                                                    checked={this.state.selectedOption == "yes"}
                                                     onClick={e => this.handleRadioButtonChange(e)}
                                                 /> Yes
                                             </label>
                                         </div>
                                         <div className="com-md-6 form-check form-check-inline no-answer-radio-btn">
-                                            <label className="form-check-label">
+                                            <label className="form-check-label" htmlFor="isEmployedNo">
                                                 <input className="radio-inline"
                                                     type="radio"
                                                     name="inlineRadioOptions"
                                                     id="isEmployedNo"
+                                                    checked={this.state.selectedOption == "no"}
+                                                    value="no"
                                                     onClick={e => this.handleRadioButtonChange(e)}
                                                 /> No
-                                    </label>
+                                            </label>
                                         </div>
                                     </div>
                                 </div>

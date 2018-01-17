@@ -24,19 +24,12 @@ export class Respondents extends React.Component<RouteComponentProps<{}>, Respon
     constructor() {
         super();
 
-        // let respondents = new Array<Respondent>(
-        //     { Id: 1, FirstName: "John", LastName: "Snow", Age: 33, IsEmployed: false, Phone: "0502354721", Skype: "starkson", Email: "stark@son.com" }
-        //     , { Id: 2, FirstName: "Aria", LastName: "Stark", Age: 20, IsEmployed: true, Phone: "0971537050", Skype: "savage", Email: "savagegirl@son.com" }
-        //     , { Id: 3, FirstName: "Bary", LastName: "Alen", Age: 18, IsEmployed: true, Phone: "0955555555", Skype: "flash", Email: "fastestmanalive@fu.com" }
-
-        // );
-
         this.state = {
             data: []
         }
     }
 
-    componentWillMount(){
+    componentDidMount(){
         let respondents: any;
         let thisContext = this;
         const request = fetch.default("http://localhost:5000/Respondents/All")
