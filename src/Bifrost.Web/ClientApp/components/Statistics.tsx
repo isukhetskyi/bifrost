@@ -15,7 +15,7 @@ export class Statistics extends React.Component<RouteComponentProps<{}>, Statist
             data: {}
         }
 
-        this.componentWillMount = this.componentWillMount.bind(this);
+        this.componentDidMount = this.componentWillMount.bind(this);
         this.renderTextualStatistics = this.renderTextualStatistics.bind(this);
     }
 
@@ -50,9 +50,7 @@ export class Statistics extends React.Component<RouteComponentProps<{}>, Statist
         }
 
         elements = collection.map((item: any, index: number) =>
-            //<li> {item.key} - {item.percentage}%</li>
-            <li> {item.key} - {item.value} respondent(s)</li>
-            //<li> {item.key} - {item.value} respondent(s) or {item.percentage}% of total number of respondents</li>
+            <li> {item.key} - {item.value} respondent(s) or {item.percentage}% of total number of respondents</li>
         );
         console.log(elements);
         return elements;
