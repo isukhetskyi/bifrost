@@ -11,15 +11,17 @@ export class Statistics extends React.Component<RouteComponentProps<{}>, Statist
     constructor(props: any) {
         super(props);
 
+        // let dataInitial: any;
+        // dataInitial = ;
         this.state = {
-            data: {}
+            data: {databases: [], frameworks: [], languages: []}
         }
 
-        this.componentDidMount = this.componentWillMount.bind(this);
+        this.componentDidMount = this.componentDidMount.bind(this);
         this.renderTextualStatistics = this.renderTextualStatistics.bind(this);
     }
 
-    componentWillMount() {
+    componentDidMount() {
         let statistics: any;
         let thisContext = this;
         const request = fetch.default("http://localhost:5000/Statistics/All")
@@ -50,7 +52,7 @@ export class Statistics extends React.Component<RouteComponentProps<{}>, Statist
         }
 
         elements = collection.map((item: any, index: number) =>
-            <li> {item.key} - {item.value} respondent(s) or {item.percentage}% of total number of respondents</li>
+            <li key={index}> {item.key} - {item.value} respondent(s) or {item.percentage}% of total number of respondents</li>
         );
         console.log(elements);
         return elements;

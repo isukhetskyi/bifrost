@@ -139,7 +139,7 @@ export class Survey extends React.Component<RouteComponentProps<SurveyProps>, Su
             collection = new Array<[number, string]>();
         }
         elements = collection.map((checkbox: any, index: number) =>
-            <div className="custom-control checkbox">
+            <div key={index} className="custom-control checkbox">
                 <label htmlFor={checkbox.id}>
                     <input type="checkbox"
                         className="custom-control-input"
