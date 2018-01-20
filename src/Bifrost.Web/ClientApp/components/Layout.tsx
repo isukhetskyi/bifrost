@@ -14,9 +14,6 @@ export class Layout extends React.Component<LayoutProps, {}> {
                     <div className="container">
                         <div className="row">
                             <div className="col-md-12">
-                                {/* <Link className='btn btn-success pull-left' style={{zIndex: 16}} to={ '/account/login' }><p style={{textDecorationColor: "white"}}>
-                                    login
-                                </p></Link> */}
                             </div>
                         </div>
                     </div>
@@ -35,7 +32,7 @@ export class Layout extends React.Component<LayoutProps, {}> {
                             <div className="col-md-12">
                                 <div className="copyright" style={{ textAlign: "center" }}>
                                     <p>
-                                        2017 NetLS Software Development
+                                        {new Date().getFullYear()} NetLS Software Development
                                     </p>
                                 </div>
                             </div>

@@ -8,6 +8,7 @@ using Bifrost.Services.TechnologyService;
 using Bifrost.Web.ViewModels;
 using Bifrost.Web.ViewModels.Survey;
 using Bifrost.Web.ViewModels.Technology;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Bifrost.Web.Controllers
@@ -29,12 +30,14 @@ namespace Bifrost.Web.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public ViewResult Survey()
         {
             return View("~/Views/Home/Index.cshtml");
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public IActionResult Survey([FromBody]SurveyViewModel body)
         {
             try
@@ -106,6 +109,7 @@ namespace Bifrost.Web.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public JsonResult GetTechnologies()
         {
             var result = new TechnologyViewModel

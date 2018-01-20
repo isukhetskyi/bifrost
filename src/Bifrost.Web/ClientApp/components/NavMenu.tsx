@@ -1,7 +1,22 @@
 import * as React from 'react';
 import { Link, NavLink } from 'react-router-dom';
 
-export class NavMenu extends React.Component<{}, {}> {
+interface NavMenuProps{
+
+}
+
+interface NavMenuState{
+    authorized?: boolean;
+}
+
+export class NavMenu extends React.Component<NavMenuProps, NavMenuState> {
+    constructor(props: any){
+        super(props)
+
+        this.state = {
+            authorized: false
+        }
+    }
     public render() {
         return <div className='main-nav' style={{zIndex: 15}}>
                 <div className='navbar navbar-inverse'>

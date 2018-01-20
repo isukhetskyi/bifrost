@@ -25,7 +25,13 @@ export class Statistics extends React.Component<RouteComponentProps<{}>, Statist
         let statistics: any;
         let thisContext = this;
         const request = fetch.default("http://localhost:5000/Statistics/All")
-            .then(function(res){return res.json()})
+            .then(function(res){
+                if(res.status === 401){
+                    alert("You are unathorized bitch");
+                }
+                console.log(res.headers)
+                return res.json();
+            })
             .then(function(json){
                 console.log(json.data);
                 statistics = json.data;
