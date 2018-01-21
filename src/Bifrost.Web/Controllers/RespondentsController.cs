@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using AutoMapper;
-using Bifrost.Domain;
+using Bifrost.Domain.Models;
 using Bifrost.Services.RespondentService;
 using Bifrost.Web.ViewModels.Respondent;
 using Microsoft.AspNetCore.Authorization;

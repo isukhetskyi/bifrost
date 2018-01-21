@@ -1,4 +1,4 @@
-using Bifrost.Domain;
+using Bifrost.Domain.Models;
 using System.Collections.Generic;
 
 namespace Bifrost.Web.ViewModels.Technology

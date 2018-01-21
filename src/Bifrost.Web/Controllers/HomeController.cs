@@ -17,12 +17,6 @@ namespace Bifrost_Web.Controllers
             return View();
         }
 
-        [AllowAnonymous]
-        public bool IsAuthenticated()
-        {
-            return User.Identity.IsAuthenticated;
-        }
-
         public IActionResult Error()
         {
             ViewData["RequestId"] = Activity.Current?.Id ?? HttpContext.TraceIdentifier;

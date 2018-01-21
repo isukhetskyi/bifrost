@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using Bifrost.Domain;
+using Bifrost.Domain.Models;
 
 namespace Bifrost.Services.RespondentTechnologyService
 {

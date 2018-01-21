@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Bifrost.Data.Models;
-using Bifrost.Domain;
+using Bifrost.Domain.Models;
 using Bifrost.Repository;
 using Bifrost.Services.RespondentService;
 using Bifrost.Services.RespondentTechnologyService;

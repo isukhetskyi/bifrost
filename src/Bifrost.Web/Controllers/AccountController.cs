@@ -32,6 +32,13 @@ namespace Bifrost.Web.Controllers
             return View("~/Views/Home/Index.cshtml");
         }
 
+
+        [AllowAnonymous]
+        public bool IsAuthenticated()
+        {
+            return User.Identity.IsAuthenticated;
+        }
+
         [HttpGet]
         [AllowAnonymous]
         public IActionResult Register(string returnUrl = null)

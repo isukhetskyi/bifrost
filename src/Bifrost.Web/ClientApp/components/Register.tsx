@@ -120,7 +120,7 @@ export class Register extends React.Component<RouteComponentProps<{}>, RegisterS
                                             className="form-control"
                                             onChange={e => this.handleInputChange(e)}
                                             onBlur={e => this.handleInputChange(e)}
-                                            type="password"
+                                            type="text"
                                             datatype="general-info-text"
                                             data-regex="(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[^\\da-zA-Z]).{8,100}"
                                         />
@@ -141,7 +141,7 @@ export class Register extends React.Component<RouteComponentProps<{}>, RegisterS
                                             className="form-control"
                                             onChange={e => this.handleInputChange(e)}
                                             onBlur={e => this.handleInputChange(e)}
-                                            type="password"
+                                            type="text"
                                             datatype="general-info-text"
                                             data-regex="(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[^\\da-zA-Z]).{8,100}"
                                         />
@@ -157,6 +157,16 @@ export class Register extends React.Component<RouteComponentProps<{}>, RegisterS
                                     </div>
                                 </div>
                             </div>
+                            <div className="form-group">
+                                <label htmlFor="roleselect">Select list:</label>
+                                <select className="form-control" id="roleselect">
+                                    <option>Admin</option>
+                                    <option>Developer</option>
+                                    <option>HR Manager</option>
+                                    <option>Project Manager</option>
+                                    <option>Sales Manager</option>
+                                </select>
+                            </div>
                             <div className="row">
                                 <div className="col-md-12">
                                     <button type="submit" disabled={this.state.FormError} className="btn btn-primary">Register</button>
@@ -170,6 +180,7 @@ export class Register extends React.Component<RouteComponentProps<{}>, RegisterS
                         </form>
                     </div>
                     <div className="col-md-4"></div>
+
                 </div>
             </div>;
         } else {

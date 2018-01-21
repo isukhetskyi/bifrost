@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using AutoMapper;
 using Bifrost.Data.Models;
-using Bifrost.Domain;
+using Bifrost.Domain.Models;
 using Bifrost.Repository;
 
 namespace Bifrost.Services.TechnologyService
