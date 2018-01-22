@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
-import * as fetch from 'node-fetch';
+import * as axios from "axios";
 
 interface LoginState {
     Email?: string;
@@ -34,16 +34,16 @@ export class Login extends React.Component<RouteComponentProps<{}>, LoginState> 
     handleSubmit(e: any) {
         if (this.isFormValid()) {
             this.setState({ FormError: false });
-            let body = JSON.stringify(this.state);
-            console.log(body)
-
-            const request = fetch.default("http://localhost:5000/account/login",
-                {
-                    method: "POST", body: JSON.stringify(this.state),
-                    headers: { "Content-Type": "application/json" }
+            let thisContext = this;
+            axios.default.post("/account/login",
+                this.state,
+                {headers: {"Content-Type": "application/json"} })
+                .then(function(response){
+                    thisContext.setState({ isDone: true})
+                }).catch(function(error){
+                    console.error(error);
+                    alert(error);
                 })
-                .then(res => console.log(res.body));
-            this.setState({ isDone: true })
         } else {
             this.setState({ FormError: true });
         }

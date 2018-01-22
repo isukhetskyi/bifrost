@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
-import * as fetch from 'node-fetch';
+import * as axios from "axios";
 
 interface RegisterState {
     Email?: string;
@@ -36,16 +36,20 @@ export class Register extends React.Component<RouteComponentProps<{}>, RegisterS
     handleSubmit(e: any) {
         if (this.isFormValid()) {
             this.setState({ FormError: false });
-            let body = JSON.stringify(this.state);
-            console.log(body)
-
-            const request = fetch.default("http://localhost:5000/account/register",
+            let thisContext = this;
+            axios.default.post(
+                "/account/register",
+                this.state,
                 {
-                    method: "POST", body: JSON.stringify(this.state),
-                    headers: { "Content-Type": "application/json" }
+                    headers: {"Content-Type": "application/json"}
+                }).then(function(response){
+                    console.log(response);
+                    thisContext.setState({ isDone: true })
+                }).catch(function(error){
+                    console.error(error);
+                    alert(error);
                 })
-                .then(res => console.log(res.body));
-            this.setState({ isDone: true })
+
         } else {
             this.setState({ FormError: true });
         }

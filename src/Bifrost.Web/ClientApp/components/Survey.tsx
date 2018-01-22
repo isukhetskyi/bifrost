@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
-import * as fetch from 'node-fetch';
 import { join } from 'path';
+import * as axios from "axios";
 
 interface SurveyProps {
 
@@ -106,16 +106,18 @@ export class Survey extends React.Component<RouteComponentProps<SurveyProps>, Su
     }
 
     componentDidMount() {
-        let data: any;
         let thisContext = this;
-        const request = fetch.default("http://localhost:5000/Survey/GetTechnologies")
-            .then(function (res) { return res.json() })
-            .then(function (json) {
-                data = json.data;
-                thisContext.setState({ ProgrammingLanguagesCheckboxes: data.languages })
-                thisContext.setState({ FrameworksCheckboxes: data.frameworks })
-                thisContext.setState({ DatabasesCheckboxes: data.databases })
-            });
+
+        axios.default.get("/survey/gettechnologies")
+        .then(function(response){
+                thisContext.setState({ ProgrammingLanguagesCheckboxes: response.data.technologies.languages })
+                thisContext.setState({ FrameworksCheckboxes: response.data.technologies.frameworks })
+                thisContext.setState({ DatabasesCheckboxes: response.data.technologies.databases })
+        })
+        .catch(function(error){
+            console.log(error);
+            alert(error);
+        })
     }
 
     renderCheckboxes(collectionName: string) {
@@ -159,13 +161,22 @@ export class Survey extends React.Component<RouteComponentProps<SurveyProps>, Su
         if(this.isFormValid())
         {
             this.setState({FormError: false});
-            let body = JSON.stringify(this.state);
-            console.log(body)
+            let thisContext = this;
 
-            const request = fetch.default("http://localhost:5000/Survey",
-                { method: "POST", body: JSON.stringify(this.state), headers: { "Content-Type": "application/json" } })
-                .then(res => console.log(res.body));
-            this.setState({isDone: true})
+            axios.default.post("/survey",
+            this.state,
+            {
+                headers: {"Content-Type": "application/json"}
+            })
+            .then(function(response){
+                console.log(response);
+                thisContext.setState({isDone: true});
+            })
+            .catch(function(error){
+                console.error(error);
+                alert(error);
+            })
+
         }else{
             this.setState({FormError: true});
         }

@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
 import ReactTable from "react-table";
-import * as fetch from 'node-fetch';
 import "react-table/react-table.css";
+import * as axios from 'axios';
 
 class Respondent {
     Id?: number;
@@ -32,13 +32,16 @@ export class Respondents extends React.Component<RouteComponentProps<{}>, Respon
     componentDidMount(){
         let respondents: any;
         let thisContext = this;
-        const request = fetch.default("http://localhost:5000/Respondents/All")
-            .then(function(res){return res.json()})
-            .then(function(json){
-                console.log(json.data);
-                respondents = json.data;
+
+        axios.default.get("/Respondents/All")
+            .then(function(response){
+                respondents = response.data.respondents;
                 thisContext.setState({data: respondents});
+            }).catch(function(error){
+                console.error(error);
             });
+
+
     }
 
     public render() {
