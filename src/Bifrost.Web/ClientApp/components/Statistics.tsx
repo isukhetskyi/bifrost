@@ -22,13 +22,7 @@ export class Statistics extends React.Component<RouteComponentProps<{}>, Statist
     componentDidMount() {
         let statistics: any;
         let thisContext = this;
-        // const request = fetch.default("/Statistics/All")
-        //     .then(function(res){return res.json()})
-        //     .then(function(json){
-        //         console.log(json.data);
-        //         statistics = json.data;
-        //         thisContext.setState({data: statistics});
-        //     });
+
         axios.default.get("/statistics/all")
         .then(function(response){
             console.log(response.data.statistics);
@@ -61,6 +55,7 @@ export class Statistics extends React.Component<RouteComponentProps<{}>, Statist
             <li key={index}> {item.key} - {item.value} respondent(s) or {item.percentage}% of total number of respondents</li>
         );
         console.log(elements);
+
         return elements;
     }
 

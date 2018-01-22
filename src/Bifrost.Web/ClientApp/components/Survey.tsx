@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
-import { join } from 'path';
 import * as axios from "axios";
 
 interface SurveyProps {
@@ -154,10 +153,13 @@ export class Survey extends React.Component<RouteComponentProps<SurveyProps>, Su
                 </label>
                 {/* <label className="custom-control-label" htmlFor={checkbox.id}>{checkbox.technologyName}</label> */}
             </div>);
+
         return elements;
     }
 
     handleSubmit(event: any) {
+        event.preventDefault();
+
         if(this.isFormValid())
         {
             this.setState({FormError: false});
@@ -180,8 +182,6 @@ export class Survey extends React.Component<RouteComponentProps<SurveyProps>, Su
         }else{
             this.setState({FormError: true});
         }
-
-        event.preventDefault();
     }
 
     isFormValid(){
@@ -199,6 +199,8 @@ export class Survey extends React.Component<RouteComponentProps<SurveyProps>, Su
     }
 
     validate(e: any): boolean {
+        e.preventDefault();
+
         let result = false;
         let inputType = e.target.attributes.getNamedItem('datatype').value;
         if (inputType as string === "general-info-text") {
@@ -213,11 +215,12 @@ export class Survey extends React.Component<RouteComponentProps<SurveyProps>, Su
             return regex.test(e.target.value as string);
         }
 
-        e.preventDefault();
         return result;
     }
 
     handleInputChange(e: any) {
+        e.preventDefault();
+
         if (this.validate(e)) {
             this.setState({ [(e.target.attributes.id.value as string)]: e.target.value as string })
             this.setState({[(e.target.attributes.id.value as string) + "Error"]: false})
@@ -225,8 +228,6 @@ export class Survey extends React.Component<RouteComponentProps<SurveyProps>, Su
         }else{
             this.setState({[(e.target.attributes.id.value as string) + "Error"]: true})
         }
-
-        e.preventDefault();
     }
 
     handleRadioButtonChange(e: any) {

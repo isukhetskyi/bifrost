@@ -32,6 +32,8 @@ export class Login extends React.Component<RouteComponentProps<{}>, LoginState> 
     }
 
     handleSubmit(e: any) {
+        e.preventDefault();
+
         if (this.isFormValid()) {
             this.setState({ FormError: false });
             let thisContext = this;
@@ -47,8 +49,6 @@ export class Login extends React.Component<RouteComponentProps<{}>, LoginState> 
         } else {
             this.setState({ FormError: true });
         }
-
-        e.preventDefault();
     }
 
     isFormValid() {
@@ -57,6 +57,8 @@ export class Login extends React.Component<RouteComponentProps<{}>, LoginState> 
     }
 
     validate(e: any) {
+        e.preventDefault();
+
         let result = false;
         let inputType = e.target.attributes.getNamedItem('datatype').value;
         if (inputType as string === "general-info-text") {
@@ -66,11 +68,12 @@ export class Login extends React.Component<RouteComponentProps<{}>, LoginState> 
             return regex.test((e.target.value as string).trim());
         }
 
-        e.preventDefault();
         return result;
     }
 
     handleInputChange(e: any) {
+        e.preventDefault();
+
         if (this.validate(e)) {
             this.setState({ [(e.target.attributes.id.value as string)]: e.target.value as string })
             this.setState({ [(e.target.attributes.id.value as string) + "Error"]: false })
@@ -78,8 +81,6 @@ export class Login extends React.Component<RouteComponentProps<{}>, LoginState> 
         } else {
             this.setState({ [(e.target.attributes.id.value as string) + "Error"]: true })
         }
-
-        e.preventDefault();
     }
 
     public render() {
