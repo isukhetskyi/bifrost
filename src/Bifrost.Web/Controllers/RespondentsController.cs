@@ -38,7 +38,7 @@ namespace Bifrost.Web.Controllers
                 //todo do some logging here
             }
 
-            return Json(new {data = this.mapper.Map<List<RespondentViewModel>>(respondents)});
+            return Json(new {respondents = this.mapper.Map<List<RespondentViewModel>>(respondents)});
         }
     }
 }

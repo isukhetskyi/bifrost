@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
 import { PieChart, Legend } from 'react-easy-chart';
-import * as fetch from 'node-fetch';
+import * as axios from "axios";
 
 interface StatisticsState {
     data: any;
@@ -22,13 +22,21 @@ export class Statistics extends React.Component<RouteComponentProps<{}>, Statist
     componentDidMount() {
         let statistics: any;
         let thisContext = this;
-        const request = fetch.default("http://localhost:5000/Statistics/All")
-            .then(function(res){return res.json()})
-            .then(function(json){
-                console.log(json.data);
-                statistics = json.data;
-                thisContext.setState({data: statistics});
-            });
+        // const request = fetch.default("/Statistics/All")
+        //     .then(function(res){return res.json()})
+        //     .then(function(json){
+        //         console.log(json.data);
+        //         statistics = json.data;
+        //         thisContext.setState({data: statistics});
+        //     });
+        axios.default.get("/statistics/all")
+        .then(function(response){
+            console.log(response.data.statistics);
+            thisContext.setState({data: response.data.statistics})
+        }).catch(function(error){
+            console.log(error);
+            alert(error);
+        })
     }
 
     renderTextualStatistics(category: string) {

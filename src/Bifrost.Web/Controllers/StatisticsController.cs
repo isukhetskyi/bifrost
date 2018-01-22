@@ -90,7 +90,7 @@ namespace Bifrost.Web.Controllers
             }
 
 
-            return Json (new { data = result });
+            return Json (new { statistics = result });
         }
     }
 }
