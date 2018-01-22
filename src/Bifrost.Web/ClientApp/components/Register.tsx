@@ -91,7 +91,7 @@ export class Register extends React.Component<RouteComponentProps<{}>, RegisterS
 
     public render() {
         if (!this.state.isDone) {
-            return <div className="container" style={{ width: "100%" }}>
+            return <div style={{ width: "100%" }}>
                 <h2 className="text-center">Register</h2>
                 <div className="row">
                     <div className="col-md-4"></div>

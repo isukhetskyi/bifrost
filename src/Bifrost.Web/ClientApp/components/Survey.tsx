@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
 import * as axios from "axios";
+import { KeyboardEvent } from 'react';
 
 interface SurveyProps {
 
@@ -102,6 +103,7 @@ export class Survey extends React.Component<RouteComponentProps<SurveyProps>, Su
         this.renderCheckboxes = this.renderCheckboxes.bind(this);
         this.componentWillMount = this.componentDidMount.bind(this);
         this.isFormValid = this.isFormValid.bind(this);
+        this.handleKeyPress = this.handleKeyPress.bind(this);
     }
 
     componentDidMount() {
@@ -308,12 +310,18 @@ export class Survey extends React.Component<RouteComponentProps<SurveyProps>, Su
         }
     }
 
+    handleKeyPress(e: KeyboardEvent<any>){
+        if(e.key === "Enter"){
+            e.preventDefault();
+        }
+    }
+
     public render() {
         if(!this.state.isDone)
         {
-            return <div className="container" style={{width:"100%"}}>
+            return <div style={{width:"100%"}}>
                 <h2 className="text-center">Take a Survey</h2>
-                <form onSubmit={this.handleSubmit}>
+                <form onSubmit={this.handleSubmit} onKeyPress={this.handleKeyPress}>
                     <div className="panel panel-default">
                         <div className="panel-heading"><h3>Personal info</h3></div>
                         <div className="panel-body">

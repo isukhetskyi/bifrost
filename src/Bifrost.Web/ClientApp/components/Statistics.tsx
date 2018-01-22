@@ -60,7 +60,7 @@ export class Statistics extends React.Component<RouteComponentProps<{}>, Statist
     }
 
     public render() {
-        return <div className="container" style={{width:"100%"}}>
+        return <div style={{width:"100%"}}>
         <h2 className="text-center">Statistics</h2>
             <div className="panel panel-default">
                 <div className="panel-heading">Programming languages</div>

@@ -85,7 +85,7 @@ export class Login extends React.Component<RouteComponentProps<{}>, LoginState> 
 
     public render() {
         if (!this.state.isDone) {
-            return <div className="container" style={{ width: "100%" }}>
+            return <div style={{ width: "100%" }}>
                 <h2 className="text-center">Login</h2>
                 <div className="row">
                     <div className="col-md-4"></div>
