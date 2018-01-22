@@ -11,8 +11,6 @@ export class Statistics extends React.Component<RouteComponentProps<{}>, Statist
     constructor(props: any) {
         super(props);
 
-        // let dataInitial: any;
-        // dataInitial = ;
         this.state = {
             data: {databases: [], frameworks: [], languages: []}
         }
@@ -47,7 +45,7 @@ export class Statistics extends React.Component<RouteComponentProps<{}>, Statist
             collection = this.state.data.frameworks;
         }
 
-        if (collection == undefined) {
+        if (!collection) {
             collection = new Array<[number, string]>();
         }
 

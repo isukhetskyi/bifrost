@@ -135,7 +135,7 @@ export class Survey extends React.Component<RouteComponentProps<SurveyProps>, Su
             datatype += "database"
         }
 
-        if (collection == undefined) {
+        if (!collection) {
             collection = new Array<[number, string]>();
         }
         elements = collection.map((checkbox: any, index: number) =>
@@ -234,15 +234,15 @@ export class Survey extends React.Component<RouteComponentProps<SurveyProps>, Su
         if (inputType as string === "checkbox-programminglanguage") {
             if (e.target.checked) {
                 let newArray = this.state.ProgrammingLanguages;
-                if (newArray == undefined) {
-                    newArray = new Array<number>();
+                if (!newArray) {
+                    newArray = new Array();
                 }
 
                 newArray.push(e.target.id);
                 this.setState({ ProgrammingLanguages: newArray });
             } else {
 
-                if (this.state.ProgrammingLanguages != null) {
+                if (!!this.state.ProgrammingLanguages) {
                     let newArray = this.state.ProgrammingLanguages;
                     let index = this.state.ProgrammingLanguages.indexOf(e.target.id, 0);
                     if (index > -1) {
@@ -255,15 +255,15 @@ export class Survey extends React.Component<RouteComponentProps<SurveyProps>, Su
         if (inputType as string === "checkbox-database") {
             if (e.target.checked) {
                 let newArray = this.state.Databases;
-                if (newArray == undefined) {
-                    newArray = new Array<number>();
+                if (!newArray) {
+                    newArray = new Array();
                 }
 
                 newArray.push(e.target.id);
                 this.setState({ Databases: newArray });
             } else {
 
-                if (this.state.Databases != null) {
+                if (!!this.state.Databases) {
                     let newArray = this.state.Databases;
                     let index = this.state.Databases.indexOf(e.target.id, 0);
                     if (index > -1) {
@@ -276,7 +276,7 @@ export class Survey extends React.Component<RouteComponentProps<SurveyProps>, Su
         if (inputType as string === "checkbox-framework") {
             if (e.target.checked) {
                 let newArray = this.state.Frameworks;
-                if (newArray == undefined) {
+                if (!newArray) {
                     newArray = new Array<number>();
                 }
 
@@ -284,7 +284,7 @@ export class Survey extends React.Component<RouteComponentProps<SurveyProps>, Su
                 this.setState({ Frameworks: newArray });
             } else {
 
-                if (this.state.Frameworks != null) {
+                if (!!this.state.Frameworks) {
                     let newArray = this.state.Frameworks;
                     let index = this.state.Frameworks.indexOf(e.target.id, 0);
                     if (index > -1) {
