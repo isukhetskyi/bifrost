@@ -200,23 +200,18 @@ export class Survey extends React.Component<RouteComponentProps<SurveyProps>, Su
             && !this.state.SpecialityError)
     }
 
-    validate(e: any): boolean {
+    validate(e: any): string {
         e.preventDefault();
-
-        let result = false;
+        let result = "";
         let inputType = e.target.attributes.getNamedItem('datatype').value;
         if (inputType as string === "general-info-text") {
-            let pattern = e.target.attributes.getNamedItem("pattern").value;
-            let regex = new RegExp("^"+pattern+"$");
-
-            //return regex.test((e.target.value as string).trim());
-            return true;
+            result = (e.target.value as string).trim();
         }
         else if (inputType as string === "general-info-number") {
             let pattern = e.target.attributes.getNamedItem("pattern").value;
             let regex = new RegExp(pattern);
             //return regex.test(e.target.value as string);
-            return true;
+            result = e.target.value as string;
         }
 
         return result;
@@ -224,8 +219,8 @@ export class Survey extends React.Component<RouteComponentProps<SurveyProps>, Su
 
     handleInputChange(e: any) {
         e.preventDefault();
-
-        if (this.validate(e)) {
+        var value = this.validate(e)
+        if (value.length > 0) {
             this.setState({ [(e.target.attributes.id.value as string)]: e.target.value as string })
             this.setState({[(e.target.attributes.id.value as string) + "Error"]: false})
             this.setState({FormError: false})
@@ -639,7 +634,6 @@ export class Survey extends React.Component<RouteComponentProps<SurveyProps>, Su
                                                 datatype="general-info-text"
                                                 minLength={2}
                                                 maxLength={1000}
-                                                pattern="[a-zA-Z0-9 ,.'-]{2,1000}"
                                                 type="text"
                                                 id="OtherInfo" />
                                         </div>
