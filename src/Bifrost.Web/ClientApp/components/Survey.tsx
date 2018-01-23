@@ -90,7 +90,7 @@ export class Survey extends React.Component<RouteComponentProps<SurveyProps>, Su
             OtherInfo: "",
             OtherInfoError: false,
 
-            selectedOption: "",
+            selectedOption: "no",
 
             FormError: false,
             isDone: false
@@ -206,15 +206,17 @@ export class Survey extends React.Component<RouteComponentProps<SurveyProps>, Su
         let result = false;
         let inputType = e.target.attributes.getNamedItem('datatype').value;
         if (inputType as string === "general-info-text") {
-            let pattern = e.target.attributes.getNamedItem("data-regex").value;
-            let regex = new RegExp(pattern);
+            let pattern = e.target.attributes.getNamedItem("pattern").value;
+            let regex = new RegExp("^"+pattern+"$");
 
-            return regex.test((e.target.value as string).trim());
+            //return regex.test((e.target.value as string).trim());
+            return true;
         }
         else if (inputType as string === "general-info-number") {
-            let pattern = e.target.attributes.getNamedItem("data-regex").value;
+            let pattern = e.target.attributes.getNamedItem("pattern").value;
             let regex = new RegExp(pattern);
-            return regex.test(e.target.value as string);
+            //return regex.test(e.target.value as string);
+            return true;
         }
 
         return result;
@@ -334,9 +336,10 @@ export class Survey extends React.Component<RouteComponentProps<SurveyProps>, Su
                                                 onChange={e => this.handleInputChange(e)}
                                                 onBlur={e => this.handleInputChange(e)}
                                                 datatype="general-info-text"
-                                                data-min-length="2"
-                                                data-max-length="100"
-                                                data-regex="[a-z ,.'-]{2,100}"
+                                                minLength={2}
+                                                maxLength={100}
+                                                required
+                                                pattern="^[a-zA-Z ]+$"
                                                 type="text"
                                                 id="FirstName" />
                                         </div>
@@ -356,9 +359,11 @@ export class Survey extends React.Component<RouteComponentProps<SurveyProps>, Su
                                                 onChange={e => this.handleInputChange(e)}
                                                 onBlur={e => this.handleInputChange(e)}
                                                 datatype="general-info-text"
-                                                data-min-length="2"
-                                                data-max-length="100"
-                                                data-regex="[a-z ,.'-]{2,100}"
+                                                minLength={2}
+                                                maxLength={100}
+                                                required
+                                                pattern="^[a-zA-Z ]+$"
+                                                title="Can contain only letters dots, dashes, comas, and be from 2 to 100 characters"
                                                 type="text"
                                                 id="LastName" />
                                         </div>
@@ -377,9 +382,9 @@ export class Survey extends React.Component<RouteComponentProps<SurveyProps>, Su
                                                 onChange={e => this.handleInputChange(e)}
                                                 onBlur={e => this.handleInputChange(e)}
                                                 datatype="general-info-number"
-                                                data-min-value="18"
-                                                data-max-value="90"
-                                                data-regex="\\d{2}"
+                                                min={18}
+                                                max={99}
+                                                required
                                                 type="number"
                                                 id="Age" />
                                         </div>
@@ -400,7 +405,10 @@ export class Survey extends React.Component<RouteComponentProps<SurveyProps>, Su
                                                 onChange={e => this.handleInputChange(e)}
                                                 onBlur={e => this.handleInputChange(e)}
                                                 datatype="general-info-text"
-                                                data-regex="(\\w[a-zA-Z- ,.0-9]{1,})"
+                                                required
+                                                minLength={2}
+                                                maxLength={200}
+                                                pattern="^(\\w[a-zA-Z- ,.0-9]{2,})$"
                                                 type="text"
                                                 id="Address" />
                                         </div>
@@ -423,7 +431,7 @@ export class Survey extends React.Component<RouteComponentProps<SurveyProps>, Su
                                                     name="inlineRadioOptions"
                                                     id="isEmployedYes"
                                                     value="yes"
-                                                    checked={this.state.selectedOption == "yes"}
+                                                    checked={this.state.selectedOption === "yes"}
                                                     onClick={e => this.handleRadioButtonChange(e)}
                                                 /> Yes
                                             </label>
@@ -434,7 +442,7 @@ export class Survey extends React.Component<RouteComponentProps<SurveyProps>, Su
                                                     type="radio"
                                                     name="inlineRadioOptions"
                                                     id="isEmployedNo"
-                                                    checked={this.state.selectedOption == "no"}
+                                                    checked={this.state.selectedOption === "no"}
                                                     value="no"
                                                     onClick={e => this.handleRadioButtonChange(e)}
                                                 /> No
@@ -451,10 +459,9 @@ export class Survey extends React.Component<RouteComponentProps<SurveyProps>, Su
                                                 onBlur={e => this.handleInputChange(e)}
                                                 datatype="general-info-text"
                                                 disabled={!this.state.IsEmployed}
-
-                                                data-min-length="2"
-                                                data-max-length="100"
-                                                data-regex="[a-zA-Z][a-zA-Z0-9\\.,\\-_]{5,31}"
+                                                minLength={5}
+                                                maxLength={100}
+                                                pattern="^([a-zA-Z0-9\\.,\\-_ ]){2,}$"
                                                 type="text"
                                                 id="CurrentPosition" />
                                         </div>
@@ -475,9 +482,9 @@ export class Survey extends React.Component<RouteComponentProps<SurveyProps>, Su
                                                 onChange={e => this.handleInputChange(e)}
                                                 onBlur={e => this.handleInputChange(e)}
                                                 datatype="general-info-text"
-                                                data-min-length="6"
-                                                data-max-length="100"
-                                                data-regex="[a-zA-Z][a-zA-Z0-9\\.,\\-_]{5,31}"
+                                                minLength={6}
+                                                maxLength={100}
+                                                pattern="[a-zA-Z][a-zA-Z0-9\\.,\\-_]{5,31}"
                                                 type="text"
                                                 id="Skype" />
                                         </div>
@@ -496,8 +503,10 @@ export class Survey extends React.Component<RouteComponentProps<SurveyProps>, Su
                                                 onChange={e => this.handleInputChange(e)}
                                                 onBlur={e => this.handleInputChange(e)}
                                                 datatype="general-info-text"
-                                                data-regex="\\d{10,12}"
-                                                type="number"
+                                                minLength={10}
+                                                maxLength={12}
+                                                pattern="^[0-9]{10,12}$"
+                                                type="text"
                                                 id="Phone" />
                                         </div>
                                     </div>
@@ -515,8 +524,9 @@ export class Survey extends React.Component<RouteComponentProps<SurveyProps>, Su
                                                 onChange={e => this.handleInputChange(e)}
                                                 onBlur={e => this.handleInputChange(e)}
                                                 datatype="general-info-text"
-                                                data-regex="\\w+([-+.']\\w+)*@\\w+([-.]\\w+)*\\.\\w{2,5}"
-                                                type="text"
+                                                required
+                                                pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
+                                                type="email"
                                                 id="Email" />
                                         </div>
                                     </div>
@@ -545,7 +555,9 @@ export class Survey extends React.Component<RouteComponentProps<SurveyProps>, Su
                                                 onChange={e => this.handleInputChange(e)}
                                                 onBlur={e => this.handleInputChange(e)}
                                                 datatype="general-info-text"
-                                                data-regex="[a-zA-Z ,.'-]{2,100}"
+                                                minLength={2}
+                                                maxLength={100}
+                                                pattern="[a-zA-Z ,.'-]{2,100}"
                                                 type="text"
                                                 id="PlaceOfStudying" />
                                         </div>
@@ -564,7 +576,9 @@ export class Survey extends React.Component<RouteComponentProps<SurveyProps>, Su
                                                 onChange={e => this.handleInputChange(e)}
                                                 onBlur={e => this.handleInputChange(e)}
                                                 datatype="general-info-text"
-                                                data-regex="[a-z ,.'-]{2,100}"
+                                                minLength={2}
+                                                maxLength={100}
+                                                pattern="[a-zA-Z ,.'-]{2,100}"
                                                 type="text"
                                                 id="Speciality" />
                                         </div>
@@ -623,7 +637,9 @@ export class Survey extends React.Component<RouteComponentProps<SurveyProps>, Su
                                                 onChange={e => this.handleInputChange(e)}
                                                 onBlur={e => {this.handleInputChange(e)}}
                                                 datatype="general-info-text"
-                                                data-regex="[a-z0-9 ,.'-]{2,1000}"
+                                                minLength={2}
+                                                maxLength={1000}
+                                                pattern="[a-zA-Z0-9 ,.'-]{2,1000}"
                                                 type="text"
                                                 id="OtherInfo" />
                                         </div>
