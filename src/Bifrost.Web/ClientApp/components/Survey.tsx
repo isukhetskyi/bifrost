@@ -403,7 +403,7 @@ export class Survey extends React.Component<RouteComponentProps<SurveyProps>, Su
                                                 required
                                                 minLength={2}
                                                 maxLength={200}
-                                                pattern="^(\\w[a-zA-Z- ,.0-9]{2,})$"
+                                                pattern="^[a-zA-Z- ,.0-9]+$"
                                                 type="text"
                                                 id="Address" />
                                         </div>
@@ -479,7 +479,7 @@ export class Survey extends React.Component<RouteComponentProps<SurveyProps>, Su
                                                 datatype="general-info-text"
                                                 minLength={6}
                                                 maxLength={100}
-                                                pattern="[a-zA-Z][a-zA-Z0-9\\.,\\-_]{5,31}"
+                                                pattern="^[a-zA-Z0-9\\.,\\-_]+$"
                                                 type="text"
                                                 id="Skype" />
                                         </div>
@@ -573,7 +573,7 @@ export class Survey extends React.Component<RouteComponentProps<SurveyProps>, Su
                                                 datatype="general-info-text"
                                                 minLength={2}
                                                 maxLength={100}
-                                                pattern="[a-zA-Z ,.'-]{2,100}"
+                                                pattern="[a-zA-Z ,.'-]+"
                                                 type="text"
                                                 id="Speciality" />
                                         </div>
