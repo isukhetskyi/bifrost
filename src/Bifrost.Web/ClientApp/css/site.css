@@ -261,9 +261,9 @@ body {
 .footer-bottom {
     background-color: #222;
     position: fixed;
-    bottom: -5px;
+    bottom: 0;
     width: 100%;
-    height: 60px;
+    height: 55px;
     line-height: 60px;
 }
 

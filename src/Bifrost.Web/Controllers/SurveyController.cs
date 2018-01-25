@@ -134,7 +134,7 @@ namespace Bifrost.Web.Controllers
                 // todo do some logging here
             }
 
-            return Json(new {data = result});
+            return Json(new {technologies = result});
         }
     }
 
