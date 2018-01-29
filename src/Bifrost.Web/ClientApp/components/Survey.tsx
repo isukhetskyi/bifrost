@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
-import * as fetch from 'node-fetch';
-import { join } from 'path';
+import * as axios from "axios";
+import { KeyboardEvent } from 'react';
 
 interface SurveyProps {
 
@@ -90,7 +90,7 @@ export class Survey extends React.Component<RouteComponentProps<SurveyProps>, Su
             OtherInfo: "",
             OtherInfoError: false,
 
-            selectedOption: "",
+            selectedOption: "no",
 
             FormError: false,
             isDone: false
@@ -103,19 +103,22 @@ export class Survey extends React.Component<RouteComponentProps<SurveyProps>, Su
         this.renderCheckboxes = this.renderCheckboxes.bind(this);
         this.componentWillMount = this.componentDidMount.bind(this);
         this.isFormValid = this.isFormValid.bind(this);
+        this.handleKeyPress = this.handleKeyPress.bind(this);
     }
 
     componentDidMount() {
-        let data: any;
         let thisContext = this;
-        const request = fetch.default("http://localhost:5000/Survey/GetTechnologies")
-            .then(function (res) { return res.json() })
-            .then(function (json) {
-                data = json.data;
-                thisContext.setState({ ProgrammingLanguagesCheckboxes: data.languages })
-                thisContext.setState({ FrameworksCheckboxes: data.frameworks })
-                thisContext.setState({ DatabasesCheckboxes: data.databases })
-            });
+
+        axios.default.get("/survey/gettechnologies")
+            .then(function (response) {
+                thisContext.setState({ ProgrammingLanguagesCheckboxes: response.data.technologies.languages })
+                thisContext.setState({ FrameworksCheckboxes: response.data.technologies.frameworks })
+                thisContext.setState({ DatabasesCheckboxes: response.data.technologies.databases })
+            })
+            .catch(function (error) {
+                console.log(error);
+                alert(error);
+            })
     }
 
     renderCheckboxes(collectionName: string) {
@@ -135,7 +138,7 @@ export class Survey extends React.Component<RouteComponentProps<SurveyProps>, Su
             datatype += "database"
         }
 
-        if (collection == undefined) {
+        if (!collection) {
             collection = new Array<[number, string]>();
         }
         elements = collection.map((checkbox: any, index: number) =>
@@ -152,28 +155,37 @@ export class Survey extends React.Component<RouteComponentProps<SurveyProps>, Su
                 </label>
                 {/* <label className="custom-control-label" htmlFor={checkbox.id}>{checkbox.technologyName}</label> */}
             </div>);
+
         return elements;
     }
 
     handleSubmit(event: any) {
-        if(this.isFormValid())
-        {
-            this.setState({FormError: false});
-            let body = JSON.stringify(this.state);
-            console.log(body)
-
-            const request = fetch.default("http://localhost:5000/Survey",
-                { method: "POST", body: JSON.stringify(this.state), headers: { "Content-Type": "application/json" } })
-                .then(res => console.log(res.body));
-            this.setState({isDone: true})
-        }else{
-            this.setState({FormError: true});
-        }
-
         event.preventDefault();
+
+        if (this.isFormValid()) {
+            this.setState({ FormError: false });
+            let thisContext = this;
+
+            axios.default.post("/survey",
+                this.state,
+                {
+                    headers: { "Content-Type": "application/json" }
+                })
+                .then(function (response) {
+                    console.log(response);
+                    thisContext.setState({ isDone: true });
+                })
+                .catch(function (error) {
+                    console.error(error);
+                    alert(error);
+                })
+
+        } else {
+            this.setState({ FormError: true });
+        }
     }
 
-    isFormValid(){
+    isFormValid() {
         return (!this.state.AddressError
             && !this.state.AgeError
             && !this.state.CurrentPositionError
@@ -187,35 +199,33 @@ export class Survey extends React.Component<RouteComponentProps<SurveyProps>, Su
             && !this.state.SpecialityError)
     }
 
-    validate(e: any): boolean {
-        let result = false;
+    validate(e: any): string {
+        e.preventDefault();
+        let result = "";
         let inputType = e.target.attributes.getNamedItem('datatype').value;
         if (inputType as string === "general-info-text") {
-            let pattern = e.target.attributes.getNamedItem("data-regex").value;
-            let regex = new RegExp(pattern);
-
-            return regex.test((e.target.value as string).trim());
+            result = (e.target.value as string).trim();
         }
         else if (inputType as string === "general-info-number") {
-            let pattern = e.target.attributes.getNamedItem("data-regex").value;
+            let pattern = e.target.attributes.getNamedItem("pattern").value;
             let regex = new RegExp(pattern);
-            return regex.test(e.target.value as string);
+            //return regex.test(e.target.value as string);
+            result = e.target.value as string;
         }
 
-        e.preventDefault();
         return result;
     }
 
     handleInputChange(e: any) {
-        if (this.validate(e)) {
-            this.setState({ [(e.target.attributes.id.value as string)]: e.target.value as string })
-            this.setState({[(e.target.attributes.id.value as string) + "Error"]: false})
-            this.setState({FormError: false})
-        }else{
-            this.setState({[(e.target.attributes.id.value as string) + "Error"]: true})
-        }
-
         e.preventDefault();
+        var value = this.validate(e)
+        if (value.length > 0) {
+            this.setState({ [(e.target.attributes.id.value as string)]: e.target.value as string })
+            this.setState({ [(e.target.attributes.id.value as string) + "Error"]: false })
+            this.setState({ FormError: false })
+        } else {
+            this.setState({ [(e.target.attributes.id.value as string) + "Error"]: true })
+        }
     }
 
     handleRadioButtonChange(e: any) {
@@ -234,15 +244,15 @@ export class Survey extends React.Component<RouteComponentProps<SurveyProps>, Su
         if (inputType as string === "checkbox-programminglanguage") {
             if (e.target.checked) {
                 let newArray = this.state.ProgrammingLanguages;
-                if (newArray == undefined) {
-                    newArray = new Array<number>();
+                if (!newArray) {
+                    newArray = new Array();
                 }
 
                 newArray.push(e.target.id);
                 this.setState({ ProgrammingLanguages: newArray });
             } else {
 
-                if (this.state.ProgrammingLanguages != null) {
+                if (!!this.state.ProgrammingLanguages) {
                     let newArray = this.state.ProgrammingLanguages;
                     let index = this.state.ProgrammingLanguages.indexOf(e.target.id, 0);
                     if (index > -1) {
@@ -255,15 +265,15 @@ export class Survey extends React.Component<RouteComponentProps<SurveyProps>, Su
         if (inputType as string === "checkbox-database") {
             if (e.target.checked) {
                 let newArray = this.state.Databases;
-                if (newArray == undefined) {
-                    newArray = new Array<number>();
+                if (!newArray) {
+                    newArray = new Array();
                 }
 
                 newArray.push(e.target.id);
                 this.setState({ Databases: newArray });
             } else {
 
-                if (this.state.Databases != null) {
+                if (!!this.state.Databases) {
                     let newArray = this.state.Databases;
                     let index = this.state.Databases.indexOf(e.target.id, 0);
                     if (index > -1) {
@@ -276,7 +286,7 @@ export class Survey extends React.Component<RouteComponentProps<SurveyProps>, Su
         if (inputType as string === "checkbox-framework") {
             if (e.target.checked) {
                 let newArray = this.state.Frameworks;
-                if (newArray == undefined) {
+                if (!newArray) {
                     newArray = new Array<number>();
                 }
 
@@ -284,7 +294,7 @@ export class Survey extends React.Component<RouteComponentProps<SurveyProps>, Su
                 this.setState({ Frameworks: newArray });
             } else {
 
-                if (this.state.Frameworks != null) {
+                if (!!this.state.Frameworks) {
                     let newArray = this.state.Frameworks;
                     let index = this.state.Frameworks.indexOf(e.target.id, 0);
                     if (index > -1) {
@@ -296,12 +306,17 @@ export class Survey extends React.Component<RouteComponentProps<SurveyProps>, Su
         }
     }
 
+    handleKeyPress(e: KeyboardEvent<any>) {
+        if (e.key === "Enter") {
+            e.preventDefault();
+        }
+    }
+
     public render() {
-        if(!this.state.isDone)
-        {
-            return <div className="container" style={{width:"100%"}}>
+        if (!this.state.isDone) {
+            return <div style={{ width: "100%" }}>
                 <h2 className="text-center">Take a Survey</h2>
-                <form onSubmit={this.handleSubmit}>
+                <form onSubmit={this.handleSubmit} onKeyPress={this.handleKeyPress}>
                     <div className="panel panel-default">
                         <div className="panel-heading"><h3>Personal info</h3></div>
                         <div className="panel-body">
@@ -314,14 +329,15 @@ export class Survey extends React.Component<RouteComponentProps<SurveyProps>, Su
                                                 onChange={e => this.handleInputChange(e)}
                                                 onBlur={e => this.handleInputChange(e)}
                                                 datatype="general-info-text"
-                                                data-min-length="2"
-                                                data-max-length="100"
-                                                data-regex="[a-z ,.'-]{2,100}"
+                                                minLength={2}
+                                                maxLength={100}
+                                                required
+                                                pattern="^[a-zA-Z ]+$"
                                                 type="text"
                                                 id="FirstName" />
                                         </div>
                                     </div>
-                                    <div className="row" id="FirstNameError" style={{ display: this.state.FirstNameError ? "block": "none"}}>
+                                    <div className="row" id="FirstNameError" style={{ display: this.state.FirstNameError ? "block" : "none" }}>
                                         <div className="col-md-12">
                                             <label className="text-danger">First name can contain only letters and be 2-100 chars long</label>
                                         </div>
@@ -336,9 +352,11 @@ export class Survey extends React.Component<RouteComponentProps<SurveyProps>, Su
                                                 onChange={e => this.handleInputChange(e)}
                                                 onBlur={e => this.handleInputChange(e)}
                                                 datatype="general-info-text"
-                                                data-min-length="2"
-                                                data-max-length="100"
-                                                data-regex="[a-z ,.'-]{2,100}"
+                                                minLength={2}
+                                                maxLength={100}
+                                                required
+                                                pattern="^[a-zA-Z ]+$"
+                                                title="Can contain only letters dots, dashes, comas, and be from 2 to 100 characters"
                                                 type="text"
                                                 id="LastName" />
                                         </div>
@@ -357,9 +375,9 @@ export class Survey extends React.Component<RouteComponentProps<SurveyProps>, Su
                                                 onChange={e => this.handleInputChange(e)}
                                                 onBlur={e => this.handleInputChange(e)}
                                                 datatype="general-info-number"
-                                                data-min-value="18"
-                                                data-max-value="90"
-                                                data-regex="\\d{2}"
+                                                min={18}
+                                                max={99}
+                                                required
                                                 type="number"
                                                 id="Age" />
                                         </div>
@@ -380,7 +398,10 @@ export class Survey extends React.Component<RouteComponentProps<SurveyProps>, Su
                                                 onChange={e => this.handleInputChange(e)}
                                                 onBlur={e => this.handleInputChange(e)}
                                                 datatype="general-info-text"
-                                                data-regex="(\\w[a-zA-Z- ,.0-9]{1,})"
+                                                required
+                                                minLength={2}
+                                                maxLength={200}
+                                                pattern="^[a-zA-Z- ,.0-9]+$"
                                                 type="text"
                                                 id="Address" />
                                         </div>
@@ -403,7 +424,7 @@ export class Survey extends React.Component<RouteComponentProps<SurveyProps>, Su
                                                     name="inlineRadioOptions"
                                                     id="isEmployedYes"
                                                     value="yes"
-                                                    checked={this.state.selectedOption == "yes"}
+                                                    checked={this.state.selectedOption === "yes"}
                                                     onClick={e => this.handleRadioButtonChange(e)}
                                                 /> Yes
                                             </label>
@@ -414,7 +435,7 @@ export class Survey extends React.Component<RouteComponentProps<SurveyProps>, Su
                                                     type="radio"
                                                     name="inlineRadioOptions"
                                                     id="isEmployedNo"
-                                                    checked={this.state.selectedOption == "no"}
+                                                    checked={this.state.selectedOption === "no"}
                                                     value="no"
                                                     onClick={e => this.handleRadioButtonChange(e)}
                                                 /> No
@@ -431,10 +452,9 @@ export class Survey extends React.Component<RouteComponentProps<SurveyProps>, Su
                                                 onBlur={e => this.handleInputChange(e)}
                                                 datatype="general-info-text"
                                                 disabled={!this.state.IsEmployed}
-
-                                                data-min-length="2"
-                                                data-max-length="100"
-                                                data-regex="[a-zA-Z][a-zA-Z0-9\\.,\\-_]{5,31}"
+                                                minLength={5}
+                                                maxLength={100}
+                                                pattern="^([a-zA-Z0-9\\.,\\-_ ]){2,}$"
                                                 type="text"
                                                 id="CurrentPosition" />
                                         </div>
@@ -455,9 +475,9 @@ export class Survey extends React.Component<RouteComponentProps<SurveyProps>, Su
                                                 onChange={e => this.handleInputChange(e)}
                                                 onBlur={e => this.handleInputChange(e)}
                                                 datatype="general-info-text"
-                                                data-min-length="6"
-                                                data-max-length="100"
-                                                data-regex="[a-zA-Z][a-zA-Z0-9\\.,\\-_]{5,31}"
+                                                minLength={6}
+                                                maxLength={100}
+                                                pattern="^[a-zA-Z0-9\\.,\\-_]+$"
                                                 type="text"
                                                 id="Skype" />
                                         </div>
@@ -476,8 +496,10 @@ export class Survey extends React.Component<RouteComponentProps<SurveyProps>, Su
                                                 onChange={e => this.handleInputChange(e)}
                                                 onBlur={e => this.handleInputChange(e)}
                                                 datatype="general-info-text"
-                                                data-regex="\\d{10,12}"
-                                                type="number"
+                                                minLength={10}
+                                                maxLength={12}
+                                                pattern="^[0-9]{10,12}$"
+                                                type="text"
                                                 id="Phone" />
                                         </div>
                                     </div>
@@ -495,8 +517,9 @@ export class Survey extends React.Component<RouteComponentProps<SurveyProps>, Su
                                                 onChange={e => this.handleInputChange(e)}
                                                 onBlur={e => this.handleInputChange(e)}
                                                 datatype="general-info-text"
-                                                data-regex="\\w+([-+.']\\w+)*@\\w+([-.]\\w+)*\\.\\w{2,5}"
-                                                type="text"
+                                                required
+                                                pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
+                                                type="email"
                                                 id="Email" />
                                         </div>
                                     </div>
@@ -525,7 +548,9 @@ export class Survey extends React.Component<RouteComponentProps<SurveyProps>, Su
                                                 onChange={e => this.handleInputChange(e)}
                                                 onBlur={e => this.handleInputChange(e)}
                                                 datatype="general-info-text"
-                                                data-regex="[a-zA-Z ,.'-]{2,100}"
+                                                minLength={2}
+                                                maxLength={100}
+                                                pattern="[a-zA-Z ,.'-]{2,100}"
                                                 type="text"
                                                 id="PlaceOfStudying" />
                                         </div>
@@ -544,7 +569,9 @@ export class Survey extends React.Component<RouteComponentProps<SurveyProps>, Su
                                                 onChange={e => this.handleInputChange(e)}
                                                 onBlur={e => this.handleInputChange(e)}
                                                 datatype="general-info-text"
-                                                data-regex="[a-z ,.'-]{2,100}"
+                                                minLength={2}
+                                                maxLength={100}
+                                                pattern="[a-zA-Z ,.'-]+"
                                                 type="text"
                                                 id="Speciality" />
                                         </div>
@@ -601,9 +628,10 @@ export class Survey extends React.Component<RouteComponentProps<SurveyProps>, Su
                                             <label>Tell me more :)</label>
                                             <textarea className="form-control"
                                                 onChange={e => this.handleInputChange(e)}
-                                                onBlur={e => {this.handleInputChange(e)}}
+                                                onBlur={e => { this.handleInputChange(e) }}
                                                 datatype="general-info-text"
-                                                data-regex="[a-z0-9 ,.'-]{2,1000}"
+                                                minLength={2}
+                                                maxLength={1000}
                                                 type="text"
                                                 id="OtherInfo" />
                                         </div>
@@ -626,13 +654,13 @@ export class Survey extends React.Component<RouteComponentProps<SurveyProps>, Su
                     </div>
                     <div className="row" id="FormError" style={{ display: this.state.FormError ? "block" : "none" }}>
                         <div className="col-md-12 btn-wrapper">
-                            <label className="text-danger" style={{marginTop: "50px"}}>You can's submit form while it contains errors</label>
+                            <label className="text-danger" style={{ marginTop: "50px" }}>You can's submit form while it contains errors</label>
                         </div>
                     </div>
                 </form>
             </div>;
-        }else{
-            return <div className="container content-center" style={{textAlign: "center"}}>
+        } else {
+            return <div className="container content-center" style={{ textAlign: "center" }}>
                 <h1>Success!</h1>
             </div>;
         }
