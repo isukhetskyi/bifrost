@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
 import { PieChart, Legend } from 'react-easy-chart';
-import * as fetch from 'node-fetch';
+import * as axios from "axios";
 
 interface StatisticsState {
     data: any;
@@ -11,8 +11,6 @@ export class Statistics extends React.Component<RouteComponentProps<{}>, Statist
     constructor(props: any) {
         super(props);
 
-        // let dataInitial: any;
-        // dataInitial = ;
         this.state = {
             data: {databases: [], frameworks: [], languages: []}
         }
@@ -24,19 +22,15 @@ export class Statistics extends React.Component<RouteComponentProps<{}>, Statist
     componentDidMount() {
         let statistics: any;
         let thisContext = this;
-        const request = fetch.default("http://localhost:5000/Statistics/All")
-            .then(function(res){
-                if(res.status === 401){
-                    alert("You are unathorized bitch");
-                }
-                console.log(res.headers)
-                return res.json();
-            })
-            .then(function(json){
-                console.log(json.data);
-                statistics = json.data;
-                thisContext.setState({data: statistics});
-            });
+
+        axios.default.get("/statistics/all")
+        .then(function(response){
+            console.log(response.data.statistics);
+            thisContext.setState({data: response.data.statistics})
+        }).catch(function(error){
+            console.log(error);
+            alert(error);
+        })
     }
 
     renderTextualStatistics(category: string) {
@@ -53,7 +47,7 @@ export class Statistics extends React.Component<RouteComponentProps<{}>, Statist
             collection = this.state.data.frameworks;
         }
 
-        if (collection == undefined) {
+        if (!collection) {
             collection = new Array<[number, string]>();
         }
 
@@ -61,11 +55,12 @@ export class Statistics extends React.Component<RouteComponentProps<{}>, Statist
             <li key={index}> {item.key} - {item.value} respondent(s) or {item.percentage}% of total number of respondents</li>
         );
         console.log(elements);
+
         return elements;
     }
 
     public render() {
-        return <div className="container" style={{width:"100%"}}>
+        return <div style={{width:"100%"}}>
         <h2 className="text-center">Statistics</h2>
             <div className="panel panel-default">
                 <div className="panel-heading">Programming languages</div>

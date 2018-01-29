@@ -110,15 +110,15 @@ export class Survey extends React.Component<RouteComponentProps<SurveyProps>, Su
         let thisContext = this;
 
         axios.default.get("/survey/gettechnologies")
-            .then(function (response) {
+        .then(function(response){
                 thisContext.setState({ ProgrammingLanguagesCheckboxes: response.data.technologies.languages })
                 thisContext.setState({ FrameworksCheckboxes: response.data.technologies.frameworks })
                 thisContext.setState({ DatabasesCheckboxes: response.data.technologies.databases })
-            })
-            .catch(function (error) {
-                console.log(error);
-                alert(error);
-            })
+        })
+        .catch(function(error){
+            console.log(error);
+            alert(error);
+        })
     }
 
     renderCheckboxes(collectionName: string) {
@@ -162,26 +162,27 @@ export class Survey extends React.Component<RouteComponentProps<SurveyProps>, Su
     handleSubmit(event: any) {
         event.preventDefault();
 
-        if (this.isFormValid()) {
-            this.setState({ FormError: false });
+        if(this.isFormValid())
+        {
+            this.setState({FormError: false});
             let thisContext = this;
 
             axios.default.post("/survey",
-                this.state,
-                {
-                    headers: { "Content-Type": "application/json" }
-                })
-                .then(function (response) {
-                    console.log(response);
-                    thisContext.setState({ isDone: true });
-                })
-                .catch(function (error) {
-                    console.error(error);
-                    alert(error);
-                })
+            this.state,
+            {
+                headers: {"Content-Type": "application/json"}
+            })
+            .then(function(response){
+                console.log(response);
+                thisContext.setState({isDone: true});
+            })
+            .catch(function(error){
+                console.error(error);
+                alert(error);
+            })
 
-        } else {
-            this.setState({ FormError: true });
+        }else{
+            this.setState({FormError: true});
         }
     }
 
@@ -306,15 +307,16 @@ export class Survey extends React.Component<RouteComponentProps<SurveyProps>, Su
         }
     }
 
-    handleKeyPress(e: KeyboardEvent<any>) {
-        if (e.key === "Enter") {
+    handleKeyPress(e: KeyboardEvent<any>){
+        if(e.key === "Enter"){
             e.preventDefault();
         }
     }
 
     public render() {
-        if (!this.state.isDone) {
-            return <div style={{ width: "100%" }}>
+        if(!this.state.isDone)
+        {
+            return <div style={{width:"100%"}}>
                 <h2 className="text-center">Take a Survey</h2>
                 <form onSubmit={this.handleSubmit} onKeyPress={this.handleKeyPress}>
                     <div className="panel panel-default">
