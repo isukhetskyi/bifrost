@@ -7,7 +7,7 @@ using Bifrost.Domain.Enums;
 
 namespace Bifrost.Web.ViewModels.Account
 {
-    public class RegisterViewModel
+    public class CreateUserViewModel
     {
         public string Email { get; set; }
 

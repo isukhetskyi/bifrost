@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Bifrost.Data.Models;
+using Bifrost.Web.ViewModels.Account;
 using Bifrost.Web.ViewModels.AdminArea;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -12,7 +13,7 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Bifrost.Web.Controllers
 {
 
-    [Authorize ("SuperAdmin")]
+    //[Authorize ("SuperAdmin")]
     public class AdminAreaController : Controller
     {
         private readonly IServiceProvider serviceProvider;
@@ -81,6 +82,27 @@ namespace Bifrost.Web.Controllers
             }
 
             return Json(new {role = roleResult.Succeeded} );
+        }
+
+        #endregion
+
+        #region Users
+
+        public async Task<JsonResult> CreateUserAsync(CreateUserViewModel model)
+        {
+            var result = new IdentityResult();
+
+            if (ModelState.IsValid)
+            {
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                result = await this.userManager.CreateAsync(user, model.Password);
+                if (result.Succeeded)
+                {
+                    // todo add here asigning to the role
+                }
+            }
+
+            return Json(new {user = result});
         }
 
         #endregion

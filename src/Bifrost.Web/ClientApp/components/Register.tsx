@@ -9,6 +9,7 @@ interface RegisterState {
     PasswordError?: boolean;
     ConfirmPassword?: string;
     ConfirmPasswordError?: boolean;
+    Role?: number;
     FormError?: boolean;
     isDone?: boolean;
 }
@@ -24,6 +25,7 @@ export class Register extends React.Component<RouteComponentProps<{}>, RegisterS
             PasswordError: false,
             ConfirmPassword: "",
             ConfirmPasswordError: false,
+            Role: -1,
             FormError: false,
             isDone: false
         }
@@ -40,7 +42,7 @@ export class Register extends React.Component<RouteComponentProps<{}>, RegisterS
             this.setState({ FormError: false });
             let thisContext = this;
             axios.default.post(
-                "/account/register",
+                "/adminarea/createuser",
                 this.state,
                 {
                     headers: {"Content-Type": "application/json"}

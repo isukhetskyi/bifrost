@@ -49,7 +49,7 @@ namespace Bifrost.Web.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        public async Task<IActionResult> Register([FromBody]RegisterViewModel model, string returnUrl = null)
+        public async Task<IActionResult> Register([FromBody]CreateUserViewModel model, string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
