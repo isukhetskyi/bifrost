@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Bifrost.Data\Bifrost.Data.csproj" />
+    <ProjectReference Include="..\Bifrost.Domain\Bifrost.Domain.csproj" />
   </ItemGroup>
 
   <ItemGroup>

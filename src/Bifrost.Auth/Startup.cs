@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
+using Bifrost.Repository;
 
 namespace Bifrost.Auth
 {
@@ -28,7 +29,7 @@ namespace Bifrost.Auth
         public void ConfigureServices (IServiceCollection services)
         {
             services.AddMvc ();
-
+            services.AddTransient<IRepository, EntityFrameworkRepository<ApplicationDbContext>> ();
             services.AddDbContext<ApplicationDbContext> (options =>
             {
                 options.UseSqlServer (Configuration.GetConnectionString ("DefaultConnection"));
@@ -41,7 +42,7 @@ namespace Bifrost.Auth
 
             services.AddOpenIddict (options =>
             {
-                options.AddEntityFrameworkCoreStores<DbContext> ();
+                options.AddEntityFrameworkCoreStores<ApplicationDbContext> ();
                 options.AddMvcBinders ();
                 // Enable the token endpoint.
                 options.EnableTokenEndpoint ("/connect/token");
