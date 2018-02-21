@@ -21,14 +21,14 @@ namespace Bifrost.Web.Controllers
         }
 
         [HttpGet]
-        [Authorize]
+        [Authorize(Roles = "Admin,HRManager")]
         public ViewResult Respondents()
         {
             return View("~/Views/Home/Index.cshtml");
         }
 
         [HttpGet]
-        [Authorize]
+        [Authorize(Roles = "Admin,HRManager")]
         public JsonResult All()
         {
             List<RespondentModel> respondents = new List<RespondentModel>();

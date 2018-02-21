@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Bifrost.Auth.ViewModels
+namespace Bifrost.Web.ViewModels
 {
     public class LoginViewModel
     {

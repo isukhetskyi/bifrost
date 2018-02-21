@@ -33,6 +33,7 @@ export class Register extends React.Component<RouteComponentProps<{}>, RegisterS
         this.handleSubmit = this.handleSubmit.bind(this);
         this.validate = this.validate.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
+        this.handleDropdownChange = this.handleDropdownChange.bind(this);
     }
 
     handleSubmit(e: any) {
@@ -42,7 +43,7 @@ export class Register extends React.Component<RouteComponentProps<{}>, RegisterS
             this.setState({ FormError: false });
             let thisContext = this;
             axios.default.post(
-                "/adminarea/createuser",
+                "/adminarea/CreateUserAsync",
                 this.state,
                 {
                     headers: {"Content-Type": "application/json"}
@@ -88,6 +89,12 @@ export class Register extends React.Component<RouteComponentProps<{}>, RegisterS
             this.setState({ FormError: false })
         } else {
             this.setState({ [(e.target.attributes.id.value as string) + "Error"]: true })
+        }
+    }
+
+    handleDropdownChange(e: any){
+        if(e.target.value as number >= 0){
+            this.setState({Role: (e.target.value as number)});
         }
     }
 
@@ -165,12 +172,14 @@ export class Register extends React.Component<RouteComponentProps<{}>, RegisterS
                             </div>
                             <div className="form-group">
                                 <label htmlFor="roleselect">Select list:</label>
-                                <select className="form-control" id="roleselect">
-                                    <option>Admin</option>
-                                    <option>Developer</option>
-                                    <option>HR Manager</option>
-                                    <option>Project Manager</option>
-                                    <option>Sales Manager</option>
+                                <select className="form-control"
+                                onChange={e => {this.handleDropdownChange(e)}}
+                                id="roleselect">
+                                    <option value={0}>Admin</option>
+                                    <option value={1}>Developer</option>
+                                    <option value={2}>HR Manager</option>
+                                    <option value={3}>Project Manager</option>
+                                    <option value={4}>Sales Manager</option>
                                 </select>
                             </div>
                             <div className="row">

@@ -28,49 +28,8 @@ namespace Bifrost.Web.Controllers
         }
 
         #region Roles
-        [HttpGet]
-        public async Task<JsonResult> RolesAsync ()
-        {
-            var result = new List<IdentityRole> ();
-            string[] roleNames = { "Admin", "Developer", "HR", "PM", "Sales" };
-
-            foreach (var roleName in roleNames)
-            {
-                IdentityResult roleResult;
-                var roleExist = await this.roleManager.RoleExistsAsync (roleName);
-                if (!roleExist)
-                {
-                    roleResult = await this.roleManager.CreateAsync (new IdentityRole (roleName));
-                }
-            }
-
-            var roles = this.roleManager.Roles.ToList ();
-
-            var poweruser = new ApplicationUser
-            {
-
-                UserName = "isukhetskyi",
-                Email = "ivan.sukhetskyi@gmail.com",
-            };
-
-            string userPWD = "Pa$$w0rd";
-            var _user = await this.userManager.FindByEmailAsync ("ivan.sukhetskyi@gmail.com");
-
-            if (_user == null)
-            {
-                var createPowerUser = await this.userManager.CreateAsync (poweruser, userPWD);
-                if (createPowerUser.Succeeded)
-                {
-                    //here we tie the new user to the role
-                    await this.userManager.AddToRoleAsync (poweruser, "Admin");
-
-                }
-            }
-
-            return Json (new { roles = result });
-        }
-
         [HttpPost]
+        [Authorize( Roles = "Admin")]
         public async Task<JsonResult> CreateRoleAsync (IdentityRoleViewModel role)
         {
             var newRole = new IdentityRole(role.RoleName);
@@ -88,9 +47,22 @@ namespace Bifrost.Web.Controllers
 
         #region Users
 
-        public async Task<JsonResult> CreateUserAsync(CreateUserViewModel model)
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        public async Task<JsonResult> CreateUserAsync([FromBody]CreateUserViewModel model)
         {
             var result = new IdentityResult();
+
+            // string[] roleNames = { "Admin", "Developer", "HRManager", "ProjectManager", "SalesManager" };
+            // foreach (var roleName in roleNames)
+            // {
+            //     IdentityResult roleResult;
+            //     var roleExist = await this.roleManager.RoleExistsAsync (roleName);
+            //     if (!roleExist)
+            //     {
+            //         roleResult = await this.roleManager.CreateAsync (new IdentityRole (roleName));
+            //     }
+            // }
 
             if (ModelState.IsValid)
             {
@@ -98,7 +70,7 @@ namespace Bifrost.Web.Controllers
                 result = await this.userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    // todo add here asigning to the role
+                    await this.userManager.AddToRoleAsync(user, model.Role.ToString());
                 }
             }
 

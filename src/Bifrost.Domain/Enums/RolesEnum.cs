@@ -1,11 +1,11 @@
 namespace Bifrost.Domain.Enums
 {
-    public enum RolesEnum
+    public enum RolesEnum : byte
     {
-        Admin,
-        Developer,
-        HRManager,
-        ProjectManager,
-        SalesManager
+        Admin = 0,
+        Developer = 1,
+        HRManager = 2,
+        ProjectManager = 3,
+        SalesManager = 4
     }
 }
