@@ -5,6 +5,7 @@ using Bifrost.Services.RespondentService;
 using Bifrost.Services.RespondentTechnologyService;
 using Bifrost.Services.TechnologyService;
 using Bifrost.Web.ViewModels.Statistics;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Bifrost.Web.Controllers
@@ -25,11 +26,13 @@ namespace Bifrost.Web.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin,HRManager")]
         public ViewResult Statistics ()
         {
             return View ("~/Views/Home/Index.cshtml");
         }
 
+        [Authorize(Roles = "Admin,HRManager")]
         public JsonResult All ()
         {
             var result = new StatisticsViewModel ();

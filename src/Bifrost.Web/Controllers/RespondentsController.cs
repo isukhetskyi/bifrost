@@ -1,9 +1,10 @@
 using System;
 using System.Collections.Generic;
 using AutoMapper;
-using Bifrost.Domain;
+using Bifrost.Domain.Models;
 using Bifrost.Services.RespondentService;
 using Bifrost.Web.ViewModels.Respondent;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Bifrost.Web.Controllers
@@ -20,12 +21,14 @@ namespace Bifrost.Web.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin,HRManager")]
         public ViewResult Respondents()
         {
             return View("~/Views/Home/Index.cshtml");
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin,HRManager")]
         public JsonResult All()
         {
             List<RespondentModel> respondents = new List<RespondentModel>();

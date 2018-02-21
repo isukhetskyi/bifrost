@@ -14,9 +14,6 @@ export class Layout extends React.Component<LayoutProps, {}> {
                     <div className="container">
                         <div className="row">
                             <div className="col-md-12">
-                                {/* <Link className='btn btn-success pull-left' style={{zIndex: 16}} to={ '/account/login' }><p style={{textDecorationColor: "white"}}>
-                                    login
-                                </p></Link> */}
                             </div>
                         </div>
                     </div>

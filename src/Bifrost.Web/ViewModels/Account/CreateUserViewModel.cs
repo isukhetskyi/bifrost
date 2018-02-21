@@ -3,15 +3,18 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using Bifrost.Domain.Enums;
 
-namespace Bifrost.Web.ViewModels
+namespace Bifrost.Web.ViewModels.Account
 {
-    public class LoginViewModel
+    public class CreateUserViewModel
     {
         public string Email { get; set; }
 
         public string Password { get; set; }
 
-        public bool RememberMe { get; set; }
+        public string ConfirmPassword { get; set; }
+
+        public RolesEnum Role {get;set;}
     }
 }

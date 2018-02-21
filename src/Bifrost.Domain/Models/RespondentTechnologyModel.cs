@@ -1,6 +1,6 @@
 using Bifrost.Data.Models;
 
-namespace Bifrost.Domain
+namespace Bifrost.Domain.Models
 {
     public class RespondentTechnologyModel
     {

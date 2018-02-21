@@ -9,6 +9,7 @@ interface RegisterState {
     PasswordError?: boolean;
     ConfirmPassword?: string;
     ConfirmPasswordError?: boolean;
+    Role?: number;
     FormError?: boolean;
     isDone?: boolean;
 }
@@ -24,6 +25,7 @@ export class Register extends React.Component<RouteComponentProps<{}>, RegisterS
             PasswordError: false,
             ConfirmPassword: "",
             ConfirmPasswordError: false,
+            Role: -1,
             FormError: false,
             isDone: false
         }
@@ -31,6 +33,7 @@ export class Register extends React.Component<RouteComponentProps<{}>, RegisterS
         this.handleSubmit = this.handleSubmit.bind(this);
         this.validate = this.validate.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
+        this.handleDropdownChange = this.handleDropdownChange.bind(this);
     }
 
     handleSubmit(e: any) {
@@ -40,7 +43,7 @@ export class Register extends React.Component<RouteComponentProps<{}>, RegisterS
             this.setState({ FormError: false });
             let thisContext = this;
             axios.default.post(
-                "/account/register",
+                "/adminarea/CreateUserAsync",
                 this.state,
                 {
                     headers: {"Content-Type": "application/json"}
@@ -89,6 +92,12 @@ export class Register extends React.Component<RouteComponentProps<{}>, RegisterS
         }
     }
 
+    handleDropdownChange(e: any){
+        if(e.target.value as number >= 0){
+            this.setState({Role: (e.target.value as number)});
+        }
+    }
+
     public render() {
         if (!this.state.isDone) {
             return <div style={{ width: "100%" }}>
@@ -124,7 +133,7 @@ export class Register extends React.Component<RouteComponentProps<{}>, RegisterS
                                             className="form-control"
                                             onChange={e => this.handleInputChange(e)}
                                             onBlur={e => this.handleInputChange(e)}
-                                            type="password"
+                                            type="text"
                                             datatype="general-info-text"
                                             data-regex="(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[^\\da-zA-Z]).{8,100}"
                                         />
@@ -145,7 +154,7 @@ export class Register extends React.Component<RouteComponentProps<{}>, RegisterS
                                             className="form-control"
                                             onChange={e => this.handleInputChange(e)}
                                             onBlur={e => this.handleInputChange(e)}
-                                            type="password"
+                                            type="text"
                                             datatype="general-info-text"
                                             data-regex="(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[^\\da-zA-Z]).{8,100}"
                                         />
@@ -161,6 +170,18 @@ export class Register extends React.Component<RouteComponentProps<{}>, RegisterS
                                     </div>
                                 </div>
                             </div>
+                            <div className="form-group">
+                                <label htmlFor="roleselect">Select list:</label>
+                                <select className="form-control"
+                                onChange={e => {this.handleDropdownChange(e)}}
+                                id="roleselect">
+                                    <option value={0}>Admin</option>
+                                    <option value={1}>Developer</option>
+                                    <option value={2}>HR Manager</option>
+                                    <option value={3}>Project Manager</option>
+                                    <option value={4}>Sales Manager</option>
+                                </select>
+                            </div>
                             <div className="row">
                                 <div className="col-md-12">
                                     <button type="submit" disabled={this.state.FormError} className="btn btn-primary">Register</button>
@@ -174,6 +195,7 @@ export class Register extends React.Component<RouteComponentProps<{}>, RegisterS
                         </form>
                     </div>
                     <div className="col-md-4"></div>
+
                 </div>
             </div>;
         } else {

@@ -4,14 +4,14 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Bifrost.Web.ViewModels.Account
+namespace Bifrost.Auth.ViewModels
 {
-    public class RegisterViewModel
+    public class LoginViewModel
     {
         public string Email { get; set; }
 
         public string Password { get; set; }
 
-        public string ConfirmPassword { get; set; }
+        public bool RememberMe { get; set; }
     }
 }

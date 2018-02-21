@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Bifrost.Domain
+namespace Bifrost.Domain.Models
 {
     public class RespondentModel
     {

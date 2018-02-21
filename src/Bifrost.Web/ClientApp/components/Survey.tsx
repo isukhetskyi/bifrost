@@ -186,7 +186,7 @@ export class Survey extends React.Component<RouteComponentProps<SurveyProps>, Su
         }
     }
 
-    isFormValid(){
+    isFormValid() {
         return (!this.state.AddressError
             && !this.state.AgeError
             && !this.state.CurrentPositionError
@@ -222,10 +222,10 @@ export class Survey extends React.Component<RouteComponentProps<SurveyProps>, Su
         var value = this.validate(e)
         if (value.length > 0) {
             this.setState({ [(e.target.attributes.id.value as string)]: e.target.value as string })
-            this.setState({[(e.target.attributes.id.value as string) + "Error"]: false})
-            this.setState({FormError: false})
-        }else{
-            this.setState({[(e.target.attributes.id.value as string) + "Error"]: true})
+            this.setState({ [(e.target.attributes.id.value as string) + "Error"]: false })
+            this.setState({ FormError: false })
+        } else {
+            this.setState({ [(e.target.attributes.id.value as string) + "Error"]: true })
         }
     }
 
@@ -339,7 +339,7 @@ export class Survey extends React.Component<RouteComponentProps<SurveyProps>, Su
                                                 id="FirstName" />
                                         </div>
                                     </div>
-                                    <div className="row" id="FirstNameError" style={{ display: this.state.FirstNameError ? "block": "none"}}>
+                                    <div className="row" id="FirstNameError" style={{ display: this.state.FirstNameError ? "block" : "none" }}>
                                         <div className="col-md-12">
                                             <label className="text-danger">First name can contain only letters and be 2-100 chars long</label>
                                         </div>
@@ -630,7 +630,7 @@ export class Survey extends React.Component<RouteComponentProps<SurveyProps>, Su
                                             <label>Tell me more :)</label>
                                             <textarea className="form-control"
                                                 onChange={e => this.handleInputChange(e)}
-                                                onBlur={e => {this.handleInputChange(e)}}
+                                                onBlur={e => { this.handleInputChange(e) }}
                                                 datatype="general-info-text"
                                                 minLength={2}
                                                 maxLength={1000}
@@ -656,13 +656,13 @@ export class Survey extends React.Component<RouteComponentProps<SurveyProps>, Su
                     </div>
                     <div className="row" id="FormError" style={{ display: this.state.FormError ? "block" : "none" }}>
                         <div className="col-md-12 btn-wrapper">
-                            <label className="text-danger" style={{marginTop: "50px"}}>You can's submit form while it contains errors</label>
+                            <label className="text-danger" style={{ marginTop: "50px" }}>You can's submit form while it contains errors</label>
                         </div>
                     </div>
                 </form>
             </div>;
-        }else{
-            return <div className="container content-center" style={{textAlign: "center"}}>
+        } else {
+            return <div className="container content-center" style={{ textAlign: "center" }}>
                 <h1>Success!</h1>
             </div>;
         }
