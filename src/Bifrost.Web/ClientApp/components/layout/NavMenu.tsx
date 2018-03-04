@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { Link, NavLink } from 'react-router-dom';
+import { IBaseProps } from '../shared/IBaseProps';
 
-interface NavMenuProps {
+interface NavMenuProps extends IBaseProps {
 
 }
 
@@ -18,7 +19,7 @@ export class NavMenu extends React.Component<NavMenuProps, NavMenuState> {
         }
     }
     public render() {
-        return <div className='main-nav' style={{ zIndex: 15 }}>
+        return <div className={this.props.classes} style={{ zIndex: 15 }}>
             <div className='navbar navbar-inverse'>
                 <div className='navbar-header'>
                     <button type='button' className='navbar-toggle' data-toggle='collapse' data-target='.navbar-collapse'>

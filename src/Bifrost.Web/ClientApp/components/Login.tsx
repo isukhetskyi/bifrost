@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
 import * as axios from "axios";
+import {CustomFormInput} from "./shared/CustomFormInput";
 
 interface LoginState {
     Email?: string;
@@ -57,22 +58,22 @@ export class Login extends React.Component<RouteComponentProps<{}>, LoginState> 
     }
 
     validate(e: any) {
-        e.preventDefault();
+        // e.preventDefault();
 
-        let result = false;
-        let inputType = e.target.attributes.getNamedItem('datatype').value;
-        if (inputType as string === "general-info-text") {
-            let pattern = e.target.attributes.getNamedItem("data-regex").value;
-            let regex = new RegExp(pattern);
+        // let result = false;
+        // let inputType = e.target.attributes.getNamedItem('datatype').value;
+        // if (inputType as string === "general-info-text") {
+        //     let pattern = e.target.attributes.getNamedItem("data-regex").value;
+        //     let regex = new RegExp(pattern);
 
-            return regex.test((e.target.value as string).trim());
-        }
+        //     return regex.test((e.target.value as string).trim());
+        // }
 
-        return result;
+        return true;
     }
 
     handleInputChange(e: any) {
-        e.preventDefault();
+        //e.preventDefault();
 
         if (this.validate(e)) {
             this.setState({ [(e.target.attributes.id.value as string)]: e.target.value as string })
@@ -91,46 +92,24 @@ export class Login extends React.Component<RouteComponentProps<{}>, LoginState> 
                     <div className="col-md-4"></div>
                     <div className="col-md-4">
                         <form onSubmit={this.handleSubmit}>
-                            <div className="form-group">
-                                <div className="row">
-                                    <div className="col-md-12">
-                                        <label htmlFor="email">Email</label>
-                                        <input id="Email"
-                                            className="form-control"
-                                            onChange={e => this.handleInputChange(e)}
-                                            onBlur={e => this.handleInputChange(e)}
-                                            datatype="general-info-text"
-                                            data-regex="\\w+([-+.']\\w+)*@\\w+([-.]\\w+)*\\.\\w{2,5}"
-                                        />
-                                    </div>
-                                </div>
-                                <div className="row" id="EmailError" style={{ display: this.state.EmailError ? "block" : "none" }}>
-                                    <div className="col-md-12">
-                                        <label className="text-danger">Invalid Email</label>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="form-group">
-                                <div className="row">
-                                    <div className="col-md-12">
-                                        <label htmlFor="Password">Password</label>
-                                        <input id="Password"
-                                            className="form-control"
-                                            onChange={e => this.handleInputChange(e)}
-                                            onBlur={e => this.handleInputChange(e)}
-                                            type="password"
-                                            datatype="general-info-text"
-                                            data-regex="(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[^\\da-zA-Z]).{8,100}"
-                                        />
-                                    </div>
-                                </div>
-                                <div className="row" id="PasswordError" style={{ display: this.state.PasswordError ? "block" : "none" }}>
-                                    <div className="col-md-12">
-                                        <label className="text-danger">Password must be at least 8 and at max 100 characters long and must
-                                    contain upper and lower case letters, numbers and special characters</label>
-                                    </div>
-                                </div>
-                            </div>
+                            <CustomFormInput
+                                id="Email"
+                                classes="form-group"
+                                title="Email"
+                                type="text"
+                                regex="\\w+([-+.']\\w+)*@\\w+([-.]\\w+)*\\.\\w{2,5}"
+                                errorMessage="Incorrect email"
+                                onChange={this.handleInputChange}
+                            />
+                            <CustomFormInput
+                                id="Password"
+                                classes="form-group"
+                                title="Password"
+                                type="password"
+                                regex="(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[^\\da-zA-Z]).{8,100}"
+                                errorMessage="Password is incorrect"
+                                onChange={this.handleInputChange}
+                            />
                             <div className="row">
                                 <div className="col-md-12">
                                     <button type="submit" disabled={this.state.FormError} className="btn btn-primary">Login</button>
