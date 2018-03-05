@@ -2,6 +2,8 @@ import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
 import * as axios from "axios";
 import { KeyboardEvent } from 'react';
+import { CustomForm } from './shared/CustomForm';
+import { CustomFormInput } from "./shared/CustomFormInput";
 
 interface SurveyProps {
 
@@ -318,6 +320,14 @@ export class Survey extends React.Component<RouteComponentProps<SurveyProps>, Su
         {
             return <div style={{width:"100%"}}>
                 <h2 className="text-center">Take a Survey</h2>
+                <CustomForm classes=""
+                    id="SurveyForm"
+                    onSubmit={this.handleSubmit}
+                    errorMessage="You can't submit form which contains errors"
+                    submitButtonText="Submit"
+                    submitButtonStyle="btn-default"
+                >
+                </CustomForm>
                 <form onSubmit={this.handleSubmit} onKeyPress={this.handleKeyPress}>
                     <div className="panel panel-default">
                         <div className="panel-heading"><h3>Personal info</h3></div>

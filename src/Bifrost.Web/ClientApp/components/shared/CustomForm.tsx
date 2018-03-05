@@ -7,6 +7,7 @@ export interface ICustomFormProps extends IBaseProps {
     submitButtonText: string;
     errorMessage: string;
     submitButtonStyle: "btn-default" | "btn-primary" | "btn-info" | "btn-success" | "btn-warning" | "btn-danger";
+    onKeyPress?: any;
 }
 
 export interface ICustomFormState extends IBaseState {
@@ -25,7 +26,8 @@ export class CustomForm extends React.Component<ICustomFormProps, ICustomFormSta
     public render() {
         return <form className={this.props.classes}
             id={this.props.id}
-            onSubmit={e => this.props.onSubmit(e)}>
+            onSubmit={e => this.props.onSubmit(e)}
+            onKeyPress={e => this.props.onKeyPress(e)}>
             {this.props.children}
             <div className="row">
                 <div className="col-md-12">
