@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
 import * as axios from "axios";
-import {CustomFormInput} from "./shared/CustomFormInput";
+import { CustomFormInput } from "./shared/CustomFormInput";
+import { CustomForm } from "./shared/CustomForm";
 
 interface LoginState {
     Email?: string;
@@ -40,10 +41,10 @@ export class Login extends React.Component<RouteComponentProps<{}>, LoginState> 
             let thisContext = this;
             axios.default.post("/account/login",
                 this.state,
-                {headers: {"Content-Type": "application/json"} })
-                .then(function(response){
-                    thisContext.setState({ isDone: true})
-                }).catch(function(error){
+                { headers: { "Content-Type": "application/json" } })
+                .then(function (response) {
+                    thisContext.setState({ isDone: true })
+                }).catch(function (error) {
                     console.error(error);
                     alert(error);
                 })
@@ -91,7 +92,14 @@ export class Login extends React.Component<RouteComponentProps<{}>, LoginState> 
                 <div className="row">
                     <div className="col-md-4"></div>
                     <div className="col-md-4">
-                        <form onSubmit={this.handleSubmit}>
+                        <CustomForm
+                            classes=""
+                            id="LoginForm"
+                            onSubmit={this.handleSubmit}
+                            errorMessage="You can't submit form if it contains errors"
+                            submitButtonStyle="btn-default"
+                            submitButtonText="Login"
+                        >
                             <CustomFormInput
                                 id="Email"
                                 classes="form-group"
@@ -110,23 +118,13 @@ export class Login extends React.Component<RouteComponentProps<{}>, LoginState> 
                                 errorMessage="Password is incorrect"
                                 onChange={this.handleInputChange}
                             />
-                            <div className="row">
-                                <div className="col-md-12">
-                                    <button type="submit" disabled={this.state.FormError} className="btn btn-primary">Login</button>
-                                </div>
-                            </div>
-                            <div className="row" id="FormError" style={{ display: this.state.FormError ? "block" : "none" }}>
-                                <div className="col-md-12 btn-wrapper">
-                                    <label className="text-danger" style={{ marginTop: "50px" }}>You can's submit form while it contains errors</label>
-                                </div>
-                            </div>
-                        </form>
+                        </CustomForm>
                     </div>
                     <div className="col-md-4"></div>
                 </div>
             </div>
         } else {
-            return <div className="container content-center" style={{textAlign: "center"}}>
+            return <div className="container content-center" style={{ textAlign: "center" }}>
                 <h1>Success!</h1>
             </div>;
         }

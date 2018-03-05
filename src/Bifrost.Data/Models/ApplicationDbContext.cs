@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Bifrost.Data.Models
 {
-    public class ApplicationDbContext : IdentityDbContext<ApplicationUser> //Microsoft.EntityFrameworkCore.DbContext
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public DbSet<Respondent> Respondents {get;set;}
         public DbSet<Technology> Technologies {get;set;}

@@ -23,24 +23,24 @@ namespace Bifrost.Web.Controllers
         public AdminAreaController (IServiceProvider serviceProvider)
         {
             this.serviceProvider = serviceProvider;
-            this.roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-            this.userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+            this.roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>> ();
+            this.userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>> ();
         }
 
         #region Roles
         [HttpPost]
-        [Authorize( Roles = "Admin")]
+        [Authorize (Roles = "Admin")]
         public async Task<JsonResult> CreateRoleAsync (IdentityRoleViewModel role)
         {
-            var newRole = new IdentityRole(role.RoleName);
-            IdentityResult roleResult = new IdentityResult();
+            var newRole = new IdentityRole (role.RoleName);
+            IdentityResult roleResult = new IdentityResult ();
             var roleExist = await this.roleManager.RoleExistsAsync (newRole.Name);
             if (!roleExist)
             {
                 roleResult = await this.roleManager.CreateAsync (newRole);
             }
 
-            return Json(new {role = roleResult.Succeeded} );
+            return Json (new { role = roleResult.Succeeded });
         }
 
         #endregion
@@ -48,10 +48,10 @@ namespace Bifrost.Web.Controllers
         #region Users
 
         [HttpPost]
-        [Authorize(Roles = "Admin")]
-        public async Task<JsonResult> CreateUserAsync([FromBody]CreateUserViewModel model)
+        [Authorize (Roles = "Admin")]
+        public async Task<JsonResult> CreateUserAsync ([FromBody] CreateUserViewModel model)
         {
-            var result = new IdentityResult();
+            var result = new IdentityResult ();
 
             // string[] roleNames = { "Admin", "Developer", "HRManager", "ProjectManager", "SalesManager" };
             // foreach (var roleName in roleNames)
@@ -67,14 +67,14 @@ namespace Bifrost.Web.Controllers
             if (ModelState.IsValid)
             {
                 var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
-                result = await this.userManager.CreateAsync(user, model.Password);
+                result = await this.userManager.CreateAsync (user, model.Password);
                 if (result.Succeeded)
                 {
-                    await this.userManager.AddToRoleAsync(user, model.Role.ToString());
+                    await this.userManager.AddToRoleAsync (user, model.Role.ToString ());
                 }
             }
 
-            return Json(new {user = result});
+            return Json (new { user = result });
         }
 
         #endregion

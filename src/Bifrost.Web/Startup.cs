@@ -37,7 +37,7 @@ namespace Bifrost_Web
         {
             services.AddMvc ();
             services.AddDbContext<ApplicationDbContext> (options =>
-                options.UseSqlServer (Configuration.GetConnectionString ("DefaultConnection")));
+                options.UseInMemoryDatabase (Configuration.GetConnectionString ("DefaultConnection")));
 
             services.AddIdentity<ApplicationUser, IdentityRole> ()
                 .AddEntityFrameworkStores<ApplicationDbContext> ()
