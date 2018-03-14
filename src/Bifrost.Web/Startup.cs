@@ -37,7 +37,7 @@ namespace Bifrost_Web
         {
             services.AddMvc ();
             services.AddDbContext<ApplicationDbContext> (options =>
-                options.UseInMemoryDatabase (Configuration.GetConnectionString ("DefaultConnection")));
+                options.UseSqlServer (Configuration.GetConnectionString ("DefaultConnection")));
 
             services.AddIdentity<ApplicationUser, IdentityRole> ()
                 .AddEntityFrameworkStores<ApplicationDbContext> ()
@@ -82,6 +82,12 @@ namespace Bifrost_Web
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure (IApplicationBuilder app, IHostingEnvironment env)
         {
+            using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
+            {
+                var context = serviceScope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+                context.Database.Migrate();
+                context.Database.EnsureCreated();
+            }
             if (env.IsDevelopment ())
             {
                 app.UseDeveloperExceptionPage ();

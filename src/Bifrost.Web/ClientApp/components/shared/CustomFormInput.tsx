@@ -6,9 +6,12 @@ export interface ICustomFormInputProps extends IBaseProps {
     title: string;
     type: string;
     errorMessage: string;
+    required: boolean;
     datatype?: string;
     regex?: string;
     onChange?: any;
+    minNumber?: number;
+    maxNumber?: number;
 }
 
 export interface ICustomFormInputState extends IBaseState {
@@ -42,6 +45,7 @@ export class CustomFormInput extends React.Component<ICustomFormInputProps, ICus
                         onBlur={e => this.handleInputChange(e)}
                         type={this.props.type}
                         datatype={this.props.datatype}
+                        required={this.props.required}
                         pattern={this.props.regex}
                     />
                 </div>

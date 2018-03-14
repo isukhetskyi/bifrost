@@ -108,6 +108,7 @@ export class Login extends React.Component<RouteComponentProps<{}>, LoginState> 
                                 regex="\\w+([-+.']\\w+)*@\\w+([-.]\\w+)*\\.\\w{2,5}"
                                 errorMessage="Incorrect email"
                                 onChange={this.handleInputChange}
+                                required={true}
                             />
                             <CustomFormInput
                                 id="Password"
@@ -117,6 +118,7 @@ export class Login extends React.Component<RouteComponentProps<{}>, LoginState> 
                                 regex="(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[^\\da-zA-Z]).{8,100}"
                                 errorMessage="Password is incorrect"
                                 onChange={this.handleInputChange}
+                                required={true}
                             />
                         </CustomForm>
                     </div>
