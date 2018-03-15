@@ -29,7 +29,7 @@ namespace Bifrost.Web.Controllers
 
         #region Roles
         [HttpPost]
-        [Authorize (Roles = "Admin")]
+        //[Authorize (Roles = "Admin")]
         public async Task<JsonResult> CreateRoleAsync (IdentityRoleViewModel role)
         {
             var newRole = new IdentityRole (role.RoleName);
@@ -48,7 +48,7 @@ namespace Bifrost.Web.Controllers
         #region Users
 
         [HttpPost]
-        [Authorize (Roles = "Admin")]
+        //[Authorize (Roles = "Admin")]
         public async Task<JsonResult> CreateUserAsync ([FromBody] CreateUserViewModel model)
         {
             var result = new IdentityResult ();

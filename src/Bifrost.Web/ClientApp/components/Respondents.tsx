@@ -13,6 +13,7 @@ class Respondent {
     Phone?: string;
     Skype?: string;
     Email?: string;
+    Technologies?: string;
     CreatedShortDate?: string;
 }
 
@@ -116,6 +117,13 @@ export class Respondents extends React.Component<RouteComponentProps<{}>, Respon
                         style: { "textAlign": "center" },
                         filterMethod: (filter: any, row: any) =>
                             row[filter.id].toLowerCase().startsWith(filter.value.toLowerCase())
+                    },
+                    {
+                        Header: "Technologies",
+                        accessor: "technologies",
+                        style: { "textAlign": "center" },
+                        filterMethod: (filter: any, row: any) =>
+                            row[filter.id].toLowerCase().indexOf(filter.value.toLowerCase() > 0)
                     },
                     {
                         Header: "Date of submition",

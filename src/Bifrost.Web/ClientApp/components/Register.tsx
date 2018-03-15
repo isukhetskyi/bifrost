@@ -123,6 +123,7 @@ export class Register extends React.Component<RouteComponentProps<{}>, RegisterS
                                 type="text"
                                 regex="\\w+([-+.']\\w+)*@\\w+([-.]\\w+)*\\.\\w{2,5}"
                                 errorMessage="Invalid email address"
+                                required={true}
                                 onChange={this.handleInputChange}
                             />
                             <CustomFormInput
@@ -132,6 +133,7 @@ export class Register extends React.Component<RouteComponentProps<{}>, RegisterS
                                 type="text"
                                 regex="(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[^\\da-zA-Z]).{8,100}"
                                 errorMessage="Password must be at least 8 and at max 100"
+                                required={true}
                                 onChange={this.handleInputChange}
                             />
                             <CustomFormInput
@@ -141,6 +143,7 @@ export class Register extends React.Component<RouteComponentProps<{}>, RegisterS
                                 type="text"
                                 regex="(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[^\\da-zA-Z]).{8,100}"
                                 errorMessage="Password must be at least 8 and at max 100"
+                                required={true}
                                 onChange={this.handleInputChange}
                             />
                             <CustomSelect

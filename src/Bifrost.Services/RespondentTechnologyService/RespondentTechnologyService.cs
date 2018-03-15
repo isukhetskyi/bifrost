@@ -19,7 +19,7 @@ namespace Bifrost.Services.RespondentTechnologyService
 
         public List<RespondentTechnologyModel> GetAll()
         {
-            var rt = this.repository.GetAll<RespondentTechnology>();
+            var rt = this.repository.GetAll<RespondentTechnology>(includeProperties:"Respondent,Technology");
             return this.mapper.Map<List<RespondentTechnologyModel>>(rt);
         }
     }
