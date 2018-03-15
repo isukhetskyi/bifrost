@@ -41,14 +41,14 @@ namespace Bifrost.Web.Controllers
             {
                 technologies = this.repondentTechnologyService.GetAll();
                 respondents = this.respondentService.GetAll();
-                // if(respondents.Any())
-                // {
-                //     for(int i = 0; i < respondents.Count(); i++)
-                //     {
-                //         respondents[i].RespondentsTechnologies =
-                //             technologies.Where(t => t.RespondentId == respondents[i].Id).ToList();
-                //     }
-                // }
+                if(respondents.Any())
+                {
+                    for(int i = 0; i < respondents.Count(); i++)
+                    {
+                        respondents[i].RespondentsTechnologies =
+                            technologies.Where(t => t.RespondentId == respondents[i].Id).ToList();
+                    }
+                }
             }
             catch(Exception e)
             {

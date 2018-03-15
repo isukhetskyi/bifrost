@@ -36,6 +36,7 @@ export class Respondents extends React.Component<RouteComponentProps<{}>, Respon
 
         axios.default.get("/Respondents/All")
             .then(function(response){
+                console.log(response);
                 respondents = response.data.respondents;
                 thisContext.setState({data: respondents});
             }).catch(function(error){
@@ -78,12 +79,11 @@ export class Respondents extends React.Component<RouteComponentProps<{}>, Respon
                             row[filter.id].toLowerCase().startsWith(filter.value.toLowerCase())
                     },
                     {
-                        Header: "Age",
-                        accessor: "age",
-                        maxWidth: 50,
+                        Header: "Technologies",
+                        accessor: "technologies",
                         style: { "textAlign": "center" },
                         filterMethod: (filter: any, row: any) =>
-                            row[filter.id] == filter.value
+                            (row[filter.id].toLowerCase() as string).indexOf(filter.value.toLowerCase() as string) >= 0
                     },
                     {
                         Header: "Is employed?",
@@ -117,13 +117,6 @@ export class Respondents extends React.Component<RouteComponentProps<{}>, Respon
                         style: { "textAlign": "center" },
                         filterMethod: (filter: any, row: any) =>
                             row[filter.id].toLowerCase().startsWith(filter.value.toLowerCase())
-                    },
-                    {
-                        Header: "Technologies",
-                        accessor: "technologies",
-                        style: { "textAlign": "center" },
-                        filterMethod: (filter: any, row: any) =>
-                            row[filter.id].toLowerCase().indexOf(filter.value.toLowerCase() > 0)
                     },
                     {
                         Header: "Date of submition",

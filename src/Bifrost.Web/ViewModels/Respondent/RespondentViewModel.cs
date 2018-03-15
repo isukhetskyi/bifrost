@@ -17,7 +17,8 @@ namespace Bifrost.Web.ViewModels.Respondent
         public string Email { get; set; }
         public DateTime CreatedDate { get; set; }
         public string ListOfChechnologies { get; set; }
-        public List<RespondentTechnologyModel> RespondentsTechnologies { get; set;}
+        [NonSerialized]
+        public List<RespondentTechnologyModel> RespondentsTechnologies;
 
         public string Technologies
         {
