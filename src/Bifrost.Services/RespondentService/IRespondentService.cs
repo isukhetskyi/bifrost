@@ -7,5 +7,6 @@ namespace Bifrost.Services.RespondentService
     {
          bool Add(RespondentModel respondent);
          List<RespondentModel> GetAll();
+         List<RespondentModel> GetFiltered(int programmingLanguageId = 0, int frameworkId = 0, int databaseId = 0);
     }
 }

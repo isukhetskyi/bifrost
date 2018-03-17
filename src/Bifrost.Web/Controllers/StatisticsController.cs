@@ -26,13 +26,13 @@ namespace Bifrost.Web.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "Admin,HRManager")]
+        //[Authorize(Roles = "Admin,HRManager")]
         public ViewResult Statistics ()
         {
             return View ("~/Views/Home/Index.cshtml");
         }
 
-        [Authorize(Roles = "Admin,HRManager")]
+        //[Authorize(Roles = "Admin,HRManager")]
         public JsonResult All ()
         {
             var result = new StatisticsViewModel ();

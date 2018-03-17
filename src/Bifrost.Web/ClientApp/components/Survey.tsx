@@ -203,7 +203,6 @@ export class Survey extends React.Component<RouteComponentProps<SurveyProps>, Su
     }
 
     validate(e: any): string {
-        e.preventDefault();
         let result = "";
         let inputType = e.target.attributes.getNamedItem('datatype').value;
         if (inputType as string === "general-info-text") {
@@ -220,7 +219,6 @@ export class Survey extends React.Component<RouteComponentProps<SurveyProps>, Su
     }
 
     handleInputChange(e: any) {
-        e.preventDefault();
         var value = this.validate(e)
         if (value.length > 0) {
             this.setState({ [(e.target.attributes.id.value as string)]: e.target.value as string })
@@ -320,14 +318,6 @@ export class Survey extends React.Component<RouteComponentProps<SurveyProps>, Su
         {
             return <div style={{width:"100%"}}>
                 <h2 className="text-center">Take a Survey</h2>
-                <CustomForm classes=""
-                    id="SurveyForm"
-                    onSubmit={this.handleSubmit}
-                    errorMessage="You can't submit form which contains errors"
-                    submitButtonText="Submit"
-                    submitButtonStyle="btn-default"
-                >
-                </CustomForm>
                 <form onSubmit={this.handleSubmit} onKeyPress={this.handleKeyPress}>
                     <div className="panel panel-default">
                         <div className="panel-heading"><h3>Personal info</h3></div>

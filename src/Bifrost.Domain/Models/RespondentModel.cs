@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Bifrost.Domain.Models
 {
@@ -24,6 +25,10 @@ namespace Bifrost.Domain.Models
         public string Speciality { get; set; }
         public string OtherInfo { get; set; }
         public DateTime CreatedDate { get; set; }
+        public string Technologies
+        {
+            get { return string.Join(",", this.RespondentsTechnologies.Select(t => t.Technology.TechnologyName)); }
+        }
 
         public virtual List<RespondentTechnologyModel> RespondentsTechnologies { get; set; }
     }
