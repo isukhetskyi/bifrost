@@ -1,4 +1,6 @@
 # bifrost project
+[![Build status](https://ci.appveyor.com/api/projects/status/an8qu9l8ig7sfjgy?svg=true)](https://ci.appveyor.com/project/IvanSukhetskyi/bifrost)
+
 To run this project few steps are necessary:
 
 1.a Install .net core v2.0 or higher
