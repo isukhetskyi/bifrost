@@ -20,10 +20,10 @@ namespace Bifrost.Web.ViewModels.Respondent
         [NonSerialized]
         public List<RespondentTechnologyModel> RespondentsTechnologies;
 
-        public string Technologies
-        {
-            get { return string.Join(",", this.RespondentsTechnologies.Select(t => t.Technology.TechnologyName).ToList());}
-        }
+        // public string Technologies
+        // {
+        //     get { return string.Join(",",  this.RespondentsTechnologies.Select(t => t.Technology.TechnologyName).ToList());}
+        // }
 
         public string CreatedShortDate
         {

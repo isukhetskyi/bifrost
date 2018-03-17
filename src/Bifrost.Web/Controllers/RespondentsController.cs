@@ -58,5 +58,21 @@ namespace Bifrost.Web.Controllers
 
             return Json(new {respondents = this.mapper.Map<List<RespondentViewModel>>(respondents)});
         }
+
+        [HttpGet]
+        public JsonResult Filter(int languageId = 0, int frameworkId = 0, int databaseId = 0)
+        {
+            var result = new List<RespondentModel>();
+            try
+            {
+                result = this.respondentService.GetFiltered(languageId, frameworkId, databaseId);
+            }
+            catch(Exception e)
+            {
+                // TODO add loggin here
+            }
+
+            return Json(new {respondents = this.mapper.Map<List<RespondentViewModel>>(result)});
+        }
     }
 }

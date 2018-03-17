@@ -23,6 +23,9 @@ interface RespondentsState {
     ProgrammingLanguages: Array<[string, string]>;
     Frameworks: Array<[string, string]>;
     Databases: Array<[string, string]>;
+    SelectedLanguage: number;
+    SelectedFramework: number;
+    SelectedDatabase: number;
 }
 
 export class Respondents extends React.Component<RouteComponentProps<{}>, RespondentsState> {
@@ -31,107 +34,148 @@ export class Respondents extends React.Component<RouteComponentProps<{}>, Respon
 
         this.state = {
             data: [],
-            ProgrammingLanguages:[],
-            Frameworks:[],
-            Databases:[]
+            ProgrammingLanguages: [],
+            Frameworks: [],
+            Databases: [],
+            SelectedLanguage: 0,
+            SelectedDatabase: 0,
+            SelectedFramework: 0
         }
 
         this.handleDropdownChange = this.handleDropdownChange.bind(this);
         this.initializeData = this.initializeData.bind(this);
+        this.filter = this.filter.bind(this);
     }
 
-    componentDidMount(){
+    componentDidMount() {
         let respondents: any;
         let thisContext = this;
 
         axios.default.get("/respondents/all")
-            .then(function(response){
+            .then(function (response) {
                 console.log(response);
                 respondents = response.data.respondents;
-                thisContext.setState({data: respondents});
-            }).catch(function(error){
+                thisContext.setState({ data: respondents });
+            }).catch(function (error) {
                 console.error(error);
             });
 
         axios.default.get("/survey/gettechnologies")
-            .then(function(response){
-                    thisContext.setState(
-                        {
-                            ProgrammingLanguages: response.data.technologies.languages.map(
-                                (item: any) =>
-                                    [item.id, item.technologyName])
-                        })
-                    thisContext.setState(
-                        {
-                            Databases: response.data.technologies.databases.map(
-                                (item: any) =>
-                                    [item.id, item.technologyName])
-                        })
-                    thisContext.setState(
-                        {
-                            Frameworks: response.data.technologies.frameworks.map(
-                                (item: any) =>
-                                    [item.id, item.technologyName])
-                        })
-                        thisContext.initializeData();
+            .then(function (response) {
+                thisContext.setState(
+                    {
+                        ProgrammingLanguages: response.data.technologies.languages.map(
+                            (item: any) =>
+                                [item.id, item.technologyName])
+                    })
+                thisContext.setState(
+                    {
+                        Databases: response.data.technologies.databases.map(
+                            (item: any) =>
+                                [item.id, item.technologyName])
+                    })
+                thisContext.setState(
+                    {
+                        Frameworks: response.data.technologies.frameworks.map(
+                            (item: any) =>
+                                [item.id, item.technologyName])
+                    })
+                thisContext.initializeData();
             })
-            .catch(function(error){
+            .catch(function (error) {
                 console.log(error);
                 alert(error);
             })
     }
 
-    handleDropdownChange(e: any){
-        if(e.target.value as number >= 0){
-            console.log(e.target.options[e.target.selectedIndex].text);
+    handleDropdownChange(e: any, type: string) {
+        if (e.target.value as number >= 0) {
+            switch (type) {
+                case "language":
+                    {
+                        this.setState({ SelectedLanguage: e.target.value as number }, this.filter)
+                    }
+                    break;
+                case "framework":
+                    {
+                        this.setState({ SelectedFramework: e.target.value as number }, this.filter)
+                    }
+                    break;
+                case "database":
+                    {
+                        this.setState({ SelectedDatabase: e.target.value as number }, this.filter)
+                    }
+                    break;
+            }
         }
     }
 
-    initializeData(){
+    filter() {
+        let respondents: any;
+        let thisContext = this;
+        axios.default.get("/respondents/filter",
+            {
+                params: {
+                    languageId: this.state.SelectedLanguage,
+                    frameworkId: this.state.SelectedFramework,
+                    databaseId: this.state.SelectedDatabase
+                }
+            })
+            .then(function (response) {
+                console.log(response);
+                respondents = response.data.respondents;
+                thisContext.setState({ data: respondents });
+                thisContext.forceUpdate();
+            }).catch(function (error) {
+                console.error(error);
+            });
+    }
+
+    initializeData() {
         let context = this;
         let currentArrayValue = this.state.ProgrammingLanguages;
         currentArrayValue.unshift(["0", "Choose"])
-        this.setState({ProgrammingLanguages: currentArrayValue})
+        this.setState({ ProgrammingLanguages: currentArrayValue })
 
         currentArrayValue = this.state.Databases;
         currentArrayValue.unshift(["0", "Choose"])
-        this.setState({Databases: currentArrayValue});
+        this.setState({ Databases: currentArrayValue });
 
         currentArrayValue = this.state.Frameworks;
         currentArrayValue.unshift(["0", "Choose"])
-        this.setState({Frameworks: currentArrayValue});
+        this.setState({ Frameworks: currentArrayValue });
     }
 
 
     public render() {
         const data = this.state.data;
 
-        return <div style={{width:"100%"}}>
+        return <div style={{ width: "100%" }}>
             <h2 className="text-center">Respondents</h2>
-                <div className="row" style={{marginBottom: 30}}>
-                    <CustomSelect classes="col-md-4"
+            <div className="row" style={{ marginBottom: 30 }}>
+                <CustomSelect classes="col-md-4"
                     id="LanguagesSelect"
-                    handleDropdownChange={this.handleDropdownChange}
+                    handleDropdownChange={(e: any) => this.handleDropdownChange(e, "language")}
                     options={this.state.ProgrammingLanguages}
                     selectId="LanguageSelect"
                     selectTitle="Programming language filter"
-                    >
+                >
                 </CustomSelect>
                 <CustomSelect classes="col-md-4"
                     id="FrameworkSelect"
-                    handleDropdownChange={this.handleDropdownChange}
+                    handleDropdownChange={(e: any) => this.handleDropdownChange(e, "framework")}
                     options={this.state.Frameworks}
                     selectId="FrameworkSelect"
                     selectTitle="Framework filter"
-                    >
+                >
                 </CustomSelect>
                 <CustomSelect classes="col-md-4"
                     id="DatabasesSelect"
-                    handleDropdownChange={this.handleDropdownChange}
+                    handleDropdownChange={(e: any) => this.handleDropdownChange(e, "database")}
                     options={this.state.Databases}
                     selectId="DatabaseSelect"
                     selectTitle="Database filter"
-                    >
+                >
                 </CustomSelect>
             </div>
 
@@ -163,15 +207,6 @@ export class Respondents extends React.Component<RouteComponentProps<{}>, Respon
                         style: { "textAlign": "center" },
                         filterMethod: (filter: any, row: any) =>
                             row[filter.id].toLowerCase().startsWith(filter.value.toLowerCase())
-                    },
-                    {
-                        Header: "Technologies",
-                        accessor: "technologies",
-                        style: { "textAlign": "center" },
-                        /// <reference path="TechnologiesFilter" />
-
-                        filterMethod: (filter: any, row: any) =>
-                            (row[filter.id].toLowerCase() as string).indexOf(filter.value.toLowerCase() as string) >= 0
                     },
                     {
                         Header: "Is employed?",
