@@ -56,7 +56,7 @@ namespace Bifrost.Web.Controllers
             }
 
 
-            return Json(new {respondents = this.mapper.Map<List<RespondentViewModel>>(respondents)});
+            return Json(new {respondents = this.mapper.Map<List<RespondentsViewModel>>(respondents)});
         }
 
         [HttpGet]
@@ -72,7 +72,22 @@ namespace Bifrost.Web.Controllers
                 // TODO add loggin here
             }
 
-            return Json(new {respondents = this.mapper.Map<List<RespondentViewModel>>(result)});
+            return Json(new {respondents = this.mapper.Map<List<RespondentsViewModel>>(result)});
+        }
+
+        public JsonResult Respondent(int respondentId)
+        {
+            var result = new RespondentModel();
+            try
+            {
+                result = this.respondentService.Get(respondentId);
+            }
+            catch(Exception e)
+            {
+                // TODO add logging here
+            }
+
+            return Json (new {respondent = this.mapper.Map<RespondentViewModel>(result)});
         }
     }
 }

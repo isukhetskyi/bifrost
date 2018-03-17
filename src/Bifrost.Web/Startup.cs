@@ -73,6 +73,9 @@ namespace Bifrost_Web
 
                 cfg.CreateMap<RespondentModel, RespondentViewModel> ();
                 cfg.CreateMap<RespondentViewModel, RespondentModel> ();
+
+                cfg.CreateMap<RespondentModel, RespondentsViewModel> ();
+                cfg.CreateMap<RespondentsViewModel, RespondentModel> ();
             });
 
             var mapper = config.CreateMapper ();

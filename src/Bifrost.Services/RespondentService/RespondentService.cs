@@ -36,6 +36,11 @@ namespace Bifrost.Services.RespondentService
             return result;
         }
 
+        public RespondentModel Get(int respondentId)
+        {
+            return this.mapper.Map<RespondentModel>(this.repository.Get<Respondent>(r => r.Id == respondentId));
+        }
+
         public List<RespondentModel> GetAll ()
         {
             return this.mapper.Map<List<RespondentModel>> (this.repository.GetAll<Respondent> ());
