@@ -5,7 +5,7 @@ import "react-table/react-table.css";
 import * as axios from 'axios';
 import { CustomSelect } from "../shared/CustomSelect";
 import  { Redirect } from 'react-router-dom'
-import { Link, NavLink } from 'react-router-dom';
+import { Link, NavLink, withRouter } from 'react-router-dom';
 import { Respondent } from "../respondents/Respondent";
 
 class RespondentModel {
@@ -33,8 +33,8 @@ interface RespondentsState {
 }
 
 export class Respondents extends React.Component<RouteComponentProps<{}>, RespondentsState> {
-    constructor() {
-        super();
+    constructor(props: any) {
+        super(props);
 
         this.state = {
             data: [],
@@ -192,7 +192,7 @@ export class Respondents extends React.Component<RouteComponentProps<{}>, Respon
                 getTrProps={(state: any, rowInfo: any, column: any) => {
                     return {
                         onClick: (e: any) => {
-                            this.props.history.push("/respondent/"+rowInfo.row.id)
+                            this.props.history.push("/respondents/view/" + rowInfo.row.id);
                         }
                     }
                 }}
@@ -263,7 +263,7 @@ export class Respondents extends React.Component<RouteComponentProps<{}>, Respon
                         Header: "Actions",
                         accessor: "id",
                         style: {"textAlign": "center"},
-                        Cell: ({value})=>{return <NavLink to={"/respondents/respondent/" + value}>View</NavLink>}
+                        Cell: ({value})=>{return <NavLink to={"/respondents/view/" + value}>View</NavLink>}
                     }
                 ]}
                 defaultPageSize={10}
@@ -272,3 +272,5 @@ export class Respondents extends React.Component<RouteComponentProps<{}>, Respon
         </div>
     }
 }
+
+export default withRouter(Respondents)

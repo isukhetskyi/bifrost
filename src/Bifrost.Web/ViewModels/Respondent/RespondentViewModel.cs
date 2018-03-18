@@ -7,7 +7,7 @@ namespace Bifrost.Web.ViewModels.Respondent
 {
     public class RespondentViewModel
     {
-          public RespondentViewModel ()
+        public RespondentViewModel ()
         {
             this.RespondentsTechnologies = new List<RespondentTechnologyModel> ();
         }
@@ -28,9 +28,17 @@ namespace Bifrost.Web.ViewModels.Respondent
         public DateTime CreatedDate { get; set; }
         public string Technologies
         {
-            get { return string.Join(",", this.RespondentsTechnologies.Select(t => t.Technology.TechnologyName)); }
+            get { if(RespondentsTechnologies.Any())
+                    {
+                        return string.Join(",", this.RespondentsTechnologies.Select(t => t.Technology.TechnologyName));
+                    }
+                    else
+                    {
+                        return string.Empty;
+                    }}
         }
 
-        public List<RespondentTechnologyModel> RespondentsTechnologies { get; set; }
+        [NonSerialized]
+        public List<RespondentTechnologyModel> RespondentsTechnologies;
     }
 }

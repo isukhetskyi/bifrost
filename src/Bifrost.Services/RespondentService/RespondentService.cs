@@ -38,7 +38,14 @@ namespace Bifrost.Services.RespondentService
 
         public RespondentModel Get(int respondentId)
         {
-            return this.mapper.Map<RespondentModel>(this.repository.Get<Respondent>(r => r.Id == respondentId));
+            var respondent = this.repository.Get<Respondent>(r => r.Id == respondentId, includeProperties:"RespondentsTechnologies").FirstOrDefault();
+
+            foreach(var rt in respondent.RespondentsTechnologies)
+            {
+                rt.Technology = this.repository.Get<Technology>(t => t.Id == rt.TechnologyId).FirstOrDefault();
+            }
+
+            return this.mapper.Map<RespondentModel>(respondent);
         }
 
         public List<RespondentModel> GetAll ()
