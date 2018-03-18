@@ -7,6 +7,7 @@ import { CustomSelect } from "../shared/CustomSelect";
 import  { Redirect } from 'react-router-dom'
 import { Link, NavLink, withRouter } from 'react-router-dom';
 import { Respondent } from "../respondents/Respondent";
+import * as csv from "json2csv";
 
 class RespondentModel {
     Id?: number;
@@ -50,6 +51,7 @@ export class Respondents extends React.Component<RouteComponentProps<{}>, Respon
         this.handleDropdownChange = this.handleDropdownChange.bind(this);
         this.initializeData = this.initializeData.bind(this);
         this.filter = this.filter.bind(this);
+        this.exportCsv = this.exportCsv.bind(this);
     }
 
     componentDidMount() {
@@ -131,6 +133,26 @@ export class Respondents extends React.Component<RouteComponentProps<{}>, Respon
                 respondents = response.data.respondents;
                 thisContext.setState({ data: respondents });
                 thisContext.forceUpdate();
+            }).catch(function (error) {
+                console.error(error);
+            });
+    }
+
+    exportCsv(){
+        let respondents: any;
+        let thisContext = this;
+        axios.default.get("/respondents/exporttocsv",
+            {
+                params: {
+                    languageId: this.state.SelectedLanguage,
+                    frameworkId: this.state.SelectedFramework,
+                    databaseId: this.state.SelectedDatabase
+                }
+            })
+            .then(function (response) {
+                let file = csv.parse(response.data.respondents);
+
+                console.log(file);
             }).catch(function (error) {
                 console.error(error);
             });
@@ -269,6 +291,7 @@ export class Respondents extends React.Component<RouteComponentProps<{}>, Respon
                 defaultPageSize={10}
                 className="-striped -highlight"
             />
+            <button className="btn btn-primary" style={{width: "100%"}} onClick={this.exportCsv}>Export to CSV</button>
         </div>
     }
 }
