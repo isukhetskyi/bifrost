@@ -3,9 +3,12 @@ import { RouteComponentProps } from 'react-router';
 import ReactTable from "react-table";
 import "react-table/react-table.css";
 import * as axios from 'axios';
-import { CustomSelect } from "./shared/CustomSelect";
+import { CustomSelect } from "../shared/CustomSelect";
+import  { Redirect } from 'react-router-dom'
+import { Link, NavLink, withRouter } from 'react-router-dom';
+import { Respondent } from "../respondents/Respondent";
 
-class Respondent {
+class RespondentModel {
     Id?: number;
     FirstName?: string;
     LastName?: string;
@@ -19,18 +22,19 @@ class Respondent {
 }
 
 interface RespondentsState {
-    data: Array<Respondent>;
+    data: Array<RespondentModel>;
     ProgrammingLanguages: Array<[string, string]>;
     Frameworks: Array<[string, string]>;
     Databases: Array<[string, string]>;
     SelectedLanguage: number;
     SelectedFramework: number;
     SelectedDatabase: number;
+    redirect: boolean;
 }
 
 export class Respondents extends React.Component<RouteComponentProps<{}>, RespondentsState> {
-    constructor() {
-        super();
+    constructor(props: any) {
+        super(props);
 
         this.state = {
             data: [],
@@ -39,7 +43,8 @@ export class Respondents extends React.Component<RouteComponentProps<{}>, Respon
             Databases: [],
             SelectedLanguage: 0,
             SelectedDatabase: 0,
-            SelectedFramework: 0
+            SelectedFramework: 0,
+            redirect: false
         }
 
         this.handleDropdownChange = this.handleDropdownChange.bind(this);
@@ -146,7 +151,6 @@ export class Respondents extends React.Component<RouteComponentProps<{}>, Respon
         this.setState({ Frameworks: currentArrayValue });
     }
 
-
     public render() {
         const data = this.state.data;
 
@@ -185,6 +189,13 @@ export class Respondents extends React.Component<RouteComponentProps<{}>, Respon
                 filterable
                 defaultFilterMethod={(filter, row) =>
                     String(row[filter.id]) === filter.value}
+                getTrProps={(state: any, rowInfo: any, column: any) => {
+                    return {
+                        onClick: (e: any) => {
+                            this.props.history.push("/respondents/view/" + rowInfo.row.id);
+                        }
+                    }
+                }}
                 columns={[
                     {
                         Header: "ID",
@@ -247,6 +258,12 @@ export class Respondents extends React.Component<RouteComponentProps<{}>, Respon
                         style: { "textAlign": "center" },
                         filterMethod: (filter: any, row: any) =>
                             row[filter.id].toLowerCase().startsWith(filter.value.toLowerCase())
+                    },
+                    {
+                        Header: "Actions",
+                        accessor: "id",
+                        style: {"textAlign": "center"},
+                        Cell: ({value})=>{return <NavLink to={"/respondents/view/" + value}>View</NavLink>}
                     }
                 ]}
                 defaultPageSize={10}
@@ -255,3 +272,5 @@ export class Respondents extends React.Component<RouteComponentProps<{}>, Respon
         </div>
     }
 }
+
+export default withRouter(Respondents)
