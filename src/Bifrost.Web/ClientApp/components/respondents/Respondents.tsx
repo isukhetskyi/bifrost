@@ -151,6 +151,22 @@ export class Respondents extends React.Component<RouteComponentProps<{}>, Respon
             })
             .then(function (response) {
                 let file = csv.parse(response.data.respondents);
+                var blob = new Blob([file], { type: 'text/csv;charset=utf-8;' });
+                if (navigator.msSaveBlob) { // IE 10+
+                    navigator.msSaveBlob(blob, "respondents.csv");
+                } else {
+                    let link = document.createElement("a");
+                    if (link.download !== undefined) { // feature detection
+                        // Browsers that support HTML5 download attribute
+                        var url = URL.createObjectURL(blob);
+                        link.setAttribute("href", url);
+                        link.setAttribute("download", "respondents.csv");
+                        link.style.visibility = 'hidden';
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+                    }
+                }
 
                 console.log(file);
             }).catch(function (error) {

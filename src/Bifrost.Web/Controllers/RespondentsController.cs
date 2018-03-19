@@ -91,25 +91,9 @@ namespace Bifrost.Web.Controllers
         [Produces("text/csv")]
         public IActionResult ExportToCsv (int languageId = 0, int frameworkId = 0, int databaseId = 0)
         {
-            // var list = this.GetFilteredList (languageId, frameworkId, databaseId);
-            // StringBuilder builer = new StringBuilder();
-
-            // try
-            // {
-            //     PropertyInfo[] props = new RespondentViewModel().GetType().GetProperties();
-
-            //     //add header
-            //     builer.AppendLine(string.Join(",", props.Select(s => $"\"{s.Name}\"").ToArray()));
-            // }
-            // catch (Exception e)
-            // {
-            //     // TODO add some logging here;
-            // }
-            // Response.Headers.Add("Content-Disposition", $"inline; filename=Respondents_{DateTime.Now.ToShortDateString()}.csv");
-            // return File(Encoding.ASCII.GetBytes(builer.ToString()), "text/csv", $"Respondents_{DateTime.Now.ToShortDateString()}.csv");
             return Json (new
             {
-                respondents = this.mapper.Map<List<RespondentsViewModel>> (
+                respondents = this.mapper.Map<List<RespondentViewModel>> (
                     this.GetFilteredList (languageId, frameworkId, databaseId))
             });
         }

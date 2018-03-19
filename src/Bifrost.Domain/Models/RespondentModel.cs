@@ -29,6 +29,7 @@ namespace Bifrost.Domain.Models
             get { return string.Join(",", this.RespondentsTechnologies.Select(t => t.Technology.TechnologyName)); }
         }
 
-        public virtual List<RespondentTechnologyModel> RespondentsTechnologies { get; set; }
+        [NonSerialized]
+        public List<RespondentTechnologyModel> RespondentsTechnologies;
     }
 }
