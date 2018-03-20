@@ -8,6 +8,11 @@ import  { Redirect } from 'react-router-dom'
 import { Link, NavLink, withRouter } from 'react-router-dom';
 import { Respondent } from "../respondents/Respondent";
 import * as csv from "json2csv";
+import Button from 'material-ui/Button';
+import Snackbar from 'material-ui/Snackbar';
+import IconButton from 'material-ui/IconButton';
+import * as theme from "../../config/theme";
+import * as Material from "material-ui"
 
 class RespondentModel {
     Id?: number;
@@ -31,7 +36,15 @@ interface RespondentsState {
     SelectedFramework: number;
     SelectedDatabase: number;
     redirect: boolean;
+    timeForSnacks: boolean;
 }
+
+const styles = (theme: any) => ({
+    close: {
+      width: theme.spacing.unit * 4,
+      height: theme.spacing.unit * 4,
+    },
+  });
 
 export class Respondents extends React.Component<RouteComponentProps<{}>, RespondentsState> {
     constructor(props: any) {
@@ -45,13 +58,15 @@ export class Respondents extends React.Component<RouteComponentProps<{}>, Respon
             SelectedLanguage: 0,
             SelectedDatabase: 0,
             SelectedFramework: 0,
-            redirect: false
+            redirect: false,
+            timeForSnacks: true
         }
 
         this.handleDropdownChange = this.handleDropdownChange.bind(this);
         this.initializeData = this.initializeData.bind(this);
         this.filter = this.filter.bind(this);
         this.exportCsv = this.exportCsv.bind(this);
+        this.handleClose = this.handleClose.bind(this);
     }
 
     componentDidMount() {
@@ -189,6 +204,10 @@ export class Respondents extends React.Component<RouteComponentProps<{}>, Respon
         this.setState({ Frameworks: currentArrayValue });
     }
 
+    handleClose(){
+          this.setState({ timeForSnacks: false });
+    }
+
     public render() {
         const data = this.state.data;
 
@@ -307,6 +326,31 @@ export class Respondents extends React.Component<RouteComponentProps<{}>, Respon
                 defaultPageSize={10}
                 className="-striped -highlight"
             />
+                    <Snackbar
+          anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'left',
+          }}
+          open={this.state.timeForSnacks}
+          autoHideDuration={6000}
+          onClose={this.handleClose}
+          SnackbarContentProps={{
+            'aria-describedby': 'message-id',
+          }}
+          message={<span id="message-id">Note archived</span>}
+          action={[
+            <Button key="undo" color="secondary" size="small" onClick={this.handleClose}>
+              UNDO
+            </Button>,
+            <IconButton
+              key="close"
+              aria-label="Close"
+              color="inherit"
+              onClick={this.handleClose}
+            >
+            </IconButton>,
+          ]}
+        />
             <button className="btn btn-primary" style={{width: "100%"}} onClick={this.exportCsv}>Export to CSV</button>
         </div>
     }

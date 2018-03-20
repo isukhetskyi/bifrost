@@ -6,7 +6,15 @@ import { AppContainer } from 'react-hot-loader';
 import { BrowserRouter } from 'react-router-dom';
 import * as RoutesModule from './routes';
 import {whyDidYouUpdate} from "why-did-you-update";
+import { MuiThemeProvider, createMuiTheme, colors } from "material-ui";
+
 let routes = RoutesModule.routes;
+const theme = createMuiTheme({
+    palette: {
+        type: "dark",
+        error: colors.red
+    }    
+});
 
 function renderApp() {
     // This code starts up the React app when it runs in a browser. It sets up the routing
@@ -14,9 +22,12 @@ function renderApp() {
     const baseUrl = document.getElementsByTagName('base')[0].getAttribute('href')!;
     //whyDidYouUpdate(React);
     ReactDOM.render(
+        <MuiThemeProvider theme={theme}>
         <AppContainer>
             <BrowserRouter children={ routes } basename={ baseUrl } />
-        </AppContainer>,
+        </AppContainer>
+        </MuiThemeProvider>
+        ,
         document.getElementById('react-app')
 
     );
