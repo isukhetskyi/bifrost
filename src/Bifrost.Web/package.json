@@ -37,13 +37,18 @@
     "webpack-hot-middleware": "2.21.0"
   },
   "dependencies": {
+    "@types/classnames": "^2.2.3",
     "@types/json2csv": "^4.0.1",
     "@types/material-ui": "^0.21.1",
     "@types/node": "https://registry.npmjs.org/@types/node/-/node-8.5.5.tgz",
+    "@types/prop-types": "^15.5.2",
     "@types/react-bootstrap": "^0.32.6",
     "@types/why-did-you-update": "0.0.8",
+    "classnames": "https://registry.npmjs.org/classnames/-/classnames-2.2.5.tgz",
     "json2csv": "^4.0.2",
     "material-ui": "^1.0.0-beta.38",
+    "material-ui-icons": "^1.0.0-beta.36",
+    "prop-types": "https://registry.npmjs.org/prop-types/-/prop-types-15.5.10.tgz",
     "react-bootstrap": "^0.32.1",
     "why-did-you-update": "^0.1.1"
   }
