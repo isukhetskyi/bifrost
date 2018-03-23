@@ -36,32 +36,33 @@ namespace Bifrost.Services.RespondentService
             return result;
         }
 
-        public RespondentModel Get(int respondentId)
+        public RespondentModel Get (int respondentId)
         {
-            var respondent = this.repository.Get<Respondent>(r => r.Id == respondentId, includeProperties:"RespondentsTechnologies").FirstOrDefault();
+            var respondent = this.repository.Get<Respondent> (r => r.Id == respondentId, includeProperties: "RespondentsTechnologies").FirstOrDefault ();
 
-            foreach(var rt in respondent.RespondentsTechnologies)
+            foreach (var rt in respondent.RespondentsTechnologies)
             {
-                rt.Technology = this.repository.Get<Technology>(t => t.Id == rt.TechnologyId).FirstOrDefault();
+                rt.Technology = this.repository.Get<Technology> (t => t.Id == rt.TechnologyId).FirstOrDefault ();
             }
 
-            return this.mapper.Map<RespondentModel>(respondent);
+            return this.mapper.Map<RespondentModel> (respondent);
         }
 
         public List<RespondentModel> GetAll ()
         {
-            return this.mapper.Map<List<RespondentModel>> (this.repository.GetAll<Respondent> ());
+            return this.mapper.Map<List<RespondentModel>> (this.repository.GetAll<Respondent> (includeProperties: "RespondentsTechnologies"));
         }
 
         public List<RespondentModel> GetFiltered (int programmingLanguageId = 0, int frameworkId = 0, int databaseId = 0)
         {
+            var result = new List<RespondentModel> ();
             if (programmingLanguageId == 0 && frameworkId == 0 && databaseId == 0)
             {
-                return this.GetAll ();
+                result = this.GetAll ();
             }
             else
             {
-                return this.mapper.Map<List<RespondentModel>> (
+                result = this.mapper.Map<List<RespondentModel>> (
                     this.repository.GetAll<Respondent> (includeProperties: "RespondentsTechnologies")
                     .Where (r => r.RespondentsTechnologies
                         .Any (t => programmingLanguageId == 0 || t.TechnologyId == programmingLanguageId))
@@ -70,6 +71,16 @@ namespace Bifrost.Services.RespondentService
                     .Where (r => r.RespondentsTechnologies
                         .Any (t => databaseId == 0 || t.TechnologyId == databaseId)));
             }
+
+            foreach (var respondent in result)
+            {
+                foreach (var rt in respondent.RespondentsTechnologies)
+                {
+                    rt.Technology = this.mapper.Map<TechnologyModel> (this.repository.Get<Technology> (t => t.Id == rt.TechnologyId).FirstOrDefault ());
+                }
+            }
+
+            return result;
         }
     }
 }

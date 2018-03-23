@@ -634,7 +634,6 @@ export class Survey extends React.Component<RouteComponentProps<SurveyProps>, Su
                                                 datatype="general-info-text"
                                                 minLength={2}
                                                 maxLength={1000}
-                                                type="text"
                                                 id="OtherInfo" />
                                         </div>
                                     </div>
