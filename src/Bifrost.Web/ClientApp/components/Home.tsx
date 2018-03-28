@@ -9,7 +9,7 @@ export class Home extends React.Component<RouteComponentProps<HomeProps>, {}> {
     constructor(props: any){
         super(props)
     }
-    
+
     public render() {
         return <div>
             <h1>NetLS Software development welcomes you</h1>

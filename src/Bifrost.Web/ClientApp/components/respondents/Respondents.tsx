@@ -11,7 +11,6 @@ import * as csv from "json2csv";
 import Button from 'material-ui/Button';
 import Snackbar from 'material-ui/Snackbar';
 import IconButton from 'material-ui/IconButton';
-import * as theme from "../../config/theme";
 import * as Material from "material-ui"
 
 class RespondentModel {

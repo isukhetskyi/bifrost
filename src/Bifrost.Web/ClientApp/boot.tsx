@@ -9,24 +9,16 @@ import {whyDidYouUpdate} from "why-did-you-update";
 import { MuiThemeProvider, createMuiTheme, colors } from "material-ui";
 
 let routes = RoutesModule.routes;
-const theme = createMuiTheme({
-    palette: {
-        type: "dark",
-        error: colors.red
-    }    
-});
 
 function renderApp() {
     // This code starts up the React app when it runs in a browser. It sets up the routing
     // configuration and injects the app into a DOM element.
     const baseUrl = document.getElementsByTagName('base')[0].getAttribute('href')!;
-    //whyDidYouUpdate(React);
+    // whyDidYouUpdate(React);
     ReactDOM.render(
-        <MuiThemeProvider theme={theme}>
         <AppContainer>
             <BrowserRouter children={ routes } basename={ baseUrl } />
         </AppContainer>
-        </MuiThemeProvider>
         ,
         document.getElementById('react-app')
 
