@@ -1,5 +1,6 @@
 import * as React from 'react';
 import Button from 'material-ui/Button';
+import * as classNames from 'classnames';
 import Dialog, {
   DialogTitle,
   DialogContent,
@@ -7,7 +8,8 @@ import Dialog, {
   DialogActions,
 } from 'material-ui/Dialog';
 import Typography from 'material-ui/Typography';
-import withStyles, { WithStyles, StyleRulesCallback } from 'material-ui/styles/withStyles';
+import { WithStyles, StyleRulesCallback } from 'material-ui/styles/withStyles';
+import { withStyles } from 'material-ui/styles';
 import { RouteComponentProps } from 'react-router';
 import withRoot from '../../withRoot';
 
@@ -22,7 +24,7 @@ type State = {
   open: boolean;
 };
 
-export class Respondent extends React.Component<WithStyles<'root'>, State> {
+export class Respondent extends React.Component<WithStyles<'root'> & RouteComponentProps<any>, State> {
     constructor(props: any){
         super(props);
 
@@ -44,6 +46,7 @@ export class Respondent extends React.Component<WithStyles<'root'>, State> {
   };
 
   render() {
+    console.log(this.props.classes)
     return (
       <div className={this.props.classes.root}>
         <Dialog open={this.state.open} onClose={this.handleClose}>

@@ -32,7 +32,7 @@ import ListNumberedIcon from "material-ui-icons/FormatListNumbered";
 import { Link } from 'react-router-dom';
 import withRoot from '../../withRoot';
 import { Theme, StyleRulesCallback, WithStyles } from 'material-ui';
-import { Route, Switch } from 'react-router';
+import { Route, Switch, RouteComponentProps } from 'react-router';
 import Home from 'material-ui-icons/Home';
 import { Survey } from '../Survey';
 import { Statistics } from '../Statistics';
@@ -193,6 +193,7 @@ export class PersistentDrawer extends React.Component<WithStyles<"root"
 
 
   render() {
+    console.log(this.props.classes)
     const { anchor, open } = this.state;
 
     const drawer = (
@@ -323,7 +324,7 @@ export class PersistentDrawer extends React.Component<WithStyles<"root"
               <Route path='/survey' component={Survey} />
               <Route path='/statistics' component={Statistics} />
               <Route path='/respondents/all' component={Respondents} />
-              <Route path='/respondents/view/:number' component={Respondent as any} />
+              <Route path='/respondents/view/:number' component={Respondent}/>
               <Route path="/account/login" component={Login} />
               <Route path="/account/register" component={Register} />
             </Switch>
