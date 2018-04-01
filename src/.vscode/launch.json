@@ -3,83 +3,102 @@
    // Use hover for the description of the existing attributes
    // For further information visit https://github.com/OmniSharp/omnisharp-vscode/blob/master/debugger-launchjson.md
    "version": "0.2.0",
+    "compounds": [
+        {
+            "name": "API and SPA",
+            "configurations": ["Api", "Launch SPA"]
+        }
+    ],
    "configurations": [
+        //{
+        //     "name": "Auth",
+        //     "type": "coreclr",
+        //     "request": "launch",
+        //     "preLaunchTask": "build",
+        //     // If you have changed target frameworks, make sure to update the program path.
+        //     "program": "${workspaceRoot}/Bifrost.Auth/bin/Debug/netcoreapp2.0/Bifrost.Auth.dll",
+        //     "args": [],
+        //     "cwd": "${workspaceRoot}/Bifrost.Auth",
+        //     "stopAtEntry": false,
+        //     "internalConsoleOptions": "openOnSessionStart",
+        //     "launchBrowser": {
+        //         "enabled": true,
+        //         "args": "${auto-detect-url}",
+        //         "windows": {
+        //             "command": "cmd.exe",
+        //             "args": "/C start ${auto-detect-url}"
+        //         },
+        //         "osx": {
+        //             "command": "open"
+        //         },
+        //         "linux": {
+        //             "command": "xdg-open"
+        //         }
+        //     },
+        //     "env": {
+        //         "ASPNETCORE_ENVIRONMENT": "Development",
+        //         "ASPNETCORE_URLS": "http://*:5050"
+        //     },
+        //     "sourceFileMap": {
+        //         "/Views": "${workspaceRoot}/Views"
+        //     }
+        // },
+        // {
+        //     "name": "Web API",
+        //     "type": "coreclr",
+        //     "request": "launch",
+        //     "preLaunchTask": "build",
+        //     // If you have changed target frameworks, make sure to update the program path.
+        //     "program": "${workspaceRoot}/Bifrost.Web/bin/Debug/netcoreapp2.0/Bifrost.Web.dll",
+        //     "args": [],
+        //     "cwd": "${workspaceRoot}/Bifrost.Web",
+        //     "stopAtEntry": false,
+        //     "internalConsoleOptions": "openOnSessionStart",
+        //     "launchBrowser": {
+        //         "enabled": true,
+        //         "args": "${auto-detect-url}",
+        //         "windows": {
+        //             "command": "cmd.exe",
+        //             "args": "/C start ${auto-detect-url}"
+        //         },
+        //         "osx": {
+        //             "command": "open"
+        //         },
+        //         "linux": {
+        //             "command": "xdg-open"
+        //         }
+        //     },
+        //     "env": {
+        //         "ASPNETCORE_ENVIRONMENT": "Development"
+        //     },
+        //     "sourceFileMap": {
+        //         "/Views": "${workspaceRoot}/Views"
+        //     }
+        // },
         {
-            "name": "Auth",
+            "name": "Api",
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
-            // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceRoot}/Bifrost.Auth/bin/Debug/netcoreapp2.0/Bifrost.Auth.dll",
-            "args": [],
-            "cwd": "${workspaceRoot}/Bifrost.Auth",
-            "stopAtEntry": false,
-            "internalConsoleOptions": "openOnSessionStart",
-            "launchBrowser": {
-                "enabled": true,
-                "args": "${auto-detect-url}",
-                "windows": {
-                    "command": "cmd.exe",
-                    "args": "/C start ${auto-detect-url}"
-                },
-                "osx": {
-                    "command": "open"
-                },
-                "linux": {
-                    "command": "xdg-open"
-                }
-            },
-            "env": {
-                "ASPNETCORE_ENVIRONMENT": "Development",
-                "ASPNETCORE_URLS": "http://*:5050"
-            },
-            "sourceFileMap": {
-                "/Views": "${workspaceRoot}/Views"
-            }
-        },
-        {
-            "name": "Web App",
-            "type": "coreclr",
-            "request": "launch",
-            "preLaunchTask": "build",
-            // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceRoot}/Bifrost.Web/bin/Debug/netcoreapp2.0/Bifrost.Web.dll",
+            "program": "${workspaceRoot}//Bifrost.Web/bin/Debug/netcoreapp2.0/Bifrost.Web.dll",
             "args": [],
             "cwd": "${workspaceRoot}/Bifrost.Web",
             "stopAtEntry": false,
-            "internalConsoleOptions": "openOnSessionStart",
-            "launchBrowser": {
-                "enabled": true,
-                "args": "${auto-detect-url}",
-                "windows": {
-                    "command": "cmd.exe",
-                    "args": "/C start ${auto-detect-url}"
-                },
-                "osx": {
-                    "command": "open"
-                },
-                "linux": {
-                    "command": "xdg-open"
-                }
-            },
-            "env": {
-                "ASPNETCORE_ENVIRONMENT": "Development"
-            },
-            "sourceFileMap": {
-                "/Views": "${workspaceRoot}/Views"
-            }
+            "console": "internalConsole"
+          },
+        {
+            "type": "chrome",
+            "request": "launch",
+            "name": "Launch SPA",
+            "url": "http://localhost:3000",
+            "webRoot": "${workspaceFolder}/Bifrost.UI"
         },
         {
-            "name": ".NET Core Attach",
-            "type": "coreclr",
+            "type": "chrome",
             "request": "attach",
-            "processId": "${command:pickProcess}"
-        }
-    ],
-    "compounds": [
-        {
-            "name": "Auth + Web",
-            "configurations": ["Auth", "Web App"]
-        }
+            "name": "Attach to Chrome",
+            "port": 9222,
+            "webRoot": "${workspaceFolder}/Bifrost.UI"
+        },
     ]
 }
