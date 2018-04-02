@@ -3,7 +3,7 @@ import withStyles, { WithStyles, StyleRulesCallback } from 'material-ui/styles/w
 import withRoot from './withRoot';
 import HomePage from './pages/HomePage';
 import TodoPage from './pages/TodoPage';
-import LoginPage from './pages/LoginPage';
+import LoginPage from './pages/account/LoginPage';
 import { Router, Route, RouteComponentProps } from 'react-router';
 import { createBrowserHistory } from 'history';
 import AppBar from 'material-ui/AppBar';
@@ -29,6 +29,7 @@ import { RootState } from './reducers/index';
 import { connect } from 'react-redux';
 import { Todo } from './model/model';
 import SurveyPage from './pages/survey/SurveyPage';
+import StatisticsPage from './pages/survey/StatisticsPage';
 
 export namespace App {
     export interface Props extends RouteComponentProps<void> {
@@ -55,6 +56,7 @@ class App extends React.Component<WithStyles & App.Props, App.State> {
             <Route exact={true} path="/" component={HomePage} />
             <Route exact={true} path="/home" component={HomePage} />
             <Route exact={true} path="/survey" component={SurveyPage} />
+            <Route exact={true} path="/statistics" component={StatisticsPage} />
             <Route exact={true} path="/todo" component={TodoPage} />
             <Route exact={true} path="/login" component={LoginPage} />
         </div>
@@ -118,7 +120,7 @@ class App extends React.Component<WithStyles & App.Props, App.State> {
                             </ListItemIcon>
                             <ListItemText inset primary="Respondents" />
                         </ListItem>
-                        <ListItem button href="/statistics" className={this.props.classes.nested}>
+                        <ListItem button className={this.props.classes.nested} onClick={() => { history.push('/statistics'); }}>
                             <ListItemIcon>
                                 <AssignmentIcon />
                             </ListItemIcon>

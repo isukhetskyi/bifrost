@@ -1,13 +1,13 @@
 import * as React from 'react';
 import Button from 'material-ui/Button';
 import withStyles, { WithStyles, StyleRulesCallback } from 'material-ui/styles/withStyles';
-import { RootState } from '../reducers/index';
+import { RootState } from '../../reducers/index';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { RouteComponentProps } from 'react-router';
 import Grid from 'material-ui/Grid';
 import { Input } from 'material-ui';
-import * as LoginActions from '../actions/login';
+import * as LoginActions from '../../actions/login';
 
 export namespace LoginPage {
     export interface Props extends RouteComponentProps<void> {

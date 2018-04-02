@@ -21,6 +21,7 @@ export enum ActionType {
     COMPLETE_TODO,
     UNCOMPLETE_TODO,
     SURVEY,
+    STATISTICS,
     LOGIN,
 }
 
