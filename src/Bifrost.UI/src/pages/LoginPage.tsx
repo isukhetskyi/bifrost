@@ -94,7 +94,7 @@ function mapStateToProps(state: RootState) {
 
 function mapDispatchToProps(dispatch: any) {
     return {
-    //   actions: bindActionCreators(TodoActions as any, dispatch)
+    //    actions: bindActionCreators(LoginAction as any, dispatch)
     };
   }
 
