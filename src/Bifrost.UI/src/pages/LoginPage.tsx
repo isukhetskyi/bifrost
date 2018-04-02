@@ -1,17 +1,17 @@
 import * as React from 'react';
 import Button from 'material-ui/Button';
-// import Typography from 'material-ui/Typography';
 import withStyles, { WithStyles, StyleRulesCallback } from 'material-ui/styles/withStyles';
 import { RootState } from '../reducers/index';
 import { connect } from 'react-redux';
-// import { bindActionCreators } from 'redux';
+import { bindActionCreators } from 'redux';
 import { RouteComponentProps } from 'react-router';
 import Grid from 'material-ui/Grid';
 import { Input } from 'material-ui';
+import * as LoginActions from '../actions/login';
 
 export namespace LoginPage {
     export interface Props extends RouteComponentProps<void> {
-
+        actions: typeof LoginActions;
     }
 
     export interface State {
@@ -33,6 +33,38 @@ class LoginPage extends React.Component<WithStyles & LoginPage.Props, LoginPage.
         idDone: false,
     };
 
+    handleInputChange = (inputName: string, event: any) => {
+        switch (inputName) {
+            case 'Email':
+            {
+                this.setState({
+                    Email: event.target.value
+                });
+            }
+            break;
+
+            case 'Password':
+            {
+                this.setState({
+                    Password: event.target.value
+                });
+            }
+            break;
+
+            default:
+            return;
+        }
+    }
+
+    handleSubmit = () => {
+        this.props.actions.login(
+            {
+                Email: this.state.Email,
+                Password: this.state.Password,
+                RememberMe: this.state.RememberMe
+            });
+    }
+
     render() {
         return (
             <Grid
@@ -41,11 +73,28 @@ class LoginPage extends React.Component<WithStyles & LoginPage.Props, LoginPage.
                 alignItems={'flex-start'}
                 justify={'flex-start'}
             >
-                <Input className={this.props.classes.input} fullWidth placeholder="Login"/>
+                <Input
+                    className={this.props.classes.input}
+                    onChange={(e) => {this.handleInputChange('Email', e); }}
+                    fullWidth
+                    type={'email'}
+                    placeholder="Login"
+                />
                 <br/>
-                <Input className={this.props.classes.input} fullWidth placeholder="Password"/>
+                <Input
+                    className={this.props.classes.input}
+                    onChange={(e) => {this.handleInputChange('Password', e); }}
+                    fullWidth
+                    type={'password'}
+                    placeholder="Password"
+                />
                 <br/>
-                <Button className={this.props.classes.button} variant="raised" color="primary">
+                <Button
+                    className={this.props.classes.button}
+                    onClick={this.handleSubmit}
+                    variant="raised"
+                    color="primary"
+                >
                     Login
                 </Button>
             </Grid>
@@ -94,7 +143,7 @@ function mapStateToProps(state: RootState) {
 
 function mapDispatchToProps(dispatch: any) {
     return {
-    //    actions: bindActionCreators(LoginAction as any, dispatch)
+        actions: bindActionCreators(LoginActions as any, dispatch)
     };
   }
 

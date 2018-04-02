@@ -17,11 +17,18 @@ import List, { ListItem, ListItemIcon, ListItemText } from 'material-ui/List';
 import MenuIcon from 'material-ui-icons/Menu';
 import HomeIcon from 'material-ui-icons/Home';
 import AccountBoxIcon from 'material-ui-icons/AccountBox';
+import AssigmentIdenIcon from 'material-ui-icons/AssignmentInd';
+import AssignmentIcon from 'material-ui-icons/Assignment';
 import TodoIcon from 'material-ui-icons/FormatListNumbered';
+import ExpandLess from 'material-ui-icons/ExpandLess';
+import ExpandMore from 'material-ui-icons/ExpandMore';
 import Badge from 'material-ui/Badge/Badge';
+import Collapse from 'material-ui/transitions/Collapse';
+import ListNumberedIcon from 'material-ui-icons/FormatListNumbered';
 import { RootState } from './reducers/index';
 import { connect } from 'react-redux';
 import { Todo } from './model/model';
+import SurveyPage from './pages/survey/SurveyPage';
 
 export namespace App {
     export interface Props extends RouteComponentProps<void> {
@@ -30,6 +37,7 @@ export namespace App {
 
     export interface State {
         mobileOpen: boolean;
+        surveyAreaOpen: boolean;
     }
 }
 
@@ -39,16 +47,41 @@ class App extends React.Component<WithStyles & App.Props, App.State> {
 
     state = {
         mobileOpen: true,
+        surveyAreaOpen: false,
     };
 
     routes = (
         <div className={this.props.classes.content}>
             <Route exact={true} path="/" component={HomePage} />
             <Route exact={true} path="/home" component={HomePage} />
+            <Route exact={true} path="/survey" component={SurveyPage} />
             <Route exact={true} path="/todo" component={TodoPage} />
-            <Route exact={true} path="/login" component={LoginPage}/>
+            <Route exact={true} path="/login" component={LoginPage} />
         </div>
     );
+
+    handleAdminAreyMenuItemClick(area: string) {
+        switch (area) {
+            //   case 'AdminArea':
+            //     {
+            //       this.
+            //         setState({
+            //           adminAreaOpen: !this.state.adminAreaOpen
+            //         });
+            //     }
+            //     break;
+
+            case 'SurveyArea':
+                {
+                    this.setState({
+                        surveyAreaOpen: !this.state.surveyAreaOpen
+                    });
+                }
+                break;
+            default:
+                return;
+        }
+    }
 
     render() {
 
@@ -64,6 +97,35 @@ class App extends React.Component<WithStyles & App.Props, App.State> {
                         <ListItemText primary="Home" />
                     </ListItem>
                 </List>
+                <ListItem button onClick={() => this.handleAdminAreyMenuItemClick('SurveyArea')}>
+                    <ListItemIcon>
+                        <AssigmentIdenIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="Survey" />
+                    {this.state.surveyAreaOpen ? <ExpandLess /> : <ExpandMore />}
+                </ListItem>
+                <Collapse in={this.state.surveyAreaOpen} timeout="auto" unmountOnExit>
+                    <List component="div" disablePadding>
+                        <ListItem button className={this.props.classes.nested} onClick={() => { history.push('/survey'); }}>
+                            <ListItemIcon>
+                                <AssignmentIcon />
+                            </ListItemIcon>
+                            <ListItemText inset primary="Developer's survey" />
+                        </ListItem>
+                        <ListItem button className={this.props.classes.nested}>
+                            <ListItemIcon>
+                                <ListNumberedIcon />
+                            </ListItemIcon>
+                            <ListItemText inset primary="Respondents" />
+                        </ListItem>
+                        <ListItem button href="/statistics" className={this.props.classes.nested}>
+                            <ListItemIcon>
+                                <AssignmentIcon />
+                            </ListItemIcon>
+                            <ListItemText inset primary="Statistics" />
+                        </ListItem>
+                    </List>
+                </Collapse>
                 <List>
                     <ListItem button onClick={() => history.push('/todo')}>
                         <ListItemIcon>
@@ -72,13 +134,13 @@ class App extends React.Component<WithStyles & App.Props, App.State> {
                         <ListItemText primary="Todo" />
                     </ListItem>
                 </List>
-                <Divider/>
+                <Divider />
                 <List>
                     <ListItem button onClick={() => history.push('/login')}>
                         <ListItemIcon>
                             <AccountBoxIcon />
                         </ListItemIcon>
-                        <ListItemText primary="Login"/>
+                        <ListItemText primary="Login" />
                     </ListItem>
                 </List>
                 <div style={{ height: '100%' }} />

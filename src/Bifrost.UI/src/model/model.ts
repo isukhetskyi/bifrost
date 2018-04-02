@@ -6,9 +6,13 @@ export interface Todo {
 }
 
 export interface Login {
-    email: string;
-    password: string;
-    rememberMe: boolean;
+    Email: string;
+    Password: string;
+    RememberMe: boolean;
+}
+
+export interface Survey {
+
 }
 
 export enum ActionType {
@@ -16,7 +20,7 @@ export enum ActionType {
     DELETE_TODO,
     COMPLETE_TODO,
     UNCOMPLETE_TODO,
-
+    SURVEY,
     LOGIN,
 }
 

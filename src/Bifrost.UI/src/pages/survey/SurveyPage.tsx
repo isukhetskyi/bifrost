@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
 import { withStyles, WithStyles, StyleRulesCallback } from 'material-ui';
-import { Login } from '../../model/model';
 import { connect } from 'react-redux';
+import { RootState } from '../../reducers';
 
 export namespace SurveyPage {
     export interface Props extends RouteComponentProps<void> {
@@ -15,6 +15,9 @@ export namespace SurveyPage {
 }
 
 class SurveyPage extends React.Component<WithStyles & SurveyPage.Props, SurveyPage.State> {
+
+    state = {};
+
     render() {
         return(
             <div>
@@ -30,7 +33,7 @@ const styles: StyleRulesCallback = theme => ({
     },
 });
 
-function mapStateToProps(state: Login) {
+function mapStateToProps(state: RootState) {
     return {
         //
     };
