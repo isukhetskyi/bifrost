@@ -20,6 +20,9 @@ import AccountBoxIcon from 'material-ui-icons/AccountBox';
 import AssigmentIdenIcon from 'material-ui-icons/AssignmentInd';
 import AssignmentIcon from 'material-ui-icons/Assignment';
 import TodoIcon from 'material-ui-icons/FormatListNumbered';
+import DashboardIcon from 'material-ui-icons/Dashboard';
+import SupervisorAccountIcon from 'material-ui-icons/SupervisorAccount';
+import CreateIcon from 'material-ui-icons/Create';
 import ExpandLess from 'material-ui-icons/ExpandLess';
 import ExpandMore from 'material-ui-icons/ExpandMore';
 import Badge from 'material-ui/Badge/Badge';
@@ -40,6 +43,7 @@ export namespace App {
     export interface State {
         mobileOpen: boolean;
         surveyAreaOpen: boolean;
+        adminAreaOpen: boolean;
     }
 }
 
@@ -50,6 +54,7 @@ class App extends React.Component<WithStyles & App.Props, App.State> {
     state = {
         mobileOpen: true,
         surveyAreaOpen: false,
+        adminAreaOpen: false,
     };
 
     routes = (
@@ -66,14 +71,14 @@ class App extends React.Component<WithStyles & App.Props, App.State> {
 
     handleAdminAreyMenuItemClick(area: string) {
         switch (area) {
-            //   case 'AdminArea':
-            //     {
-            //       this.
-            //         setState({
-            //           adminAreaOpen: !this.state.adminAreaOpen
-            //         });
-            //     }
-            //     break;
+              case 'AdminArea':
+                {
+                  this.
+                    setState({
+                      adminAreaOpen: !this.state.adminAreaOpen
+                    });
+                }
+                break;
 
             case 'SurveyArea':
                 {
@@ -129,6 +134,31 @@ class App extends React.Component<WithStyles & App.Props, App.State> {
                             <ListItemText inset primary="Statistics" />
                         </ListItem>
                     </List>
+                </Collapse>
+                <ListItem button onClick={() => this.handleAdminAreyMenuItemClick('AdminArea')}>
+              <ListItemIcon>
+                <DashboardIcon />
+              </ListItemIcon>
+                <ListItemText primary="Admin Area" />
+                {this.state.adminAreaOpen ? <ExpandLess /> : <ExpandMore />}
+                </ListItem>
+                <Collapse in={this.state.adminAreaOpen} timeout="auto" unmountOnExit>
+                <List component="div" disablePadding>
+                    <ListItem button className={this.props.classes.nested}>
+                    <ListItemIcon>
+                        <SupervisorAccountIcon />
+                    </ListItemIcon>
+                    <ListItemText inset primary="Users" />
+                    </ListItem>
+                </List>
+                <List component="div" disablePadding>
+                    <ListItem button className={this.props.classes.nested}>
+                    <ListItemIcon>
+                        <CreateIcon />
+                    </ListItemIcon>
+                    <ListItemText inset primary="Register" />
+                    </ListItem>
+                </List>
                 </Collapse>
                 <List>
                     <ListItem button onClick={() => history.push('/todo')}>
