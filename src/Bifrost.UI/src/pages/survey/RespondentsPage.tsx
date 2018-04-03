@@ -32,12 +32,33 @@ export namespace RespondentsPage {
         redirect: boolean;
         page: number;
         rowsPerPage: number;
+        counter: number;
     }
 }
 
+let counter: number;
+counter = 0;
+
+function createData (name: string, calories: number, fat: number): any {
+    counter += 1;
+    return { id: counter, name, calories, fat };
+    }
+
 class RespondentsPage extends React.Component<WithStyles & RespondentsPage.Props, RespondentsPage.State> {
     state = {
-        data: [],
+        data: [createData('Cupcake', 305, 3.7),
+        createData('Donut', 452, 25.0),
+        createData('Eclair', 262, 16.0),
+        createData('Frozen yoghurt', 159, 6.0),
+        createData('Gingerbread', 356, 16.0),
+        createData('Honeycomb', 408, 3.2),
+        createData('Ice cream sandwich', 237, 9.0),
+        createData('Jelly Bean', 375,   0.0),
+        createData('KitKat',   518,   26.0),
+        createData('Lollipop',   392,   0.2),
+        createData('Marshmallow',   318,   0),
+        createData('Nougat',   360,   19.0),
+        createData('Oreo',   437,   18.0)],
         ProgrammingLanguages: [],
         Frameworks: [],
         Databases: [],
@@ -46,7 +67,8 @@ class RespondentsPage extends React.Component<WithStyles & RespondentsPage.Props
         SelectedDatabase: -1,
         redirect: false,
         page: 0,
-        rowsPerPage: 5,
+        rowsPerPage: 10,
+        counter: 0
     };
 
     handleChangePage = (event: any, page: number) => {
@@ -63,12 +85,11 @@ class RespondentsPage extends React.Component<WithStyles & RespondentsPage.Props
                 <div className={this.props.classes.tableWrapper}>
                     <Table className={this.props.classes.table}>
                         <TableBody>
-                            // tslint:disable-next-line:max-line-length
                             {this.state.data.slice(
                                 this.state.page * this.state.rowsPerPage,
                                 this.state.page * this.state.rowsPerPage + this.state.rowsPerPage).map((n: any) => {
                                     return (
-                                        <TableRow key={n.id}>
+                                        <TableRow key={n.id} onClick={(e) => {console.log(e.currentTarget); }}>
                                             <TableCell>{n.name}</TableCell>
                                             <TableCell numeric>{n.calories}</TableCell>
                                             <TableCell numeric>{n.fat}</TableCell>
@@ -90,7 +111,6 @@ class RespondentsPage extends React.Component<WithStyles & RespondentsPage.Props
                                     page={this.state.page}
                                     onChangePage={this.handleChangePage}
                                     onChangeRowsPerPage={this.handleChangeRowsPerPage}
-                                    // Actions={TablePaginationActionsWrapped}
                                 />
                             </TableRow>
                         </TableFooter>
@@ -111,6 +131,7 @@ const style: StyleRulesCallback = theme => ({
     },
     tableWrapper: {
         overflowX: 'auto',
+        overflowY: 'auto'
     },
 });
 
