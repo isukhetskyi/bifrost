@@ -20,6 +20,7 @@ class HomePage extends React.Component<WithStyles & HomePage.Props> {
         <Typography variant="display1" gutterBottom>
           NetLS Software Development welcomes you!
         </Typography>
+        <img src={'/NetLSlogo.png'} height={500} width={540} alt={'NetLS Logo'} />
       </div>
     );
   }
