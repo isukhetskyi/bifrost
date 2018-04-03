@@ -30,6 +30,7 @@ import { connect } from 'react-redux';
 import { Todo } from './model/model';
 import SurveyPage from './pages/survey/SurveyPage';
 import StatisticsPage from './pages/survey/StatisticsPage';
+import RespondentsPage from './pages/survey/RespondentsPage';
 
 export namespace App {
     export interface Props extends RouteComponentProps<void> {
@@ -57,6 +58,7 @@ class App extends React.Component<WithStyles & App.Props, App.State> {
             <Route exact={true} path="/home" component={HomePage} />
             <Route exact={true} path="/survey" component={SurveyPage} />
             <Route exact={true} path="/statistics" component={StatisticsPage} />
+            <Route exact={true} path="/respondents" component={RespondentsPage} />
             <Route exact={true} path="/todo" component={TodoPage} />
             <Route exact={true} path="/login" component={LoginPage} />
         </div>
@@ -114,7 +116,7 @@ class App extends React.Component<WithStyles & App.Props, App.State> {
                             </ListItemIcon>
                             <ListItemText inset primary="Developer's survey" />
                         </ListItem>
-                        <ListItem button className={this.props.classes.nested}>
+                        <ListItem button className={this.props.classes.nested} onClick={() => { history.push('/respondents'); }}>
                             <ListItemIcon>
                                 <ListNumberedIcon />
                             </ListItemIcon>

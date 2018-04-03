@@ -11,6 +11,19 @@ export interface Login {
     RememberMe: boolean;
 }
 
+export interface Respondent {
+    Id: number;
+    FirstName: string;
+    LastName: string;
+    Age?: number;
+    IsEmployed: boolean;
+    Phone?: string;
+    Skype?: string;
+    Email?: string;
+    Technologies?: string;
+    CreatedShortDate?: string;
+}
+
 export interface Survey {
 
 }
@@ -22,6 +35,7 @@ export enum ActionType {
     UNCOMPLETE_TODO,
     SURVEY,
     STATISTICS,
+    GET_RESPONDENTS,
     LOGIN,
 }
 
