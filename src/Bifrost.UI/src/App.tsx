@@ -34,6 +34,8 @@ import { Todo } from './model/model';
 import SurveyPage from './pages/survey/SurveyPage';
 import StatisticsPage from './pages/survey/StatisticsPage';
 import RespondentsPage from './pages/survey/RespondentsPage';
+import RespondentPage from './pages/survey/RespondentPage';
+import SignUpPage from './pages/adminarea/SignUpPage';
 
 export namespace App {
     export interface Props extends RouteComponentProps<void> {
@@ -64,8 +66,10 @@ class App extends React.Component<WithStyles & App.Props, App.State> {
             <Route exact={true} path="/survey" component={SurveyPage} />
             <Route exact={true} path="/statistics" component={StatisticsPage} />
             <Route exact={true} path="/respondents" component={RespondentsPage} />
+            <Route exact={true} path="/respondents/:number" component={RespondentPage}/>
             <Route exact={true} path="/todo" component={TodoPage} />
             <Route exact={true} path="/login" component={LoginPage} />
+            <Route exact={true} path="/signup" component={SignUpPage}/>
         </div>
     );
 
@@ -152,7 +156,7 @@ class App extends React.Component<WithStyles & App.Props, App.State> {
                     </ListItem>
                 </List>
                 <List component="div" disablePadding>
-                    <ListItem button className={this.props.classes.nested}>
+                    <ListItem button className={this.props.classes.nested} onClick={() => history.push('/singup')}>
                     <ListItemIcon>
                         <CreateIcon />
                     </ListItemIcon>

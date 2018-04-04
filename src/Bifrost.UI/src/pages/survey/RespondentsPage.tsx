@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
-import { StyleRulesCallback } from 'material-ui';
+import { StyleRulesCallback, Select } from 'material-ui';
 import { RootState } from '../../reducers';
 import { bindActionCreators } from 'redux';
 import withStyles, { WithStyles } from 'material-ui/styles/withStyles';
 import { connect } from 'react-redux';
-import * as RespondenceActions from '../../model/model';
+import * as RespondentActions from '../../model/model';
 import Table, {
     TableBody,
     TableCell,
@@ -14,7 +14,6 @@ import Table, {
     TableRow,
 } from 'material-ui/Table';
 import Paper from 'material-ui/Paper';
-// import * as TablePaginationActionsWrapped from '../../components/TablePagination';
 
 export namespace RespondentsPage {
     export interface Props extends RouteComponentProps<void> {
@@ -22,7 +21,7 @@ export namespace RespondentsPage {
     }
 
     export interface State {
-        data: Array<RespondenceActions.Respondent>;
+        data: Array<RespondentActions.Respondent>;
         ProgrammingLanguages: Array<[string, string]>;
         Frameworks: Array<[string, string]>;
         Databases: Array<[string, string]>;
@@ -39,26 +38,34 @@ export namespace RespondentsPage {
 let counter: number;
 counter = 0;
 
-function createData (name: string, calories: number, fat: number): any {
+function createData(
+    iden: number,
+    firstName: string,
+    lastName: string,
+    isEmployed: boolean,
+    phone: string,
+    email: string,
+    skype: string,
+    dateOfSubmition: string): any {
     counter += 1;
-    return { id: counter, name, calories, fat };
-    }
+    return {
+        id: counter,
+        iden,
+        firstName,
+        lastName,
+        isEmployed,
+        phone,
+        email,
+        skype,
+        dateOfSubmition
+    };
+}
 
 class RespondentsPage extends React.Component<WithStyles & RespondentsPage.Props, RespondentsPage.State> {
     state = {
-        data: [createData('Cupcake', 305, 3.7),
-        createData('Donut', 452, 25.0),
-        createData('Eclair', 262, 16.0),
-        createData('Frozen yoghurt', 159, 6.0),
-        createData('Gingerbread', 356, 16.0),
-        createData('Honeycomb', 408, 3.2),
-        createData('Ice cream sandwich', 237, 9.0),
-        createData('Jelly Bean', 375,   0.0),
-        createData('KitKat',   518,   26.0),
-        createData('Lollipop',   392,   0.2),
-        createData('Marshmallow',   318,   0),
-        createData('Nougat',   360,   19.0),
-        createData('Oreo',   437,   18.0)],
+        data: [createData(1, 'John', 'Doe', false, '0333333333', 'jdoe@gmail.com', 'doujohn', '2017-03-18'),
+        createData(1, 'Jane', 'Doe', true, '05555555555', 'janedoe@gmail.com', 'doujohnyo', '2017-03-18')
+        ],
         ProgrammingLanguages: [],
         Frameworks: [],
         Databases: [],
@@ -81,42 +88,75 @@ class RespondentsPage extends React.Component<WithStyles & RespondentsPage.Props
     emptyRows = this.state.rowsPerPage - Math.min(this.state.rowsPerPage, this.state.data.length - this.state.page * this.state.rowsPerPage);
     render() {
         return (
-            <Paper className={this.props.classes.root} >
-                <div className={this.props.classes.tableWrapper}>
-                    <Table className={this.props.classes.table}>
-                        <TableBody>
-                            {this.state.data.slice(
-                                this.state.page * this.state.rowsPerPage,
-                                this.state.page * this.state.rowsPerPage + this.state.rowsPerPage).map((n: any) => {
-                                    return (
-                                        <TableRow key={n.id} onClick={(e) => {console.log(e.currentTarget); }}>
-                                            <TableCell>{n.name}</TableCell>
-                                            <TableCell numeric>{n.calories}</TableCell>
-                                            <TableCell numeric>{n.fat}</TableCell>
-                                        </TableRow>
-                                    );
-                                })}
-                            {this.emptyRows > 0 && (
-                                <TableRow style={{ height: 48 * this.emptyRows }}>
-                                    <TableCell colSpan={6} />
+            <div>
+                <Select
+                    value={this.state.SelectedLanguage}
+                    native={true}
+                    className={this.props.classes.select}
+                >
+                    <option value={10}>Ten</option>
+                    <option value={20}>Twenty</option>
+                    <option value={30}>Thirty</option>
+                </Select>
+                <Select
+                    value={this.state.SelectedLanguage}
+                    native={true}
+                    className={this.props.classes.select}
+                >
+                    <option value={10}>Ten</option>
+                    <option value={20}>Twenty</option>
+                    <option value={30}>Thirty</option>
+                </Select>
+                <Select
+                    value={this.state.SelectedLanguage}
+                    native={true}
+                    className={this.props.classes.select}
+                >
+                    <option value={10}>Ten</option>
+                    <option value={20}>Twenty</option>
+                    <option value={30}>Thirty</option>
+                </Select>
+                <Paper className={this.props.classes.root} >
+                    <div className={this.props.classes.tableWrapper}>
+                        <Table className={this.props.classes.table}>
+                            <TableBody>
+                                {this.state.data.slice(
+                                    this.state.page * this.state.rowsPerPage,
+                                    this.state.page * this.state.rowsPerPage + this.state.rowsPerPage).map((n: any) => {
+                                        return (
+                                            <TableRow key={n.id.toString()} onClick={(e) => { this.props.history.push('/respondents/1'); }}>
+                                                <TableCell>{n.iden.toString()}</TableCell>
+                                                <TableCell>{n.firstName}</TableCell>
+                                                <TableCell>{n.lastName}</TableCell>
+                                                <TableCell>{n.isEmployed}</TableCell>
+                                                <TableCell>{n.phone}</TableCell>
+                                                <TableCell>{n.skype}</TableCell>
+                                                <TableCell>{n.dateOfSubmition}</TableCell>
+                                            </TableRow>
+                                        );
+                                    })}
+                                {this.emptyRows > 0 && (
+                                    <TableRow style={{ height: 48 * this.emptyRows }}>
+                                        <TableCell colSpan={6} />
+                                    </TableRow>
+                                )}
+                            </TableBody>
+                            <TableFooter>
+                                <TableRow>
+                                    <TablePagination
+                                        colSpan={3}
+                                        count={this.state.data.length}
+                                        rowsPerPage={this.state.rowsPerPage}
+                                        page={this.state.page}
+                                        onChangePage={this.handleChangePage}
+                                        onChangeRowsPerPage={this.handleChangeRowsPerPage}
+                                    />
                                 </TableRow>
-                            )}
-                        </TableBody>
-                        <TableFooter>
-                            <TableRow>
-                                <TablePagination
-                                    colSpan={3}
-                                    count={this.state.data.length}
-                                    rowsPerPage={this.state.rowsPerPage}
-                                    page={this.state.page}
-                                    onChangePage={this.handleChangePage}
-                                    onChangeRowsPerPage={this.handleChangeRowsPerPage}
-                                />
-                            </TableRow>
-                        </TableFooter>
-                    </Table>
-                </div>
-      </Paper >
+                            </TableFooter>
+                        </Table>
+                    </div>
+                </Paper >
+            </div>
         );
     }
 }
@@ -133,6 +173,11 @@ const style: StyleRulesCallback = theme => ({
         overflowX: 'auto',
         overflowY: 'auto'
     },
+    select: {
+        width: 'calc(30%)',
+        padding: 5,
+        margin: 5
+    }
 });
 
 function mapStateToProps(state: RootState) {
@@ -143,7 +188,7 @@ function mapStateToProps(state: RootState) {
 
 function mapDispatchToProps(dispatch: any) {
     return {
-        actions: bindActionCreators(RespondenceActions as any, dispatch)
+        actions: bindActionCreators(RespondentActions as any, dispatch)
     };
 }
 
