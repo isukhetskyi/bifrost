@@ -43,46 +43,14 @@
         //         "/Views": "${workspaceRoot}/Views"
         //     }
         // },
-        // {
-        //     "name": "Web API",
-        //     "type": "coreclr",
-        //     "request": "launch",
-        //     "preLaunchTask": "build",
-        //     // If you have changed target frameworks, make sure to update the program path.
-        //     "program": "${workspaceRoot}/Bifrost.Web/bin/Debug/netcoreapp2.0/Bifrost.Web.dll",
-        //     "args": [],
-        //     "cwd": "${workspaceRoot}/Bifrost.Web",
-        //     "stopAtEntry": false,
-        //     "internalConsoleOptions": "openOnSessionStart",
-        //     "launchBrowser": {
-        //         "enabled": true,
-        //         "args": "${auto-detect-url}",
-        //         "windows": {
-        //             "command": "cmd.exe",
-        //             "args": "/C start ${auto-detect-url}"
-        //         },
-        //         "osx": {
-        //             "command": "open"
-        //         },
-        //         "linux": {
-        //             "command": "xdg-open"
-        //         }
-        //     },
-        //     "env": {
-        //         "ASPNETCORE_ENVIRONMENT": "Development"
-        //     },
-        //     "sourceFileMap": {
-        //         "/Views": "${workspaceRoot}/Views"
-        //     }
-        // },
         {
             "name": "Api",
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
-            "program": "${workspaceRoot}//Bifrost.Web/bin/Debug/netcoreapp2.0/Bifrost.Web.dll",
+            "program": "${workspaceRoot}//Bifrost.API/bin/Debug/netcoreapp2.0/Bifrost.API.dll",
             "args": [],
-            "cwd": "${workspaceRoot}/Bifrost.Web",
+            "cwd": "${workspaceRoot}/Bifrost.API",
             "stopAtEntry": false,
             "console": "internalConsole"
           },
