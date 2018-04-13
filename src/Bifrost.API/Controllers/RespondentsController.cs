@@ -64,10 +64,11 @@ namespace Bifrost.API.Controllers
         [HttpGet]
         public IActionResult Filter (int languageId = 0, int frameworkId = 0, int databaseId = 0)
         {
+            var respondents = this.mapper.Map<List<RespondentsViewModel>> (
+                    this.GetFilteredList (languageId, frameworkId, databaseId));
             return Ok (new
             {
-                respondents = this.mapper.Map<List<RespondentsViewModel>> (
-                    this.GetFilteredList (languageId, frameworkId, databaseId))
+                respondents = respondents
             });
         }
 

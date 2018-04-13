@@ -7,24 +7,70 @@ import { RouteComponentProps } from 'react-router';
 import { GridListTile, GridList, GridListTileBar } from 'material-ui';
 import * as StatisticsActions from '../../actions/statistics';
 import { PieChart } from 'react-easy-chart';
+import * as axios from 'axios';
+import { AppConfigration } from '../../config/config';
 
 export namespace StatisticsPage {
     export interface Props extends RouteComponentProps<void> {
         actions: any; // StatisticsActions;
-        data: {
-            languages: [{key: string, value: number}],
-            databases: [{key: string, value: number}],
-            frameworks: [{key: string, value: number}]
-        };
+
     }
 
     export interface State {
-
+        data: {
+            languages: Array<{ key: string; value: number; }>,
+            frameworks: Array<{ key: string; value: number; }>,
+            databases: Array<{ key: string; value: number; }>
+        };
     }
 }
 
 class StatisticsPage extends React.Component<WithStyles & StatisticsPage.Props, StatisticsPage.State> {
-    state = {};
+    state = {
+        data: {
+            languages: new Array<{ key: string; value: number; }>() ,
+            frameworks: new Array<{ key: string; value: number; }>() ,
+            databases: new Array<{ key: string; value: number; }>()
+    }
+    };
+
+    componentDidMount() {
+        let thisContext = this;
+
+        axios.default.get(AppConfigration.BASE_API_URL + '/api/statistics/all')
+        .then(function(response: any) {
+            console.log(response);
+            thisContext.setState({data: response.data.statistics});
+        }).catch(function(error: any) {
+            console.log(error);
+            alert(error);
+        });
+    }
+
+    renderTextualStatistics(category: string) {
+        let elements: any;
+        let collection: Array<object> | undefined;
+
+        if (category === 'languages') {
+            collection = this.state.data.languages;
+        }
+        if (category === 'databases') {
+            collection = this.state.data.databases;
+        }
+        if (category === 'frameworks') {
+            collection = this.state.data.frameworks;
+        }
+
+        if (!collection) {
+            collection = new Array<[number, string]>();
+        }
+
+        elements = collection.map((item: any, index: number) =>
+            <li key={index}> {item.key} - {item.value} respondent(s) or {item.percentage}% of total number of respondents</li>
+        );
+
+        return elements;
+    }
 
     render() {
         return (
@@ -40,9 +86,10 @@ class StatisticsPage extends React.Component<WithStyles & StatisticsPage.Props, 
                         labels
                         size={400}
                         innerHoleSize={1}
-                        // data={this.props.data.languages}
-                        data={[{key: 'C#', value: 5}, {key: 'JavaScript', value: 3}]}
+                        data={this.state.data.languages as [{ key: string; value: number; }]}
+                        // data={[{key: 'C#', value: 5}, {key: 'JavaScript', value: 3}]}
                     />
+                        {this.renderTextualStatistics('languages')}
                     </GridListTile>
                 </GridList>
                 <GridList cellHeight={500}  spacing={1} cols={1} className={this.props.classes.gridList}>
@@ -56,9 +103,10 @@ class StatisticsPage extends React.Component<WithStyles & StatisticsPage.Props, 
                         labels
                         size={400}
                         innerHoleSize={2}
-                        // data={this.props.data.frameworks}
-                        data={[{key: 'EntityFramework', value: 4}, {key: 'Angular5', value: 2}]}
+                        data={this.state.data.frameworks as [{ key: string; value: number; }]}
+                        // data={[{key: 'EntityFramework', value: 4}, {key: 'Angular5', value: 2}]}
                     />
+                    {this.renderTextualStatistics('frameworks')}
                     </GridListTile>
                 </GridList>
                 <GridList cellHeight={500}  spacing={1} cols={1} className={this.props.classes.gridList}>
@@ -72,9 +120,10 @@ class StatisticsPage extends React.Component<WithStyles & StatisticsPage.Props, 
                         labels
                         size={400}
                         innerHoleSize={3}
-                        // data={this.props.data.databases}
-                        data={[{key: 'SQL Server', value: 15}, {key: 'MongoDB', value: 8}]}
+                        data={this.state.data.databases as [{ key: string; value: number; }]}
+                        // data={[{key: 'SQL Server', value: 15}, {key: 'MongoDB', value: 8}]}
                     />
+                    {this.renderTextualStatistics('databases')}
                     </GridListTile>
                 </GridList>
             </div>
@@ -93,17 +142,16 @@ const style: StyleRulesCallback = theme => ({
       },
       gridList: {
         width: '100%',
-        height: 500,
+        minHeight: 600,
         alignContent: 'center',
         textAlign: 'center',
-        overflow: 'hidden',
         // Promote the list into his own layer on Chrome. This cost memory but helps keeping high FPS.
         transform: 'translateZ(0)',
       },
       title: {
           background: 'rgba(0, 0, 0, 0.1);',
           position: 'static',
-          color: 'rgba(0, 0, 0, 0.87)',
+          color: 'rgba(0, 0, 0, 0.87)'
       }
 });
 

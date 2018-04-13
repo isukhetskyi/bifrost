@@ -7,7 +7,7 @@
         {
             "taskName": "build",
             "args": [
-                "${workspaceRoot}/Bifrost.Web/Bifrost.Web.csproj"
+                "${workspaceRoot}/Bifrost.API/Bifrost.API.csproj"
             ],
             "isBuildCommand": true,
             "problemMatcher": "$msCompile"

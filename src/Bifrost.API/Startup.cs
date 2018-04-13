@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Bifrost.API.ViewModels.Respondent;
+using Bifrost.API.ViewModels.Survey;
 using Bifrost.Data.Models;
 using Bifrost.Domain.Models;
 using Bifrost.Repository;
 using Bifrost.Services.RespondentService;
 using Bifrost.Services.RespondentTechnologyService;
 using Bifrost.Services.TechnologyService;
-using Bifrost.API.ViewModels.Respondent;
-using Bifrost.API.ViewModels.Survey;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -30,11 +30,15 @@ namespace Bifrost.API
             Configuration = configuration;
         }
 
-        public IConfiguration Configuration { get; }
+        public IConfiguration Configuration
+        {
+            get;
+        }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices (IServiceCollection services)
         {
+            services.AddCors ();
             services.AddMvc ();
             services.AddDbContext<ApplicationDbContext> (options =>
                 options.UseSqlServer (Configuration.GetConnectionString ("DefaultConnection")));
@@ -47,7 +51,7 @@ namespace Bifrost.API
             services.AddTransient<IRespondentService, RespondentService> ();
             services.AddTransient<ITechnologyService, TechnologyService> ();
             services.AddTransient<IRespondentTechnologyService, RespondentTechnologyService> ();
-            services.ConfigureApplicationCookie(options =>
+            services.ConfigureApplicationCookie (options =>
             {
                 options.Events.OnRedirectToLogin = context =>
                 {
@@ -85,11 +89,16 @@ namespace Bifrost.API
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure (IApplicationBuilder app, IHostingEnvironment env)
         {
-            using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
+            app.UseCors(builder => builder
+                .AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .AllowCredentials().WithOrigins("http://localhost:3000"));
+            using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory> ().CreateScope ())
             {
-                var context = serviceScope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-                context.Database.Migrate();
-                context.Database.EnsureCreated();
+                var context = serviceScope.ServiceProvider.GetRequiredService<ApplicationDbContext> ();
+                context.Database.Migrate ();
+                context.Database.EnsureCreated ();
             }
             if (env.IsDevelopment ())
             {
@@ -104,10 +113,13 @@ namespace Bifrost.API
 
             app.UseMvc (routes =>
             {
-                routes.MapRoute(
+                routes.MapRoute (
                     name: "default",
                     template: "api/{controller}/{action}/{id?}",
-                    defaults: new { controller = "Home", action = "Index" });
+                    defaults : new
+                    {
+                        controller = "Home", action = "Index"
+                    });
             });
         }
     }
