@@ -39,7 +39,6 @@ class StatisticsPage extends React.Component<WithStyles & StatisticsPage.Props, 
 
         axios.default.get(AppConfigration.BASE_API_URL + '/api/statistics/all')
         .then(function(response: any) {
-            console.log(response);
             thisContext.setState({data: response.data.statistics});
         }).catch(function(error: any) {
             console.log(error);
@@ -66,7 +65,7 @@ class StatisticsPage extends React.Component<WithStyles & StatisticsPage.Props, 
         }
 
         elements = collection.map((item: any, index: number) =>
-            <li key={index}> {item.key} - {item.value} respondent(s) or {item.percentage}% of total number of respondents</li>
+            <div key={index}> {item.key} - {item.value} respondent(s) or {item.percentage}% of total number of respondents</div>
         );
 
         return elements;

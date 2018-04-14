@@ -40,14 +40,6 @@ namespace Bifrost.API.Controllers
             return User.Identity.IsAuthenticated;
         }
 
-        // [HttpGet]
-        // [AllowAnonymous]
-        // public IActionResult Register(string returnUrl = null)
-        // {
-        //     ViewData["ReturnUrl"] = returnUrl;
-        //     return View("~/Views/Home/Index.cshtml");
-        // }
-
         [HttpPost]
         [AllowAnonymous]
         public async Task<IActionResult> Register([FromBody]CreateUserViewModel model, string returnUrl = null)

@@ -27,13 +27,6 @@ namespace Bifrost.API.Controllers
             this.mapper = mapper;
         }
 
-        // [HttpGet]
-        // //[Authorize(Roles = "Admin,HRManager")]
-        // public ViewResult Respondents ()
-        // {
-        //     return View ("~/Views/Home/Index.cshtml");
-        // }
-
         [HttpGet]
         //[Authorize(Roles = "Admin,HRManager")]
         public IActionResult All ()

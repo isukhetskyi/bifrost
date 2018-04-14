@@ -29,13 +29,6 @@ namespace Bifrost.API.Controllers
             this.mapper = mapper;
         }
 
-        // [HttpGet]
-        // [AllowAnonymous]
-        // public ViewResult Survey()
-        // {
-        //     return View("~/Views/Home/Index.cshtml");
-        // }
-
         [HttpPost]
         [AllowAnonymous]
         public IActionResult Survey([FromBody]SurveyViewModel body)
@@ -44,41 +37,15 @@ namespace Bifrost.API.Controllers
             {
                 var technologies = this.technologyService.GetAll();
                 var usersTechnologies = new List<TechnologyModel>();
-                if(body.ProgrammingLanguages != null && body.ProgrammingLanguages.Any())
+                if(body.Technologies != null && body.Technologies.Any())
                 {
                     var ids = new List<int>();
-                    foreach(var id in body.ProgrammingLanguages)
+                    foreach(var id in body.Technologies)
                     {
                         var lang = technologies.FirstOrDefault(t => t.Id == id);
                         if(lang != null)
                         {
                             usersTechnologies.Add(lang);
-                        }
-                    }
-                }
-
-                if(body.Frameworks != null && body.Frameworks.Any())
-                {
-                    var ids = new List<int>();
-                    foreach(var id in body.Frameworks)
-                    {
-                        var framew = technologies.FirstOrDefault(t => t.Id == id);
-                        if(framew != null)
-                        {
-                            usersTechnologies.Add(framew);
-                        }
-                    }
-                }
-
-                if(body.Databases != null && body.Databases.Any())
-                {
-                    var ids = new List<int>();
-                    foreach(var id in body.Databases)
-                    {
-                        var db = technologies.FirstOrDefault(t => t.Id == id);
-                        if(db != null)
-                        {
-                            usersTechnologies.Add(db);
                         }
                     }
                 }

@@ -18,9 +18,7 @@ namespace Bifrost.API.ViewModels.Survey
         public List<object> ProgrammingLanguagesCheckboxes { get; set; }
         public List<object> FrameworksCheckboxes { get; set; }
         public List<object> DatabasesCheckboxes { get; set; }
-        public List<int> ProgrammingLanguages { get; set; }
-        public List<int> Databases { get; set; }
-        public List<int> Frameworks { get; set; }
-        public string OtherInfo { get; set; }
+        public List<int> Technologies { get; set; }
+        public string Other { get; set; }
     }
 }
