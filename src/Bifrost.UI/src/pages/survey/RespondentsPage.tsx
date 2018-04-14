@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
-import { StyleRulesCallback, Select } from 'material-ui';
+import { StyleRulesCallback, Select, Button } from 'material-ui';
 import { RootState } from '../../reducers';
 import { bindActionCreators } from 'redux';
 import withStyles, { WithStyles } from 'material-ui/styles/withStyles';
@@ -45,9 +45,9 @@ class RespondentsPage extends React.Component<WithStyles & RespondentsPage.Props
         ProgrammingLanguages: new Array<[string, string]>(),
         Frameworks: new Array<[string, string]>(),
         Databases: new Array<[string, string]>(),
-        SelectedLanguage: -1,
-        SelectedFramework: -1,
-        SelectedDatabase: -1,
+        SelectedLanguage: 0,
+        SelectedFramework: 0,
+        SelectedDatabase: 0,
         redirect: false,
         page: 0,
         rowsPerPage: 10,
@@ -145,13 +145,17 @@ class RespondentsPage extends React.Component<WithStyles & RespondentsPage.Props
     }
 
     exportCsv() {
-        axios.default.get(AppConfigration.BASE_API_URL + '/api/respondents/exporttocsv',
-                          {
+        axios.default.get(
+            AppConfigration.BASE_API_URL + '/api/respondents/exporttocsv',
+            {
                 params: {
                     languageId: this.state.SelectedLanguage,
                     frameworkId: this.state.SelectedFramework,
                     databaseId: this.state.SelectedDatabase
-                }
+                },
+                headers: {'Access-Control-Allow-Origin': '*'
+                , 'Accept': 'text/html,application/xhtml+xml,application/xml,text/csv;q=0.9,image/webp,image/apng,*/*;q=0.8'
+            }
             })
             .then(function (response: any) {
                 let file = csv.parse(response.data.respondents);
@@ -204,6 +208,11 @@ class RespondentsPage extends React.Component<WithStyles & RespondentsPage.Props
     render() {
         return (
             <div>
+                <div className={this.props.classes.wrapper}>
+                    <Button className={this.props.classes.button} onClick={() => this.exportCsv()}>
+                        Export CSV
+                    </Button>
+                </div>
                 <Select
                     value={this.state.SelectedLanguage}
                     native={true}
@@ -297,6 +306,13 @@ const style: StyleRulesCallback = theme => ({
         width: 'calc(30%)',
         padding: 5,
         margin: 5
+    },
+    button: {
+        width: '100%'
+    },
+    wrapper: {
+        width: '100%',
+        display: 'inline-block'
     }
 });
 

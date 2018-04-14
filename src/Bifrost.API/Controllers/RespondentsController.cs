@@ -90,7 +90,6 @@ namespace Bifrost.API.Controllers
         }
 
         [HttpGet]
-        [Produces("text/csv")]
         public IActionResult ExportToCsv (int languageId = 0, int frameworkId = 0, int databaseId = 0)
         {
             return Ok (new

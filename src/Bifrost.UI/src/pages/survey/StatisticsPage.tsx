@@ -138,6 +138,7 @@ const style: StyleRulesCallback = theme => ({
         justifyContent: 'space-around',
         maxHeight: '100%',
         overflow: 'auto',
+        color: 'black',
         backgroundColor: theme.palette.background.paper,
       },
       gridList: {
@@ -147,6 +148,7 @@ const style: StyleRulesCallback = theme => ({
         textAlign: 'center',
         // Promote the list into his own layer on Chrome. This cost memory but helps keeping high FPS.
         transform: 'translateZ(0)',
+        overflow: 'unset',
       },
       title: {
           background: 'rgba(0, 0, 0, 0.1);',
