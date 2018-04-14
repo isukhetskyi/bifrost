@@ -122,7 +122,6 @@ class SurveyPage extends React.Component<WithStyles & SurveyPage.Props, SurveyPa
                 thisContext.setState({ ProgrammingLanguagesCheckboxes: response.data.technologies.languages });
                 thisContext.setState({ FrameworksCheckboxes: response.data.technologies.frameworks });
                 thisContext.setState({ DatabasesCheckboxes: response.data.technologies.databases });
-                console.log(thisContext.state);
             })
             .catch(function (error: any) {
                 console.log(error);
@@ -185,7 +184,6 @@ class SurveyPage extends React.Component<WithStyles & SurveyPage.Props, SurveyPa
                 this.setState({ Technologies: newArray });
             }
         }
-        console.log(this.state.Technologies);
     }
 
     renderCheckboxes(type: string) {
@@ -256,7 +254,7 @@ class SurveyPage extends React.Component<WithStyles & SurveyPage.Props, SurveyPa
     }
 
     render() {
-        if (this.state.isDone) {
+        if (!this.state.isDone) {
             // tslint:disable-next-line:jsx-wrap-multiline
             return <div>
                 <form onSubmit={e => this.handleSubmit()} onKeyPress={e => this.handleKeyPress(e)}>
