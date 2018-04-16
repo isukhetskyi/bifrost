@@ -10,7 +10,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bifrost.Repository", "Bifro
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bifrost.Services", "Bifrost.Services\Bifrost.Services.csproj", "{164BDA0B-EE96-4E92-96C5-B59BD7995417}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bifrost.Web", "Bifrost.Web\Bifrost.Web.csproj", "{E30D495D-C0A7-4BC0-BF55-E24D8793F112}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bifrost.API", "Bifrost.API\Bifrost.API.csproj", "{E30D495D-C0A7-4BC0-BF55-E24D8793F112}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bifrost.Domain", "Bifrost.Domain\Bifrost.Domain.csproj", "{D81BBD77-203A-4585-86CC-19131BA33ADA}"
 EndProject
