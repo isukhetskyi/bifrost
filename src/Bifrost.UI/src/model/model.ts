@@ -30,8 +30,8 @@ export class RespondentModel {
     lastName: string;
     age: number;
     address: string;
-    isEmployed: boolean;
-    currentPossition: string;
+    isEmployed: string;
+    currentPosition: string;
     phone: string;
     skype: string;
     email: string;
@@ -47,8 +47,8 @@ export class RespondentModel {
         this.lastName = '';
         this.age = -1;
         this.address = '';
-        this.isEmployed = false;
-        this.currentPossition = '';
+        this.isEmployed = '';
+        this.currentPosition = '';
         this.phone = '';
         this.skype = '';
         this.email = '';
@@ -68,7 +68,7 @@ export interface Select {
 
 }
 
-export interface SignUp {
+export interface Register {
 
 }
 
@@ -82,7 +82,7 @@ export enum ActionType {
     GET_RESPONDENTS,
     GET_RESPONDENT,
     LOGIN,
-    SIGNUP,
+    REGISTER,
 }
 
 export interface Action<T> {

@@ -1,13 +1,13 @@
 import * as React from 'react';
-import Button from 'material-ui/Button';
 import withStyles, { WithStyles, StyleRulesCallback } from 'material-ui/styles/withStyles';
 import { RootState } from '../../reducers/index';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { RouteComponentProps } from 'react-router';
-import Grid from 'material-ui/Grid';
-import { Input } from 'material-ui';
+import { Input, Button, Grid } from 'material-ui';
 import * as LoginActions from '../../actions/login';
+import * as axios from 'axios';
+import { AppConfigration } from '../../config/config';
 
 export namespace LoginPage {
     export interface Props extends RouteComponentProps<void> {
@@ -28,7 +28,10 @@ export namespace LoginPage {
 class LoginPage extends React.Component<WithStyles & LoginPage.Props, LoginPage.State> {
     state = {
         Email: '',
+        EmailError: false,
         Password: '',
+        PasswordError: false,
+        isDone: false,
         RememberMe: false,
         idDone: false,
     };
@@ -57,11 +60,23 @@ class LoginPage extends React.Component<WithStyles & LoginPage.Props, LoginPage.
     }
 
     handleSubmit = () => {
-        this.props.actions.login(
+        let thisContext = this;
+
+        axios.default.post(AppConfigration.BASE_API_URL + '/api/account/login',
+            this.state,
             {
-                Email: this.state.Email,
-                Password: this.state.Password,
-                RememberMe: this.state.RememberMe
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*',
+                    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8'
+                }
+            })
+            .then(function (response: any) {
+                thisContext.setState({ isDone: true });
+            })
+            .catch(function (error: any) {
+                // tslint:disable-next-line:no-console
+                console.error(error);
             });
     }
 

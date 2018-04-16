@@ -266,6 +266,7 @@ class SurveyPage extends React.Component<WithStyles & SurveyPage.Props, SurveyPa
                             <GridList cols={4} cellHeight={100}>
                                 <FormControl
                                     style={{ width: '30%' }}
+                                    required
                                     className={this.props.classes.formControl}
                                     error={this.state.FirstNameError}
                                     aria-describedby="FirstName-error-text"
@@ -280,6 +281,7 @@ class SurveyPage extends React.Component<WithStyles & SurveyPage.Props, SurveyPa
                                 </FormControl>
                                 <FormControl
                                     style={{ width: '30%' }}
+                                    required
                                     className={this.props.classes.formControl}
                                     error={this.state.LastNameError}
                                     aria-describedby="LastName-error-text"
@@ -308,6 +310,7 @@ class SurveyPage extends React.Component<WithStyles & SurveyPage.Props, SurveyPa
                                 </FormControl>
                                 <FormControl
                                     style={{ width: '100%' }}
+                                    required
                                     className={this.props.classes.formControl}
                                     error={this.state.AddressError}
                                     aria-describedby="Address-error-text"
@@ -333,6 +336,7 @@ class SurveyPage extends React.Component<WithStyles & SurveyPage.Props, SurveyPa
                                 </FormControl>
                                 <FormControl
                                     style={{ width: '75%' }}
+                                    required={this.state.IsEmployed}
                                     className={this.props.classes.formControl}
                                     error={this.state.CurrentPositionError}
                                     aria-describedby="CurrentPosition-error-text"

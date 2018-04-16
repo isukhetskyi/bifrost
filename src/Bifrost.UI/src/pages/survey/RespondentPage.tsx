@@ -72,9 +72,9 @@ class RespondentPage extends React.Component<WithStyles & RespondentPage.Props, 
                     </ExpansionPanelSummary>
                     <ExpansionPanelDetails>
                         <Typography>
-                            <span className={this.props.classes.h3}>Is employed: {this.state.respondent.isEmployed}</span>
+                            <span className={this.props.classes.h3}>Is employed: {this.state.respondent.isEmployed ? 'Yes' : 'No'}</span>
                             <br/>
-                            <span className={this.props.classes.h3}>Current possition: {this.state.respondent.currentPossition}</span>
+                            <span className={this.props.classes.h3}>Current possition: {this.state.respondent.currentPosition}</span>
                         </Typography>
                     </ExpansionPanelDetails>
                 </ExpansionPanel>

@@ -35,7 +35,7 @@ import SurveyPage from './pages/survey/SurveyPage';
 import StatisticsPage from './pages/survey/StatisticsPage';
 import RespondentsPage from './pages/survey/RespondentsPage';
 import RespondentPage from './pages/survey/RespondentPage';
-import SignUpPage from './pages/adminarea/SignUpPage';
+import RegisterPage from './pages/adminarea/RegisterPage';
 
 export namespace App {
     export interface Props extends RouteComponentProps<void> {
@@ -54,7 +54,7 @@ const history = createBrowserHistory();
 class App extends React.Component<WithStyles & App.Props, App.State> {
 
     state = {
-        mobileOpen: true,
+        mobileOpen: false,
         surveyAreaOpen: false,
         adminAreaOpen: false,
     };
@@ -69,7 +69,7 @@ class App extends React.Component<WithStyles & App.Props, App.State> {
             <Route exact={true} path="/respondents/:number" component={RespondentPage}/>
             <Route exact={true} path="/todo" component={TodoPage} />
             <Route exact={true} path="/login" component={LoginPage} />
-            <Route exact={true} path="/signup" component={SignUpPage}/>
+            <Route exact={true} path="/signup" component={RegisterPage}/>
         </div>
     );
 

@@ -1,15 +1,12 @@
 import * as React from 'react';
-import Button from 'material-ui/Button';
 import withStyles, { WithStyles, StyleRulesCallback } from 'material-ui/styles/withStyles';
 import { RootState } from '../../reducers/index';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 import { RouteComponentProps } from 'react-router';
-import Grid from 'material-ui/Grid';
-import { Input } from 'material-ui';
+import { Input, Button, Grid } from 'material-ui';
 import * as SignUpActions from '../../actions/signup';
 
-export namespace SignUpPage {
+export namespace RegisterPage {
     export interface Props extends RouteComponentProps<void> {
         actions: typeof SignUpActions;
     }
@@ -25,7 +22,7 @@ export namespace SignUpPage {
     }
 }
 
-class SignUpPage extends React.Component<WithStyles & SignUpPage.Props, SignUpPage.State> {
+class RegisterPage extends React.Component<WithStyles & RegisterPage.Props, RegisterPage.State> {
     state = {
         Email: '',
         Password: '',
@@ -66,9 +63,9 @@ class SignUpPage extends React.Component<WithStyles & SignUpPage.Props, SignUpPa
     }
 
     render() {
+        console.log('On sign up page');
         return (
             <Grid
-                container
                 className={this.props.classes.loginpage}
                 alignItems={'flex-start'}
                 justify={'flex-start'}
@@ -89,6 +86,15 @@ class SignUpPage extends React.Component<WithStyles & SignUpPage.Props, SignUpPa
                     placeholder="Password"
                 />
                 <br/>
+                <br/>
+                <Input
+                    className={this.props.classes.input}
+                    onChange={(e) => {this.handleInputChange('Password', e); }}
+                    fullWidth
+                    type={'password'}
+                    placeholder="Repeat Password"
+                />
+                <br/>
                 <Button
                     className={this.props.classes.button}
                     onClick={this.handleSubmit}
@@ -98,7 +104,6 @@ class SignUpPage extends React.Component<WithStyles & SignUpPage.Props, SignUpPa
                     Login
                 </Button>
             </Grid>
-
         );
     }
 }
@@ -143,8 +148,8 @@ function mapStateToProps(state: RootState) {
 
 function mapDispatchToProps(dispatch: any) {
     return {
-        actions: bindActionCreators(SignUpActions as any, dispatch)
+        // actions: bindActionCreators(SignUpActions as any, dispatch)
     };
   }
 
-export default (withStyles(styles)<{}>(connect(mapStateToProps, mapDispatchToProps)(SignUpPage)));
+export default (withStyles(styles)<{}>(connect(mapStateToProps, mapDispatchToProps)(RegisterPage)));
