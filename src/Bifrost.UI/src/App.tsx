@@ -103,7 +103,7 @@ class App extends React.Component<WithStyles & App.Props, App.State> {
                 <div className={this.props.classes.drawerHeader} />
                 <Divider />
                 <List>
-                    <ListItem button onClick={() => history.push('/')}>
+                    <ListItem button onClick={() => { history.push('/'); this.setState({mobileOpen: false}); }}>
                         <ListItemIcon>
                             <HomeIcon />
                         </ListItemIcon>
@@ -119,19 +119,19 @@ class App extends React.Component<WithStyles & App.Props, App.State> {
                 </ListItem>
                 <Collapse in={this.state.surveyAreaOpen} timeout="auto" unmountOnExit>
                     <List component="div" disablePadding>
-                        <ListItem button className={this.props.classes.nested} onClick={() => { history.push('/survey'); }}>
+                        <ListItem button className={this.props.classes.nested} onClick={() => { history.push('/survey'); this.setState({mobileOpen: false}); }}>
                             <ListItemIcon>
                                 <AssignmentIcon />
                             </ListItemIcon>
                             <ListItemText inset primary="Developer's survey" />
                         </ListItem>
-                        <ListItem button className={this.props.classes.nested} onClick={() => { history.push('/respondents'); }}>
+                        <ListItem button className={this.props.classes.nested} onClick={() => { history.push('/respondents'); this.setState({mobileOpen: false}); }}>
                             <ListItemIcon>
                                 <ListNumberedIcon />
                             </ListItemIcon>
                             <ListItemText inset primary="Respondents" />
                         </ListItem>
-                        <ListItem button className={this.props.classes.nested} onClick={() => { history.push('/statistics'); }}>
+                        <ListItem button className={this.props.classes.nested} onClick={() => { history.push('/statistics'); this.setState({mobileOpen: false}); }}>
                             <ListItemIcon>
                                 <AssignmentIcon />
                             </ListItemIcon>
@@ -148,7 +148,7 @@ class App extends React.Component<WithStyles & App.Props, App.State> {
                 </ListItem>
                 <Collapse in={this.state.adminAreaOpen} timeout="auto" unmountOnExit>
                 <List component="div" disablePadding>
-                    <ListItem button className={this.props.classes.nested}>
+                    <ListItem button className={this.props.classes.nested} onClick={() => { history.push('/'); this.setState({mobileOpen: false}); }}>
                     <ListItemIcon>
                         <SupervisorAccountIcon />
                     </ListItemIcon>
@@ -156,7 +156,7 @@ class App extends React.Component<WithStyles & App.Props, App.State> {
                     </ListItem>
                 </List>
                 <List component="div" disablePadding>
-                    <ListItem button className={this.props.classes.nested} onClick={() => history.push('/singup')}>
+                    <ListItem button className={this.props.classes.nested} onClick={() => {history.push('/singup'); this.setState({mobileOpen: false}); }}>
                     <ListItemIcon>
                         <CreateIcon />
                     </ListItemIcon>
@@ -165,7 +165,7 @@ class App extends React.Component<WithStyles & App.Props, App.State> {
                 </List>
                 </Collapse>
                 <List>
-                    <ListItem button onClick={() => history.push('/todo')}>
+                    <ListItem button onClick={() => {history.push('/todo'); this.setState({mobileOpen: false}); }}>
                         <ListItemIcon>
                             {this.renderTodoIcon()}
                         </ListItemIcon>
@@ -174,7 +174,7 @@ class App extends React.Component<WithStyles & App.Props, App.State> {
                 </List>
                 <Divider />
                 <List>
-                    <ListItem button onClick={() => history.push('/login')}>
+                    <ListItem button onClick={() => {history.push('/login'); this.setState({mobileOpen: false}); }}>
                         <ListItemIcon>
                             <AccountBoxIcon />
                         </ListItemIcon>

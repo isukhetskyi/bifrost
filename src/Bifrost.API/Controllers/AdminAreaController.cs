@@ -13,7 +13,7 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Bifrost.API.Controllers
 {
 
-    //[Authorize ("SuperAdmin")]
+    [Authorize ("SuperAdmin")]
     public class AdminAreaController : Controller
     {
         private readonly IServiceProvider serviceProvider;

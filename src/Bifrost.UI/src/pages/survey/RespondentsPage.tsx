@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
-import { StyleRulesCallback, Select, Button } from 'material-ui';
+import { StyleRulesCallback, Select, Button, Grid } from 'material-ui';
 import { RootState } from '../../reducers';
 import { bindActionCreators } from 'redux';
 import withStyles, { WithStyles } from 'material-ui/styles/withStyles';
@@ -183,15 +183,15 @@ class RespondentsPage extends React.Component<WithStyles & RespondentsPage.Props
 
     initializeData() {
         let currentArrayValue = this.state.ProgrammingLanguages;
-        currentArrayValue.unshift(['0', 'Choose']);
+        currentArrayValue.unshift(['0', 'Languages']);
         this.setState({ ProgrammingLanguages: currentArrayValue });
 
         currentArrayValue = this.state.Databases;
-        currentArrayValue.unshift(['0', 'Choose']);
+        currentArrayValue.unshift(['0', 'Databases']);
         this.setState({ Databases: currentArrayValue });
 
         currentArrayValue = this.state.Frameworks;
-        currentArrayValue.unshift(['0', 'Choose']);
+        currentArrayValue.unshift(['0', 'Frameworks']);
         this.setState({ Frameworks: currentArrayValue });
     }
 
@@ -207,40 +207,49 @@ class RespondentsPage extends React.Component<WithStyles & RespondentsPage.Props
         return (
             <div>
                 <div className={this.props.classes.wrapper}>
-                    <Button className={this.props.classes.button} onClick={() => this.exportCsv()}>
+                    <Button fullWidth onClick={() => this.exportCsv()}>
                         Export CSV
                     </Button>
                 </div>
-                <Select
-                    value={this.state.SelectedLanguage}
-                    native={true}
-                    className={this.props.classes.select}
-                    onChange={(e: any) => this.handleDropdownChange(e, 'language')}
-                >
-                    {this.state.ProgrammingLanguages.map((item: [string, string], index: number) => {
-                        return <option key={index} value={item[0]}>{item[1]}</option>;
-                    } )}
-                </Select>
-                <Select
-                    value={this.state.SelectedFramework}
-                    native={true}
-                    className={this.props.classes.select}
-                    onChange={(e: any) => this.handleDropdownChange(e, 'framework')}
-                >
-                    {this.state.Frameworks.map((item: [string, string], index: number) => {
-                        return <option key={index} value={item[0]}>{item[1]}</option>;
-                    } )}
-                </Select>
-                <Select
-                    value={this.state.SelectedDatabase}
-                    native={true}
-                    className={this.props.classes.select}
-                    onChange={(e: any) => this.handleDropdownChange(e, 'database')}
-                >
-                    {this.state.Databases.map((item: [string, string], index: number) => {
-                        return <option key={index} value={item[0]}>{item[1]}</option>;
-                    } )}
-                </Select>
+                <Grid container spacing={0}>
+                    <Grid item xs={12} md={4}>
+                        <Select
+                            fullWidth
+                            value={this.state.SelectedLanguage}
+                            native={true}
+                            onChange={(e: any) => this.handleDropdownChange(e, 'language')}
+                        >
+                            {this.state.ProgrammingLanguages.map((item: [string, string], index: number) => {
+                                return <option key={index} value={item[0]}>{item[1]}</option>;
+                            } )}
+                        </Select>
+                    </Grid>
+                    <Grid item xs={12} md={4}>
+                        <Select
+                            fullWidth
+                            value={this.state.SelectedFramework}
+                            native={true}
+                            onChange={(e: any) => this.handleDropdownChange(e, 'framework')}
+                        >
+                            {this.state.Frameworks.map((item: [string, string], index: number) => {
+                                return <option key={index} value={item[0]}>{item[1]}</option>;
+                            } )}
+                        </Select>
+                    </Grid>
+                    <Grid item xs={12} md={4}>
+                        <Select
+                            fullWidth
+                            value={this.state.SelectedDatabase}
+                            native={true}
+                            onChange={(e: any) => this.handleDropdownChange(e, 'database')}
+                        >
+                            {this.state.Databases.map((item: [string, string], index: number) => {
+                                return <option key={index} value={item[0]}>{item[1]}</option>;
+                            } )}
+                        </Select>
+                    </Grid>
+                </Grid>
+
                 <Paper className={this.props.classes.root} >
                     <div className={this.props.classes.tableWrapper}>
                         <Table className={this.props.classes.table}>
@@ -261,11 +270,11 @@ class RespondentsPage extends React.Component<WithStyles & RespondentsPage.Props
                                             </TableRow>
                                         );
                                     })}
-                                {this.emptyRows > 0 && (
-                                    <TableRow style={{ height: 48 * this.emptyRows }}>
+                                {/* {this.emptyRows > 0 && (
+                                    <TableRow>
                                         <TableCell colSpan={6} />
                                     </TableRow>
-                                )}
+                                )} */}
                             </TableBody>
                             <TableFooter>
                                 <TableRow>
@@ -290,27 +299,15 @@ class RespondentsPage extends React.Component<WithStyles & RespondentsPage.Props
 
 const style: StyleRulesCallback = theme => ({
     root: {
-        width: '100%',
+        // width: '100%',
         marginTop: theme.spacing.unit * 3,
     },
     table: {
-        minWidth: 500,
+         minWidth: 400,
     },
     tableWrapper: {
         overflowX: 'auto',
         overflowY: 'auto'
-    },
-    select: {
-        width: 'calc(30%)',
-        padding: 5,
-        margin: 5
-    },
-    button: {
-        width: '100%'
-    },
-    wrapper: {
-        width: '100%',
-        display: 'inline-block'
     }
 });
 
