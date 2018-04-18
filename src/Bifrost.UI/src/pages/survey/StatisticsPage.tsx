@@ -74,7 +74,7 @@ class StatisticsPage extends React.Component<WithStyles & StatisticsPage.Props, 
     render() {
         return (
             <div className={this.props.classes.root}>
-                <GridList cellHeight={500}  spacing={1} cols={1} className={this.props.classes.gridList}>
+                <GridList cellHeight={600} spacing={1} cols={1} className={this.props.classes.gridList}>
                     <GridListTile>
                     <GridListTileBar
                         title={'Programming languages'}
@@ -91,7 +91,7 @@ class StatisticsPage extends React.Component<WithStyles & StatisticsPage.Props, 
                         {this.renderTextualStatistics('languages')}
                     </GridListTile>
                 </GridList>
-                <GridList cellHeight={500}  spacing={1} cols={1} className={this.props.classes.gridList}>
+                <GridList cellHeight={600} spacing={1} cols={1} className={this.props.classes.gridList}>
                     <GridListTile cols={1} rows={1}>
                     <GridListTileBar
                         title={'Frameworks and libraries'}
@@ -108,7 +108,7 @@ class StatisticsPage extends React.Component<WithStyles & StatisticsPage.Props, 
                     {this.renderTextualStatistics('frameworks')}
                     </GridListTile>
                 </GridList>
-                <GridList cellHeight={500}  spacing={1} cols={1} className={this.props.classes.gridList}>
+                <GridList cellHeight={600} spacing={1} cols={1} className={this.props.classes.gridList}>
                     <GridListTile cols={1} rows={1}>
                     <GridListTileBar
                         title={'Databases'}

@@ -1,8 +1,8 @@
-import { Action, ActionType, SignUp } from '../model/model';
+import { Action, ActionType, Register } from '../model/model';
 
-export function singUp(user: SignUp): Action<SignUp> {
+export function singUp(user: Register): Action<Register> {
     return {
-        type: ActionType.SIGNUP,
+        type: ActionType.REGISTER,
         payload: user
     };
 }

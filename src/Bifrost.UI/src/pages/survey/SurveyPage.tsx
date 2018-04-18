@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
 import {
-    GridList,
     withStyles,
     WithStyles,
     StyleRulesCallback,
@@ -18,12 +17,12 @@ import {
     FormGroup,
     FormControlLabel,
     FormLabel,
-    Button
+    Button,
+    Grid
 } from 'material-ui';
 import { connect } from 'react-redux';
 import { RootState } from '../../reducers';
 import ExpandMoreIcon from 'material-ui-icons/ExpandMore';
-import Textarea from 'material-ui/Input/Textarea';
 import * as axios from 'axios';
 import { AppConfigration } from '../../config/config';
 
@@ -63,6 +62,7 @@ export namespace SurveyPage {
         Technologies?: Array<number>;
         isValid: boolean;
         isDone: boolean;
+        isNotEmpty: boolean;
     }
 }
 
@@ -92,12 +92,13 @@ class SurveyPage extends React.Component<WithStyles & SurveyPage.Props, SurveyPa
         SpecialityError: false,
         Other: '',
         OtherError: false,
-        ProgrammingLanguagesCheckboxes: [],
-        FrameworksCheckboxes: [],
-        DatabasesCheckboxes: [],
+        ProgrammingLanguagesCheckboxes: Array(),
+        FrameworksCheckboxes: Array(),
+        DatabasesCheckboxes: Array(),
         Technologies: new Array<number>(),
         isValid: false,
         isDone: false,
+        isNotEmpty: false,
     };
 
     validation = {
@@ -141,7 +142,19 @@ class SurveyPage extends React.Component<WithStyles & SurveyPage.Props, SurveyPa
         }
     }
 
+    checkIfNotEmpty() {
+        let result = false;
+        result = this.state.FirstName.trim().length > 0
+              && this.state.LastName.trim().length > 0
+              && this.state.Address.trim().length > 0
+              && (this.state.Phone.trim().length > 0
+                  || this.state.Email.trim().length > 0
+                  || this.state.Skype.trim().length > 0);
+        this.setState({isNotEmpty: result});
+    }
+
     validateForm(): boolean {
+        this.checkIfNotEmpty();
         let isFormValid = (!this.state.AddressError
             && !this.state.AgeError
             && !this.state.CurrentPositionError
@@ -162,6 +175,7 @@ class SurveyPage extends React.Component<WithStyles & SurveyPage.Props, SurveyPa
     handleChange = (event: any) => {
         if (this.validate(event)) {
             this.setState({ [event.target.id]: event.target.value });
+            this.checkIfNotEmpty();
         }
     };
 
@@ -256,97 +270,118 @@ class SurveyPage extends React.Component<WithStyles & SurveyPage.Props, SurveyPa
     render() {
         if (!this.state.isDone) {
             // tslint:disable-next-line:jsx-wrap-multiline
-            return <div>
+            return <Grid  container spacing={0}>
                 <form onSubmit={e => this.handleSubmit()} onKeyPress={e => this.handleKeyPress(e)}>
                     <ExpansionPanel defaultExpanded>
                         <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
                             <Typography className={this.props.classes.heading}>Personal Info</Typography>
                         </ExpansionPanelSummary>
                         <ExpansionPanelDetails>
-                            <GridList cols={4} cellHeight={100}>
-                                <FormControl
-                                    style={{ width: '30%' }}
-                                    className={this.props.classes.formControl}
-                                    error={this.state.FirstNameError}
-                                    aria-describedby="FirstName-error-text"
-                                >
-                                    <InputLabel htmlFor="FirstName">First Name</InputLabel>
-                                    <Input
-                                        id="FirstName"
-                                        datatype={'text'}
-                                        onChange={e => this.handleChange(e)}
-                                    />
-                                    <FormHelperText id="FirstName-error-text" className={this.state.FirstNameError ? '' : this.props.classes.none}>Error</FormHelperText>
-                                </FormControl>
-                                <FormControl
-                                    style={{ width: '30%' }}
-                                    className={this.props.classes.formControl}
-                                    error={this.state.LastNameError}
-                                    aria-describedby="LastName-error-text"
-                                >
-                                    <InputLabel htmlFor="LastName">Last Name</InputLabel>
-                                    <Input
-                                        id="LastName"
-                                        datatype={'text'}
-                                        onChange={e => this.handleChange(e)}
-                                    />
-                                    <FormHelperText id="LastName-error-text" className={this.state.LastNameError ? '' : this.props.classes.none}>Error</FormHelperText>
-                                </FormControl>
-                                <FormControl
-                                    style={{ width: '30%' }}
-                                    className={this.props.classes.formControl}
-                                    error={this.state.AgeError}
-                                    aria-describedby="Age-error-text"
-                                >
-                                    <InputLabel htmlFor="Age">Age</InputLabel>
-                                    <Input
-                                        id="Age"
-                                        datatype={'number'}
-                                        onChange={e => this.handleChange(e)}
-                                    />
-                                    <FormHelperText id="Age-error-text" className={this.state.AgeError ? '' : this.props.classes.none}>Error</FormHelperText>
-                                </FormControl>
-                                <FormControl
-                                    style={{ width: '100%' }}
-                                    className={this.props.classes.formControl}
-                                    error={this.state.AddressError}
-                                    aria-describedby="Address-error-text"
-                                >
-                                    <InputLabel htmlFor="Address">Address</InputLabel>
-                                    <Input
-                                        id="Address"
-                                        datatype={'text'}
-                                        onChange={e => this.handleChange(e)}
-                                    />
-                                    <FormHelperText id="Address-error-text" className={this.state.AddressError ? '' : this.props.classes.none}>Error</FormHelperText>
-                                </FormControl>
-                                <FormControl style={{ width: '20%' }}>
-                                    <Select
-                                        native={true}
-                                        className={this.props.classes.select}
-                                        defaultValue={'No'}
-                                        onChange={() => { this.setState({ IsEmployed: !this.state.IsEmployed }); }}
-                                    >
-                                        <option value={'Yes'}>Yes</option>
-                                        <option value={'No'}>No</option>
-                                    </Select>
-                                </FormControl>
-                                <FormControl
-                                    style={{ width: '75%' }}
-                                    className={this.props.classes.formControl}
-                                    error={this.state.CurrentPositionError}
-                                    aria-describedby="CurrentPosition-error-text"
-                                >
-                                    <InputLabel htmlFor="CurrentPosition">Current position</InputLabel>
-                                    <Input
-                                        id="CurrentPosition"
-                                        datatype={'text'}
-                                        disabled={!this.state.IsEmployed}
-                                        onChange={e => this.handleChange(e)}
-                                    />
-                                    <FormHelperText id="CurrentPosition-error-text" className={this.state.CurrentPositionError ? '' : this.props.classes.none}>Error</FormHelperText>
-                                </FormControl>
-                            </GridList>
+                                <Grid container>
+                                    <Grid item xs={12} md={4}>
+                                        <FormControl
+                                            fullWidth
+                                            required
+                                            className={this.props.classes.formControl}
+                                            error={this.state.FirstNameError}
+                                            aria-describedby="FirstName-error-text"
+                                        >
+                                            <InputLabel htmlFor="FirstName">First Name</InputLabel>
+                                            <Input
+                                                id="FirstName"
+                                                datatype={'text'}
+                                                onChange={e => this.handleChange(e)}
+                                                onBlur={e => this.validate(e)}
+                                            />
+                                            <FormHelperText id="FirstName-error-text" className={this.state.FirstNameError ? '' : this.props.classes.none}>Error</FormHelperText>
+                                        </FormControl>
+                                    </Grid>
+                                    <Grid item xs={12} md={4}>
+                                        <FormControl
+                                            fullWidth
+                                            required
+                                            className={this.props.classes.formControl}
+                                            error={this.state.LastNameError}
+                                            aria-describedby="LastName-error-text"
+                                        >
+                                            <InputLabel htmlFor="LastName">Last Name</InputLabel>
+                                            <Input
+                                                id="LastName"
+                                                datatype={'text'}
+                                                onChange={e => this.handleChange(e)}
+                                                onBlur={e => this.validate(e)}
+                                            />
+                                            <FormHelperText id="LastName-error-text" className={this.state.LastNameError ? '' : this.props.classes.none}>Error</FormHelperText>
+                                        </FormControl>
+                                    </Grid >
+                                    <Grid item xs={12} md={4}>
+                                        <FormControl
+                                            fullWidth
+                                            className={this.props.classes.formControl}
+                                            error={this.state.AgeError}
+                                            aria-describedby="Age-error-text"
+                                        >
+                                            <InputLabel htmlFor="Age">Age</InputLabel>
+                                            <Input
+                                                id="Age"
+                                                datatype={'number'}
+                                                onChange={e => this.handleChange(e)}
+                                                onBlur={e => this.validate(e)}
+                                            />
+                                            <FormHelperText id="Age-error-text" className={this.state.AgeError ? '' : this.props.classes.none}>Error</FormHelperText>
+                                        </FormControl>
+                                    </Grid>
+                                    <Grid item xs={12} md={12}>
+                                        <FormControl
+                                            fullWidth
+                                            required
+                                            className={this.props.classes.formControl}
+                                            error={this.state.AddressError}
+                                            aria-describedby="Address-error-text"
+                                        >
+                                            <InputLabel htmlFor="Address">Address</InputLabel>
+                                            <Input
+                                                id="Address"
+                                                datatype={'text'}
+                                                onChange={e => this.handleChange(e)}
+                                                onBlur={e => this.validate(e)}
+                                            />
+                                            <FormHelperText id="Address-error-text" className={this.state.AddressError ? '' : this.props.classes.none}>Error</FormHelperText>
+                                        </FormControl>
+                                    </Grid>
+                                    <Grid item xs={4} md={2}>
+                                        <FormControl fullWidth>
+                                            <Select
+                                                native={true}
+                                                className={this.props.classes.select}
+                                                defaultValue={'No'}
+                                                onChange={() => { this.setState({ IsEmployed: !this.state.IsEmployed }); }}
+                                            >
+                                                <option value={'Yes'}>Yes</option>
+                                                <option value={'No'}>No</option>
+                                            </Select>
+                                        </FormControl>
+                                    </Grid>
+                                    <Grid item xs={8} md={10}>
+                                        <FormControl
+                                            fullWidth
+                                            required={this.state.IsEmployed}
+                                            className={this.props.classes.formControl}
+                                            error={this.state.CurrentPositionError}
+                                            aria-describedby="CurrentPosition-error-text"
+                                        >
+                                            <InputLabel htmlFor="CurrentPosition">Current position</InputLabel>
+                                            <Input
+                                                id="CurrentPosition"
+                                                datatype={'text'}
+                                                disabled={!this.state.IsEmployed}
+                                                onChange={e => this.handleChange(e)}
+                                                onBlur={e => this.validate(e)}
+                                            />
+                                            <FormHelperText id="CurrentPosition-error-text" className={this.state.CurrentPositionError ? '' : this.props.classes.none}>Error</FormHelperText>
+                                        </FormControl>
+                                    </Grid>
+                                </Grid>
                         </ExpansionPanelDetails>
                     </ExpansionPanel>
                     <ExpansionPanel defaultExpanded>
@@ -354,73 +389,92 @@ class SurveyPage extends React.Component<WithStyles & SurveyPage.Props, SurveyPa
                             <Typography className={this.props.classes.heading}>Work Experience</Typography>
                         </ExpansionPanelSummary>
                         <ExpansionPanelDetails>
-                            <FormGroup style={{ width: '30%' }}>
-                                <FormLabel>
-                                    Languages
-                                    </FormLabel>
-                                {this.renderCheckboxes('ProgrammingLanguagesCheckboxes')}
-                            </FormGroup>
-                            <FormGroup style={{ width: '30%' }}>
-                                <FormLabel>
-                                    Frameworks
-                                    </FormLabel>
-                                {this.renderCheckboxes('FrameworksCheckboxes')}
-                            </FormGroup>
-                            <FormGroup style={{ width: '30%' }}>
-                                <FormLabel>
-                                    Databases
-                                    </FormLabel>
-                                {this.renderCheckboxes('DatabasesCheckboxes')}
-                            </FormGroup>
+                            <Grid container>
+                                <Grid item xs={12} sm={6}  md={4}>
+                                    <FormGroup>
+                                        <FormLabel>
+                                            Languages
+                                            </FormLabel>
+                                        {this.renderCheckboxes('ProgrammingLanguagesCheckboxes')}
+                                    </FormGroup>
+                                </Grid>
+                                <Grid item xs={12} sm={6} md={4}>
+                                    <FormGroup>
+                                        <FormLabel>
+                                            Frameworks
+                                            </FormLabel>
+                                        {this.renderCheckboxes('FrameworksCheckboxes')}
+                                    </FormGroup>
+                                </Grid>
+                                <Grid item xs={12} sm={6} md={4}>
+                                    <FormGroup>
+                                        <FormLabel>
+                                            Databases
+                                            </FormLabel>
+                                        {this.renderCheckboxes('DatabasesCheckboxes')}
+                                    </FormGroup>
+                                </Grid>
+                            </Grid>
                         </ExpansionPanelDetails>
                     </ExpansionPanel>
                     <ExpansionPanel defaultExpanded>
                         <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
                             <Typography className={this.props.classes.heading}>Contact info</Typography>
                         </ExpansionPanelSummary>
-                        <ExpansionPanelDetails style={{ style: '100%' }}>
-                            <FormControl
-                                style={{ width: '30%' }}
-                                className={this.props.classes.formControl}
-                                error={this.state.PhoneError}
-                                aria-describedby="Phone-error-text"
-                            >
-                                <InputLabel htmlFor="Phone">Phone</InputLabel>
-                                <Input
-                                    id="Phone"
-                                    datatype={'text'}
-                                    onChange={e => this.handleChange(e)}
-                                />
-                                <FormHelperText id="Phone-error-text" className={this.state.LastNameError ? '' : this.props.classes.none}>Error</FormHelperText>
-                            </FormControl>
-                            <FormControl
-                                style={{ width: '30%' }}
-                                className={this.props.classes.formControl}
-                                error={this.state.EmailError}
-                                aria-describedby="Email-error-text"
-                            >
-                                <InputLabel htmlFor="Email">Email</InputLabel>
-                                <Input
-                                    id="Email"
-                                    datatype={'text'}
-                                    onChange={e => this.handleChange(e)}
-                                />
-                                <FormHelperText id="Email-error-text" className={this.state.EmailError ? '' : this.props.classes.none}>Error</FormHelperText>
-                            </FormControl>
-                            <FormControl
-                                style={{ width: '30%' }}
-                                className={this.props.classes.formControl}
-                                error={this.state.SkypeError}
-                                aria-describedby="Skype-error-text"
-                            >
-                                <InputLabel htmlFor="Skype">Skype</InputLabel>
-                                <Input
-                                    id="Skype"
-                                    datatype={'number'}
-                                    onChange={e => this.handleChange(e)}
-                                />
-                                <FormHelperText id="Skype-error-text" className={this.state.SkypeError ? '' : this.props.classes.none}>Error</FormHelperText>
-                            </FormControl>
+                        <ExpansionPanelDetails>
+                            <Grid container>
+                                <Grid item xs={12} md={4}>
+                                    <FormControl
+                                        fullWidth
+                                        className={this.props.classes.formControl}
+                                        error={this.state.PhoneError}
+                                        aria-describedby="Phone-error-text"
+                                    >
+                                        <InputLabel htmlFor="Phone">Phone</InputLabel>
+                                        <Input
+                                            id="Phone"
+                                            datatype={'text'}
+                                            onChange={e => this.handleChange(e)}
+                                            onBlur={e => this.validate(e)}
+                                        />
+                                        <FormHelperText id="Phone-error-text" className={this.state.LastNameError ? '' : this.props.classes.none}>Error</FormHelperText>
+                                    </FormControl>
+                                </Grid>
+                                <Grid item xs={12} md={4}>
+                                    <FormControl
+                                        fullWidth
+                                        className={this.props.classes.formControl}
+                                        error={this.state.EmailError}
+                                        aria-describedby="Email-error-text"
+                                    >
+                                        <InputLabel htmlFor="Email">Email</InputLabel>
+                                        <Input
+                                            id="Email"
+                                            datatype={'text'}
+                                            onChange={e => this.handleChange(e)}
+                                            onBlur={e => this.validate(e)}
+                                        />
+                                        <FormHelperText id="Email-error-text" className={this.state.EmailError ? '' : this.props.classes.none}>Error</FormHelperText>
+                                    </FormControl>
+                                </Grid>
+                                <Grid item xs={12} md={4}>
+                                    <FormControl
+                                        fullWidth
+                                        className={this.props.classes.formControl}
+                                        error={this.state.SkypeError}
+                                        aria-describedby="Skype-error-text"
+                                    >
+                                        <InputLabel htmlFor="Skype">Skype</InputLabel>
+                                        <Input
+                                            id="Skype"
+                                            datatype={'number'}
+                                            onChange={e => this.handleChange(e)}
+                                            onBlur={e => this.validate(e)}
+                                        />
+                                        <FormHelperText id="Skype-error-text" className={this.state.SkypeError ? '' : this.props.classes.none}>Error</FormHelperText>
+                                    </FormControl>
+                                </Grid>
+                            </Grid>
                         </ExpansionPanelDetails>
                     </ExpansionPanel>
                     <ExpansionPanel defaultExpanded>
@@ -428,34 +482,42 @@ class SurveyPage extends React.Component<WithStyles & SurveyPage.Props, SurveyPa
                             <Typography className={this.props.classes.heading}>Education Info</Typography>
                         </ExpansionPanelSummary>
                         <ExpansionPanelDetails>
-                            <FormControl
-                                style={{ width: '45%' }}
-                                className={this.props.classes.formControl}
-                                error={this.state.PlaceOfStudyingError}
-                                aria-describedby="PlaceOfStudying-error-text"
-                            >
-                                <InputLabel htmlFor="PlaceOfStudying">Place of studying</InputLabel>
-                                <Input
-                                    id="PlaceOfStudying"
-                                    datatype={'text'}
-                                    onChange={e => this.handleChange(e)}
-                                />
-                                <FormHelperText id="PlaceOfStudying-error-text" className={this.state.PlaceOfStudyingError ? '' : this.props.classes.none}>Error</FormHelperText>
-                            </FormControl>
-                            <FormControl
-                                style={{ width: '45%' }}
-                                className={this.props.classes.formControl}
-                                error={this.state.SpecialityError}
-                                aria-describedby="Speciality-error-text"
-                            >
-                                <InputLabel htmlFor="Speciality">Speciality</InputLabel>
-                                <Input
-                                    id="Speciality"
-                                    datatype={'text'}
-                                    onChange={e => this.handleChange(e)}
-                                />
-                                <FormHelperText id="Speciality-error-text" className={this.state.SpecialityError ? '' : this.props.classes.none}>Error</FormHelperText>
-                            </FormControl>
+                            <Grid container>
+                                <Grid item xs={12} md={6}>
+                                    <FormControl
+                                        fullWidth
+                                        className={this.props.classes.formControl}
+                                        error={this.state.PlaceOfStudyingError}
+                                        aria-describedby="PlaceOfStudying-error-text"
+                                    >
+                                        <InputLabel htmlFor="PlaceOfStudying">Place of studying</InputLabel>
+                                        <Input
+                                            id="PlaceOfStudying"
+                                            datatype={'text'}
+                                            onChange={e => this.handleChange(e)}
+                                            onBlur={e => this.validate(e)}
+                                        />
+                                        <FormHelperText id="PlaceOfStudying-error-text" className={this.state.PlaceOfStudyingError ? '' : this.props.classes.none}>Error</FormHelperText>
+                                    </FormControl>
+                                </Grid>
+                                <Grid item xs={12} md={6}>
+                                    <FormControl
+                                        fullWidth
+                                        className={this.props.classes.formControl}
+                                        error={this.state.SpecialityError}
+                                        aria-describedby="Speciality-error-text"
+                                    >
+                                        <InputLabel htmlFor="Speciality">Speciality</InputLabel>
+                                        <Input
+                                            id="Speciality"
+                                            datatype={'text'}
+                                            onChange={e => this.handleChange(e)}
+                                            onBlur={e => this.validate(e)}
+                                        />
+                                        <FormHelperText id="Speciality-error-text" className={this.state.SpecialityError ? '' : this.props.classes.none}>Error</FormHelperText>
+                                    </FormControl>
+                                </Grid>
+                            </Grid>
                         </ExpansionPanelDetails>
                     </ExpansionPanel>
                     <ExpansionPanel defaultExpanded>
@@ -463,31 +525,36 @@ class SurveyPage extends React.Component<WithStyles & SurveyPage.Props, SurveyPa
                             <Typography className={this.props.classes.heading}>Other</Typography>
                         </ExpansionPanelSummary>
                         <ExpansionPanelDetails>
-                            <FormControl
-                                style={{ width: '95%' }}
-                                className={this.props.classes.formControl}
-                                error={this.state.OtherError}
-                                aria-describedby="Other-error-text"
-                            >
-                                <InputLabel htmlFor="Other">Other</InputLabel>
-                                <Textarea
-                                    id="Other"
-                                    datatype={'text'}
-                                    onChange={e => this.handleChange(e)}
-                                />
-                                <FormHelperText id="Other-error-text" className={this.state.OtherError ? '' : this.props.classes.none}>Error</FormHelperText>
-                            </FormControl>
+                            <Grid container>
+                                <Grid item xs={12} md={12}>
+                                    <FormControl
+                                        fullWidth
+                                        className={this.props.classes.formControl}
+                                        error={this.state.OtherError}
+                                        aria-describedby="Other-error-text"
+                                    >
+                                        <InputLabel htmlFor="Other">Other</InputLabel>
+                                        <Input
+                                            id="Other"
+                                            datatype={'text'}
+                                            onChange={e => this.handleChange(e)}
+                                            onBlur={e => this.validate(e)}
+                                        />
+                                        <FormHelperText id="Other-error-text" className={this.state.OtherError ? '' : this.props.classes.none}>Error</FormHelperText>
+                                    </FormControl>
+                                </Grid>
+                            </Grid>
                         </ExpansionPanelDetails>
                     </ExpansionPanel>
                     <Button
                         fullWidth
-                        disabled={!this.state.isValid}
+                        disabled={!this.state.isValid || !this.state.isNotEmpty}
                         onClick={e => this.handleSubmit()}
                     >
                         Submit
                     </Button>
                 </form>
-            </div>;
+            </Grid>;
         } else {
             // tslint:disable-next-line:jsx-wrap-multiline
             return <Typography variant="display1" style={{textAlign: 'center', marginTop: '100px'}} gutterBottom>

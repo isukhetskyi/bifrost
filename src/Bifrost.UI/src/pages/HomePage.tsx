@@ -16,12 +16,12 @@ class HomePage extends React.Component<WithStyles & HomePage.Props> {
 
   render() {
     return (
-      <div className={this.props.classes.root}>
-        <Typography variant="display1" gutterBottom>
-          NetLS Software Development welcomes you!
-        </Typography>
-        <img src={'/NetLSlogo.png'} height={500} width={540} alt={'NetLS Logo'} />
-      </div>
+          <div className={this.props.classes.root}>
+            <Typography variant="display1" gutterBottom>
+              NetLS Software Development welcomes you!
+            </Typography>
+            <img src={'/NetLSlogo.png'} className={this.props.classes.image} alt={'NetLS Logo'} />
+          </div>
     );
   }
 }
@@ -31,6 +31,10 @@ const styles: StyleRulesCallback = theme => ({
     textAlign: 'center',
     paddingTop: theme.spacing.unit * 20,
   },
+  image: {
+    maxWidth: '100%',
+    height: 'auto',
+  }
 });
 
 function mapStateToProps(state: RootState) {
