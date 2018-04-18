@@ -21,7 +21,7 @@ namespace Bifrost.Data.Models
         public string Skype { get; set; }
         public string PlaceOfStudying { get; set; }
         public string Speciality { get; set; }
-        public string OtherInfo { get; set; }
+        public string Other { get; set; }
 
         public virtual List<RespondentTechnology> RespondentsTechnologies { get; set; }
     }

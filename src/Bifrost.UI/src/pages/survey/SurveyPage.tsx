@@ -25,6 +25,7 @@ import { RootState } from '../../reducers';
 import ExpandMoreIcon from 'material-ui-icons/ExpandMore';
 import * as axios from 'axios';
 import { AppConfigration } from '../../config/config';
+import { debounce } from 'lodash';
 
 export namespace SurveyPage {
     export interface Props extends RouteComponentProps<void> {
@@ -68,6 +69,10 @@ export namespace SurveyPage {
 
 class SurveyPage extends React.Component<WithStyles & SurveyPage.Props, SurveyPage.State> {
 
+    cosntructor(props: WithStyles & SurveyPage.Props) {
+        this.validate = debounce(this.validate, 500);
+    }
+
     state = {
         FirstName: '',
         FirstNameError: false,
@@ -102,16 +107,16 @@ class SurveyPage extends React.Component<WithStyles & SurveyPage.Props, SurveyPa
     };
 
     validation = {
-        FirstName: '^[a-zA-Z ]{2,100}$',
-        LastName: '^[a-zA-Z ]{2,100}$',
+        FirstName: '^[a-zA-ZA-Яа-яіЇїєЄь -]{2,100}$',
+        LastName: '^[a-zA-ZA-Яа-яіЇїєЄь -]{2,100}$',
         Age: '^(?:\\b|-)([1-9]{1,2}[0]?|99)\\b$',
-        Address: '^[a-zA-Z- ,.0-9]{2,200}$',
-        CurrentPosition: '^([a-zA-Z0-9\\.,\\-_ ]){2,100}$',
-        Phone: '^[0-9]{10,12}$',
-        Email: '^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$',
+        Address: '^[a-zA-Z-A-Яа-яіЇїєЄь ,.0-9]{2,200}$',
+        CurrentPosition: '^([a-zA-Z0-9-A-Яа-яіЇїєЄь \\.,\\-_ ]){2,100}$',
+        Phone: '^\\+?[0-9]{10,12}$',
+        Email: '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$',
         Skype: '^[a-zA-Z0-9\\.,\\-_]{6,100}$',
-        PlaceOfStudying: '^[a-zA-Z ,.\'-]{2,100}$',
-        Speciality: '^[a-zA-Z ,.\'-]{2,100}$',
+        PlaceOfStudying: '^[a-zA-Z-A-Яа-яіЇїєЄь ,.\'-]{2,100}$',
+        Speciality: '^[a-zA-Z-A-Яа-яіЇїєЄь ,.\'-]{2,100}$',
         Other: '^[\\S\\s+]{2,1000}$'
     };
 
@@ -137,7 +142,18 @@ class SurveyPage extends React.Component<WithStyles & SurveyPage.Props, SurveyPa
 
     validate(event: any): boolean {
         let regex = new RegExp(this.validation[event.target.id]);
-        if (regex.test(event.target.value)) {
+        let value = event.target.value;
+        if ( value.length === 0) {
+            this.setState({ [(event.target.id + 'Error') as any]: false });
+            return true;
+        }
+
+        if (regex.test(value)) {
+            if (event.target.id === 'Age' && ((event.target.value as number) < 15 || (event.target.value as number) > 80)) {
+                this.setState({ [(event.target.id + 'Error') as any]: true });
+                return false;
+            }
+
             this.setState({ [(event.target.id + 'Error') as any]: false });
             this.validateForm();
             return true;
@@ -155,7 +171,8 @@ class SurveyPage extends React.Component<WithStyles & SurveyPage.Props, SurveyPa
               && this.state.Address.trim().length > 0
               && (this.state.Phone.trim().length > 0
                   || this.state.Email.trim().length > 0
-                  || this.state.Skype.trim().length > 0);
+                  || this.state.Skype.trim().length > 0)
+              && (this.state.IsEmployed && this.state.CurrentPosition.trim().length > 0);
         this.setState({isNotEmpty: result});
     }
 
@@ -260,6 +277,7 @@ class SurveyPage extends React.Component<WithStyles & SurveyPage.Props, SurveyPa
             })
             .then(function (response: any) {
                 thisContext.setState({ isDone: true });
+                setTimeout(() => { thisContext.setState({ isDone: false}); }, 2500);
             })
             .catch(function (error: any) {
                 // tslint:disable-next-line:no-console
@@ -280,7 +298,7 @@ class SurveyPage extends React.Component<WithStyles & SurveyPage.Props, SurveyPa
                 <form style={{width: '100%'}} onSubmit={e => this.handleSubmit()} onKeyPress={e => this.handleKeyPress(e)}>
                     <ExpansionPanel defaultExpanded>
                         <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                            <Typography className={this.props.classes.heading}>Personal Info</Typography>
+                            <Typography className={this.props.classes.heading}>Personal Info (all fields with asterics (*))</Typography>
                         </ExpansionPanelSummary>
                         <ExpansionPanelDetails>
                                 <Grid container>
@@ -299,7 +317,12 @@ class SurveyPage extends React.Component<WithStyles & SurveyPage.Props, SurveyPa
                                                 onChange={e => this.handleChange(e)}
                                                 onBlur={e => this.validate(e)}
                                             />
-                                            <FormHelperText id="FirstName-error-text" className={this.state.FirstNameError ? '' : this.props.classes.none}>Error</FormHelperText>
+                                            <FormHelperText
+                                                id="FirstName-error-text"
+                                                className={this.state.FirstNameError ? '' : this.props.classes.none}
+                                            >
+                                                Error
+                                            </FormHelperText>
                                         </FormControl>
                                     </Grid>
                                     <Grid item xs={12} md={4}>
@@ -317,7 +340,12 @@ class SurveyPage extends React.Component<WithStyles & SurveyPage.Props, SurveyPa
                                                 onChange={e => this.handleChange(e)}
                                                 onBlur={e => this.validate(e)}
                                             />
-                                            <FormHelperText id="LastName-error-text" className={this.state.LastNameError ? '' : this.props.classes.none}>Error</FormHelperText>
+                                            <FormHelperText
+                                                id="LastName-error-text"
+                                                className={this.state.LastNameError ? '' : this.props.classes.none}
+                                            >
+                                                Error
+                                            </FormHelperText>
                                         </FormControl>
                                     </Grid >
                                     <Grid item xs={12} md={4}>
@@ -334,7 +362,12 @@ class SurveyPage extends React.Component<WithStyles & SurveyPage.Props, SurveyPa
                                                 onChange={e => this.handleChange(e)}
                                                 onBlur={e => this.validate(e)}
                                             />
-                                            <FormHelperText id="Age-error-text" className={this.state.AgeError ? '' : this.props.classes.none}>Error</FormHelperText>
+                                            <FormHelperText
+                                                id="Age-error-text"
+                                                className={this.state.AgeError ? '' : this.props.classes.none}
+                                            >
+                                                Error! Must be number between 15 and 85
+                                            </FormHelperText>
                                         </FormControl>
                                     </Grid>
                                     <Grid item xs={12} md={12}>
@@ -352,13 +385,24 @@ class SurveyPage extends React.Component<WithStyles & SurveyPage.Props, SurveyPa
                                                 onChange={e => this.handleChange(e)}
                                                 onBlur={e => this.validate(e)}
                                             />
-                                            <FormHelperText id="Address-error-text" className={this.state.AddressError ? '' : this.props.classes.none}>Error</FormHelperText>
+                                            <FormHelperText
+                                                id="Address-error-text"
+                                                className={this.state.AddressError ? '' : this.props.classes.none}
+                                            >
+                                                Error
+                                            </FormHelperText>
                                         </FormControl>
+                                    </Grid>
+                                    <Grid item xs={12} md={12}>
+                                        <Typography>
+                                            {'Are you currently employed?'}
+                                        </Typography>
                                     </Grid>
                                     <Grid item xs={4} md={2}>
                                         <FormControl fullWidth>
                                             <Select
                                                 native={true}
+                                                id={'IsEmployed'}
                                                 className={this.props.classes.select}
                                                 defaultValue={'No'}
                                                 onChange={() => { this.setState({ IsEmployed: !this.state.IsEmployed }); }}
@@ -384,7 +428,12 @@ class SurveyPage extends React.Component<WithStyles & SurveyPage.Props, SurveyPa
                                                 onChange={e => this.handleChange(e)}
                                                 onBlur={e => this.validate(e)}
                                             />
-                                            <FormHelperText id="CurrentPosition-error-text" className={this.state.CurrentPositionError ? '' : this.props.classes.none}>Error</FormHelperText>
+                                            <FormHelperText
+                                                id="CurrentPosition-error-text"
+                                                className={this.state.CurrentPositionError ? '' : this.props.classes.none}
+                                            >
+                                                Error
+                                            </FormHelperText>
                                         </FormControl>
                                     </Grid>
                                 </Grid>
@@ -425,7 +474,7 @@ class SurveyPage extends React.Component<WithStyles & SurveyPage.Props, SurveyPa
                     </ExpansionPanel>
                     <ExpansionPanel defaultExpanded>
                         <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                            <Typography className={this.props.classes.heading}>Contact info *</Typography>
+                            <Typography className={this.props.classes.heading}>Contact info *(only one is required)</Typography>
                         </ExpansionPanelSummary>
                         <ExpansionPanelDetails>
                             <Grid container>
@@ -436,14 +485,19 @@ class SurveyPage extends React.Component<WithStyles & SurveyPage.Props, SurveyPa
                                         error={this.state.PhoneError}
                                         aria-describedby="Phone-error-text"
                                     >
-                                        <InputLabel htmlFor="Phone">Phone</InputLabel>
+                                        <InputLabel htmlFor="Phone">{'+380XXXXXXXXX'}</InputLabel>
                                         <Input
                                             id="Phone"
                                             datatype={'text'}
                                             onChange={e => this.handleChange(e)}
                                             onBlur={e => this.validate(e)}
                                         />
-                                        <FormHelperText id="Phone-error-text" className={this.state.LastNameError ? '' : this.props.classes.none}>Error</FormHelperText>
+                                        <FormHelperText
+                                            id="Phone-error-text"
+                                            className={this.state.LastNameError ? '' : this.props.classes.none}
+                                        >
+                                                Error
+                                        </FormHelperText>
                                     </FormControl>
                                 </Grid>
                                 <Grid item xs={12} md={4}>
@@ -453,14 +507,19 @@ class SurveyPage extends React.Component<WithStyles & SurveyPage.Props, SurveyPa
                                         error={this.state.EmailError}
                                         aria-describedby="Email-error-text"
                                     >
-                                        <InputLabel htmlFor="Email">Email</InputLabel>
+                                        <InputLabel htmlFor="Email">{'mail@domain.com'}</InputLabel>
                                         <Input
                                             id="Email"
                                             datatype={'text'}
                                             onChange={e => this.handleChange(e)}
                                             onBlur={e => this.validate(e)}
                                         />
-                                        <FormHelperText id="Email-error-text" className={this.state.EmailError ? '' : this.props.classes.none}>Error</FormHelperText>
+                                        <FormHelperText
+                                            id="Email-error-text"
+                                            className={this.state.EmailError ? '' : this.props.classes.none}
+                                        >
+                                            Error
+                                        </FormHelperText>
                                     </FormControl>
                                 </Grid>
                                 <Grid item xs={12} md={4}>
@@ -477,7 +536,12 @@ class SurveyPage extends React.Component<WithStyles & SurveyPage.Props, SurveyPa
                                             onChange={e => this.handleChange(e)}
                                             onBlur={e => this.validate(e)}
                                         />
-                                        <FormHelperText id="Skype-error-text" className={this.state.SkypeError ? '' : this.props.classes.none}>Error</FormHelperText>
+                                        <FormHelperText
+                                            id="Skype-error-text"
+                                            className={this.state.SkypeError ? '' : this.props.classes.none}
+                                        >
+                                            Error
+                                        </FormHelperText>
                                     </FormControl>
                                 </Grid>
                             </Grid>
@@ -503,7 +567,12 @@ class SurveyPage extends React.Component<WithStyles & SurveyPage.Props, SurveyPa
                                             onChange={e => this.handleChange(e)}
                                             onBlur={e => this.validate(e)}
                                         />
-                                        <FormHelperText id="PlaceOfStudying-error-text" className={this.state.PlaceOfStudyingError ? '' : this.props.classes.none}>Error</FormHelperText>
+                                        <FormHelperText
+                                            id="PlaceOfStudying-error-text"
+                                            className={this.state.PlaceOfStudyingError ? '' : this.props.classes.none}
+                                        >
+                                            Error
+                                        </FormHelperText>
                                     </FormControl>
                                 </Grid>
                                 <Grid item xs={12} md={6}>
@@ -520,7 +589,12 @@ class SurveyPage extends React.Component<WithStyles & SurveyPage.Props, SurveyPa
                                             onChange={e => this.handleChange(e)}
                                             onBlur={e => this.validate(e)}
                                         />
-                                        <FormHelperText id="Speciality-error-text" className={this.state.SpecialityError ? '' : this.props.classes.none}>Error</FormHelperText>
+                                        <FormHelperText
+                                            id="Speciality-error-text"
+                                            className={this.state.SpecialityError ? '' : this.props.classes.none}
+                                        >
+                                            Error
+                                        </FormHelperText>
                                     </FormControl>
                                 </Grid>
                             </Grid>
@@ -546,7 +620,12 @@ class SurveyPage extends React.Component<WithStyles & SurveyPage.Props, SurveyPa
                                             onChange={e => this.handleChange(e)}
                                             onBlur={e => this.validate(e)}
                                         />
-                                        <FormHelperText id="Other-error-text" className={this.state.OtherError ? '' : this.props.classes.none}>Error</FormHelperText>
+                                        <FormHelperText
+                                            id="Other-error-text"
+                                            className={this.state.OtherError ? '' : this.props.classes.none}
+                                        >
+                                            Error
+                                        </FormHelperText>
                                     </FormControl>
                                 </Grid>
                             </Grid>

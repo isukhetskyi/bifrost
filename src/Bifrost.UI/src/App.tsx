@@ -302,6 +302,9 @@ const styles: StyleRulesCallback = theme => ({
             marginTop: 64,
         },
     },
+    nested: {
+        marginLeft: '30px'
+    },
 });
 
 function mapStateToProps(state: RootState) {
