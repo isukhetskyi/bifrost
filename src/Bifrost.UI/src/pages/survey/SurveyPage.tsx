@@ -118,7 +118,12 @@ class SurveyPage extends React.Component<WithStyles & SurveyPage.Props, SurveyPa
     componentDidMount() {
         let thisContext = this;
 
-        axios.default.get(AppConfigration.BASE_API_URL + '/api/survey/gettechnologies')
+        axios.default.get(AppConfigration.BASE_API_URL + '/api/survey/gettechnologies', {
+            headers: {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*',
+            'Accept': 'text/html,application/xhtml+xml,application/xml,text/csv;q=0.9,image/webp,image/apng,*/*;q=0.8'
+        }})
             .then(function (response: any) {
                 thisContext.setState({ ProgrammingLanguagesCheckboxes: response.data.technologies.languages });
                 thisContext.setState({ FrameworksCheckboxes: response.data.technologies.frameworks });
@@ -126,6 +131,7 @@ class SurveyPage extends React.Component<WithStyles & SurveyPage.Props, SurveyPa
             })
             .catch(function (error: any) {
                 console.log(error);
+                alert(error);
             });
     }
 
@@ -271,7 +277,7 @@ class SurveyPage extends React.Component<WithStyles & SurveyPage.Props, SurveyPa
         if (!this.state.isDone) {
             // tslint:disable-next-line:jsx-wrap-multiline
             return <Grid  container spacing={0}>
-                <form onSubmit={e => this.handleSubmit()} onKeyPress={e => this.handleKeyPress(e)}>
+                <form style={{width: '100%'}} onSubmit={e => this.handleSubmit()} onKeyPress={e => this.handleKeyPress(e)}>
                     <ExpansionPanel defaultExpanded>
                         <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
                             <Typography className={this.props.classes.heading}>Personal Info</Typography>
@@ -419,7 +425,7 @@ class SurveyPage extends React.Component<WithStyles & SurveyPage.Props, SurveyPa
                     </ExpansionPanel>
                     <ExpansionPanel defaultExpanded>
                         <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                            <Typography className={this.props.classes.heading}>Contact info</Typography>
+                            <Typography className={this.props.classes.heading}>Contact info *</Typography>
                         </ExpansionPanelSummary>
                         <ExpansionPanelDetails>
                             <Grid container>

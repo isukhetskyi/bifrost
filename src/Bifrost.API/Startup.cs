@@ -93,7 +93,7 @@ namespace Bifrost.API
                 .AllowAnyOrigin()
                 .AllowAnyMethod()
                 .AllowAnyHeader()
-                .AllowCredentials().WithOrigins("http://localhost:3000"));
+                .AllowCredentials());
             using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory> ().CreateScope ())
             {
                 var context = serviceScope.ServiceProvider.GetRequiredService<ApplicationDbContext> ();
