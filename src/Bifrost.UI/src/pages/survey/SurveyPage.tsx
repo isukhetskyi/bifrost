@@ -329,7 +329,7 @@ class SurveyPage extends React.Component<WithStyles & SurveyPage.Props, SurveyPa
         if (!this.state.isDone) {
             // tslint:disable-next-line:jsx-wrap-multiline
             return <Grid  container spacing={0}>
-                <form style={{width: '100%'}} onSubmit={e => this.handleSubmit()} onKeyPress={e => this.handleKeyPress(e)}>
+                <form className={this.props.classes.fullwidth} onSubmit={e => this.handleSubmit()} onKeyPress={e => this.handleKeyPress(e)}>
                     <ExpansionPanel defaultExpanded>
                         <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
                             <Typography className={this.props.classes.heading}>Personal Info (all fields with asterics <b>*</b> are required)</Typography>
@@ -704,6 +704,9 @@ const styles: StyleRulesCallback = theme => ({
     },
     select: {
         'margin-top': '24px',
+    },
+    fullwidth: {
+        width: '100%',
     }
 });
 
