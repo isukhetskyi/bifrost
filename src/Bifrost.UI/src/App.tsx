@@ -36,6 +36,7 @@ import StatisticsPage from './pages/survey/StatisticsPage';
 import RespondentsPage from './pages/survey/RespondentsPage';
 import RespondentPage from './pages/survey/RespondentPage';
 import RegisterPage from './pages/adminarea/RegisterPage';
+import { Button } from 'material-ui';
 
 export namespace App {
     export interface Props extends RouteComponentProps<void> {
@@ -46,6 +47,7 @@ export namespace App {
         mobileOpen: boolean;
         surveyAreaOpen: boolean;
         adminAreaOpen: boolean;
+        isAuthentificated: boolean;
     }
 }
 
@@ -57,6 +59,7 @@ class App extends React.Component<WithStyles & App.Props, App.State> {
         mobileOpen: false,
         surveyAreaOpen: false,
         adminAreaOpen: false,
+        isAuthentificated: false,
     };
 
     routes = (
@@ -173,7 +176,7 @@ class App extends React.Component<WithStyles & App.Props, App.State> {
                     </ListItem>
                 </List>
                 <Divider />
-                <List>
+                <List className={this.state.mobileOpen ? '' : this.props.classes.none}>
                     <ListItem button onClick={() => {history.push('/login'); this.setState({mobileOpen: false}); }}>
                         <ListItemIcon>
                             <AccountBoxIcon />
@@ -202,6 +205,12 @@ class App extends React.Component<WithStyles & App.Props, App.State> {
                                 <Typography variant="title" color="inherit" noWrap>
                                     Bifrost
                             </Typography>
+                            <Button
+                                className={this.props.classes.loginButton}
+                                onClick={() => {history.push('/login'); this.setState({mobileOpen: false}); }}
+                            >
+                                    Login
+                            </Button>
                             </Toolbar>
                         </AppBar>
                         <Hidden mdUp>
@@ -209,6 +218,7 @@ class App extends React.Component<WithStyles & App.Props, App.State> {
                                 variant="temporary"
                                 anchor={'left'}
                                 open={this.state.mobileOpen}
+                                className={this.state.isAuthentificated ? '' : this.props.classes.none}
                                 classes={{
                                     paper: this.props.classes.drawerPaper,
                                 }}
@@ -224,6 +234,7 @@ class App extends React.Component<WithStyles & App.Props, App.State> {
                             <Drawer
                                 variant="permanent"
                                 open
+                                className={this.state.isAuthentificated ? '' : this.props.classes.none}
                                 classes={{
                                     paper: this.props.classes.drawerPaper,
                                 }}
@@ -302,6 +313,18 @@ const styles: StyleRulesCallback = theme => ({
             marginTop: 64,
         },
     },
+    nested: {
+        marginLeft: '30px'
+    },
+    loginButton: {
+        float: 'right',
+        position: 'absolute',
+        right: '0',
+        marginRight: '10px'
+    },
+    none: {
+        display: 'none'
+    }
 });
 
 function mapStateToProps(state: RootState) {

@@ -50,6 +50,7 @@ class RespondentPage extends React.Component<WithStyles & RespondentPage.Props, 
     }
 
     render() {
+        console.log(this.state.respondent);
         return (
             <div>
                 <ExpansionPanel defaultExpanded>
@@ -58,11 +59,14 @@ class RespondentPage extends React.Component<WithStyles & RespondentPage.Props, 
                     </ExpansionPanelSummary>
                     <ExpansionPanelDetails>
                         <Typography>
-                            <span className={this.props.classes.h3}>Name: {this.state.respondent.firstName + ' ' + this.state.respondent.lastName}</span>
+                            <span className={this.props.classes.h3}>Name: { (this.state.respondent.firstName + ' ' + this.state.respondent.lastName) === ' '
+                                ? 'N/A' : (this.state.respondent.firstName + ' ' + this.state.respondent.lastName) }</span>
                             <br/>
-                            <span className={this.props.classes.h3}>Age: {this.state.respondent.age}</span>
+                            <span className={this.props.classes.h3}>Age: {(this.state.respondent.age.toString()) === '-1'
+                                    ? 'N/A' : this.state.respondent.age}</span>
                             <br/>
-                            <span className={this.props.classes.h3}>Address: {this.state.respondent.address}</span>
+                            <span className={this.props.classes.h3}>Address: {this.state.respondent.address === ''
+                                    ? 'N/A' : this.state.respondent.address}</span>
                          </Typography>
                     </ExpansionPanelDetails>
                 </ExpansionPanel>
@@ -74,7 +78,8 @@ class RespondentPage extends React.Component<WithStyles & RespondentPage.Props, 
                         <Typography>
                             <span className={this.props.classes.h3}>Is employed: {this.state.respondent.isEmployed ? 'Yes' : 'No'}</span>
                             <br/>
-                            <span className={this.props.classes.h3}>Current possition: {this.state.respondent.currentPosition}</span>
+                            <span className={this.props.classes.h3}>Current possition: {this.state.respondent.currentPosition === ''
+                                ? 'N/A' : this.state.respondent.currentPosition}</span>
                         </Typography>
                     </ExpansionPanelDetails>
                 </ExpansionPanel>
@@ -84,11 +89,14 @@ class RespondentPage extends React.Component<WithStyles & RespondentPage.Props, 
                     </ExpansionPanelSummary>
                     <ExpansionPanelDetails>
                         <Typography>
-                            <span className={this.props.classes.h3}>Email: {this.state.respondent.email}</span>
+                            <span className={this.props.classes.h3}>Email: {this.state.respondent.email === ''
+                                ? 'N/A' : this.state.respondent.email}</span>
                             <br/>
-                            <span className={this.props.classes.h3}>Phone: {this.state.respondent.phone}</span>
+                            <span className={this.props.classes.h3}>Phone: {this.state.respondent.phone === ''
+                                ? 'N/A' : this.state.respondent.phone}</span>
                             <br/>
-                            <span className={this.props.classes.h3}>Skype: {this.state.respondent.skype}</span>
+                            <span className={this.props.classes.h3}>Skype: {this.state.respondent.skype === ''
+                                ? 'N/A' : this.state.respondent.skype}</span>
                         </Typography>
                     </ExpansionPanelDetails>
                 </ExpansionPanel>
@@ -98,9 +106,11 @@ class RespondentPage extends React.Component<WithStyles & RespondentPage.Props, 
                     </ExpansionPanelSummary>
                     <ExpansionPanelDetails>
                         <Typography>
-                            <span className={this.props.classes.h3}>Place of studying: {this.state.respondent.placeOfStudying}</span>
+                            <span className={this.props.classes.h3}>Place of studying: {this.state.respondent.placeOfStudying === ''
+                                ? 'N/A' : this.state.respondent.placeOfStudying}</span>
                             <br/>
-                            <span className={this.props.classes.h3}>speciality: {this.state.respondent.speciality}</span>
+                            <span className={this.props.classes.h3}>Speciality: {this.state.respondent.speciality === ''
+                                ? 'N/A' : this.state.respondent.speciality}</span>
                         </Typography>
                     </ExpansionPanelDetails>
                 </ExpansionPanel>
@@ -110,7 +120,8 @@ class RespondentPage extends React.Component<WithStyles & RespondentPage.Props, 
                     </ExpansionPanelSummary>
                     <ExpansionPanelDetails>
                         <Typography>
-                            <span className={this.props.classes.h3}>Other: {this.state.respondent.otherInfo}</span>
+                            <span className={this.props.classes.h3}>Other: {this.state.respondent.other === ''
+                                || this.state.respondent.other === null ? 'N/A' : this.state.respondent.other}</span>
                         </Typography>
                     </ExpansionPanelDetails>
                 </ExpansionPanel>

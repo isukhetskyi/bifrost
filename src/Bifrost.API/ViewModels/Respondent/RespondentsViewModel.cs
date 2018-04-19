@@ -16,7 +16,7 @@ namespace Bifrost.API.ViewModels.Respondent
         public string Skype { get; set; }
         public string Email { get; set; }
         public DateTime CreatedDate { get; set; }
-        public string ListOfChechnologies { get; set; }
+        public string ListOfTechnologies { get; set; }
         [NonSerialized]
         public List<RespondentTechnologyModel> RespondentsTechnologies;
 

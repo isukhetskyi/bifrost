@@ -9,6 +9,7 @@ import * as RespondentActions from '../../actions/respondents';
 import Table, {
     TableBody,
     TableCell,
+    TableHead,
     TableFooter,
     TablePagination,
     TableRow,
@@ -214,7 +215,7 @@ class RespondentsPage extends React.Component<WithStyles & RespondentsPage.Props
                 <Grid container spacing={0}>
                     <Grid item xs={12} md={4}>
                         <Select
-                            fullWidth
+                            className={this.props.classes.filter}
                             value={this.state.SelectedLanguage}
                             native={true}
                             onChange={(e: any) => this.handleDropdownChange(e, 'language')}
@@ -226,7 +227,7 @@ class RespondentsPage extends React.Component<WithStyles & RespondentsPage.Props
                     </Grid>
                     <Grid item xs={12} md={4}>
                         <Select
-                            fullWidth
+                            className={this.props.classes.filter}
                             value={this.state.SelectedFramework}
                             native={true}
                             onChange={(e: any) => this.handleDropdownChange(e, 'framework')}
@@ -238,7 +239,7 @@ class RespondentsPage extends React.Component<WithStyles & RespondentsPage.Props
                     </Grid>
                     <Grid item xs={12} md={4}>
                         <Select
-                            fullWidth
+                            className={this.props.classes.filter}
                             value={this.state.SelectedDatabase}
                             native={true}
                             onChange={(e: any) => this.handleDropdownChange(e, 'database')}
@@ -253,6 +254,17 @@ class RespondentsPage extends React.Component<WithStyles & RespondentsPage.Props
                 <Paper className={this.props.classes.root} >
                     <div className={this.props.classes.tableWrapper}>
                         <Table className={this.props.classes.table}>
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell>{'ID'}</TableCell>
+                                    <TableCell>{'First Name'}</TableCell>
+                                    <TableCell>{'Last Name'}</TableCell>
+                                    <TableCell>{'Is Employed?'}</TableCell>
+                                    <TableCell>{'Phone'}</TableCell>
+                                    <TableCell>{'Skype'}</TableCell>
+                                    <TableCell>{'Date of Submition'}</TableCell>
+                                </TableRow>
+                            </TableHead>
                             <TableBody>
                                 {this.state.data.slice(
                                     this.state.page * this.state.rowsPerPage,
@@ -308,6 +320,11 @@ const style: StyleRulesCallback = theme => ({
     tableWrapper: {
         overflowX: 'auto',
         overflowY: 'auto'
+    },
+    filter: {
+        marginLeft: '5px',
+        marginRight: '5px',
+        width: '95%'
     }
 });
 

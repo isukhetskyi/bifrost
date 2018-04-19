@@ -38,7 +38,7 @@ export class RespondentModel {
     placeOfStudying: string;
     speciality: string;
     technologies: string;
-    otherInfo: string;
+    other: string;
     createdDate: string;
 
     constructor() {
@@ -55,7 +55,7 @@ export class RespondentModel {
         this.placeOfStudying = '';
         this.speciality = '';
         this.technologies = '';
-        this.otherInfo = '';
+        this.other = '';
         this.createdDate = '';
     }
 }
