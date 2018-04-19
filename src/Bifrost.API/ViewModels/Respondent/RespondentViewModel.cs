@@ -24,7 +24,7 @@ namespace Bifrost.API.ViewModels.Respondent
         public string Skype { get; set; }
         public string PlaceOfStudying { get; set; }
         public string Speciality { get; set; }
-        public string OtherInfo { get; set; }
+        public string Other { get; set; }
         public DateTime CreatedDate { get; set; }
         public string Technologies
         {

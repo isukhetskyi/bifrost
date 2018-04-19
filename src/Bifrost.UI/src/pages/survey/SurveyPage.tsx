@@ -277,7 +277,7 @@ class SurveyPage extends React.Component<WithStyles & SurveyPage.Props, SurveyPa
             })
             .then(function (response: any) {
                 thisContext.setState({ isDone: true });
-                setTimeout(() => { thisContext.setState({ isDone: false}); }, 2500);
+                setTimeout(() => { thisContext.clearForm(); }, 2500);
             })
             .catch(function (error: any) {
                 // tslint:disable-next-line:no-console
@@ -291,6 +291,40 @@ class SurveyPage extends React.Component<WithStyles & SurveyPage.Props, SurveyPa
         }
     }
 
+    clearForm() {
+        this.setState({
+            FirstName: '',
+            FirstNameError: false,
+            LastName: '',
+            LastNameError: false,
+            Age: '-1',
+            AgeError: false,
+            Address: '',
+            AddressError: false,
+            IsEmployed: false,
+            CurrentPosition: '',
+            CurrentPositionError: false,
+            Phone: '',
+            PhoneError: false,
+            Email: '',
+            EmailError: false,
+            Skype: '',
+            SkypeError: false,
+            PlaceOfStudying: '',
+            PlaceOfStudyingError: false,
+            Speciality: '',
+            SpecialityError: false,
+            Other: '',
+            OtherError: false,
+            ProgrammingLanguagesCheckboxes: Array(),
+            FrameworksCheckboxes: Array(),
+            DatabasesCheckboxes: Array(),
+            Technologies: new Array<number>(),
+            isValid: false,
+            isDone: false,
+            isNotEmpty: false});
+    }
+
     render() {
         if (!this.state.isDone) {
             // tslint:disable-next-line:jsx-wrap-multiline
@@ -298,7 +332,7 @@ class SurveyPage extends React.Component<WithStyles & SurveyPage.Props, SurveyPa
                 <form style={{width: '100%'}} onSubmit={e => this.handleSubmit()} onKeyPress={e => this.handleKeyPress(e)}>
                     <ExpansionPanel defaultExpanded>
                         <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                            <Typography className={this.props.classes.heading}>Personal Info (all fields with asterics (*))</Typography>
+                            <Typography className={this.props.classes.heading}>Personal Info (all fields with asterics <b>*</b> are required)</Typography>
                         </ExpansionPanelSummary>
                         <ExpansionPanelDetails>
                                 <Grid container>

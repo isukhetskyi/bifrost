@@ -120,8 +120,8 @@ class RespondentPage extends React.Component<WithStyles & RespondentPage.Props, 
                     </ExpansionPanelSummary>
                     <ExpansionPanelDetails>
                         <Typography>
-                            <span className={this.props.classes.h3}>Other: {this.state.respondent.otherInfo === ''
-                                || this.state.respondent.otherInfo === null ? 'N/A' : this.state.respondent.otherInfo}</span>
+                            <span className={this.props.classes.h3}>Other: {this.state.respondent.other === ''
+                                || this.state.respondent.other === null ? 'N/A' : this.state.respondent.other}</span>
                         </Typography>
                     </ExpansionPanelDetails>
                 </ExpansionPanel>
