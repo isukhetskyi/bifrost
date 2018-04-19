@@ -7,7 +7,7 @@
     "environment" : "BifrostAPI-dev",
     "iis-website" : "Default Web Site",
     "app-path"    : "/",
-    "enable-xray" : false,
+    "enable-xray" : true,
     "cname"       : "bifrostapi-dev",
     "solution-stack" : "64bit Windows Server Core 2012 R2 v1.2.0 running IIS 8.5",
     "environment-type" : "SingleInstance",

@@ -59,7 +59,7 @@ class RespondentsPage extends React.Component<WithStyles & RespondentsPage.Props
         let thisContext = this;
         axios.default.get(AppConfigration.BASE_API_URL + '/api/respondents/all',
                           {
-                            headers: {'Access-Control-Allow-Origin': '*'
+                            headers: {'Access-Control-Allow-Origin': AppConfigration.CORS
                                     , 'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8'
                                 },
                             method: 'GET'
@@ -154,7 +154,7 @@ class RespondentsPage extends React.Component<WithStyles & RespondentsPage.Props
                     frameworkId: this.state.SelectedFramework,
                     databaseId: this.state.SelectedDatabase
                 },
-                headers: {'Access-Control-Allow-Origin': '*'
+                headers: {'Access-Control-Allow-Origin': AppConfigration.CORS
                 , 'Accept': 'text/html,application/xhtml+xml,application/xml,text/csv;q=0.9,image/webp,image/apng,*/*;q=0.8'
             }
             })

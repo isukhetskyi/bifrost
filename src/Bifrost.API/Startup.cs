@@ -93,7 +93,7 @@ namespace Bifrost.API
                 .AllowAnyOrigin()
                 .AllowAnyMethod()
                 .AllowAnyHeader()
-                .AllowCredentials());
+                .AllowCredentials()).UseCors("http://app.bifrost.s3-website.eu-central-1.amazonaws.com");
             using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory> ().CreateScope ())
             {
                 var context = serviceScope.ServiceProvider.GetRequiredService<ApplicationDbContext> ();

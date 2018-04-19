@@ -37,7 +37,7 @@ class RespondentPage extends React.Component<WithStyles & RespondentPage.Props, 
                     }
                 ,
                 headers: {
-                  'Access-Control-Allow-Origin': '*'
+                  'Access-Control-Allow-Origin': AppConfigration.CORS
                 , 'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8'
             }})
             .then(function (response: any) {

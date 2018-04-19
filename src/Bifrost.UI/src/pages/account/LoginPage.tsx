@@ -67,7 +67,7 @@ class LoginPage extends React.Component<WithStyles & LoginPage.Props, LoginPage.
             {
                 headers: {
                     'Content-Type': 'application/json',
-                    'Access-Control-Allow-Origin': '*',
+                    'Access-Control-Allow-Origin': AppConfigration.CORS,
                     'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8'
                 }
             })

@@ -126,7 +126,7 @@ class SurveyPage extends React.Component<WithStyles & SurveyPage.Props, SurveyPa
         axios.default.get(AppConfigration.BASE_API_URL + '/api/survey/gettechnologies', {
             headers: {
             'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Origin': AppConfigration.CORS,
             'Accept': 'text/html,application/xhtml+xml,application/xml,text/csv;q=0.9,image/webp,image/apng,*/*;q=0.8'
         }})
             .then(function (response: any) {
@@ -171,8 +171,11 @@ class SurveyPage extends React.Component<WithStyles & SurveyPage.Props, SurveyPa
               && this.state.Address.trim().length > 0
               && (this.state.Phone.trim().length > 0
                   || this.state.Email.trim().length > 0
-                  || this.state.Skype.trim().length > 0)
-              && (this.state.IsEmployed && this.state.CurrentPosition.trim().length > 0);
+                  || this.state.Skype.trim().length > 0);
+        if (this.state.IsEmployed) {
+            result = result && this.state.CurrentPosition.trim().length > 0;
+        }
+
         this.setState({isNotEmpty: result});
     }
 
@@ -271,7 +274,7 @@ class SurveyPage extends React.Component<WithStyles & SurveyPage.Props, SurveyPa
             {
                 headers: {
                     'Content-Type': 'application/json',
-                    'Access-Control-Allow-Origin': '*',
+                    'Access-Control-Allow-Origin': AppConfigration.CORS,
                     'Accept': 'text/html,application/xhtml+xml,application/xml,text/csv;q=0.9,image/webp,image/apng,*/*;q=0.8'
                 }
             })
@@ -316,9 +319,6 @@ class SurveyPage extends React.Component<WithStyles & SurveyPage.Props, SurveyPa
             SpecialityError: false,
             Other: '',
             OtherError: false,
-            ProgrammingLanguagesCheckboxes: Array(),
-            FrameworksCheckboxes: Array(),
-            DatabasesCheckboxes: Array(),
             Technologies: new Array<number>(),
             isValid: false,
             isDone: false,
