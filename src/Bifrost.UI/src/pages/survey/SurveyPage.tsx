@@ -80,12 +80,12 @@ class SurveyPage extends React.Component<WithStyles & SurveyPage.Props, SurveyPa
         LastNameError: false,
         Age: '-1',
         AgeError: false,
-        Address: '',
+        Address: 'Ivano-Frankivsk',
         AddressError: false,
         IsEmployed: false,
         CurrentPosition: '',
         CurrentPositionError: false,
-        Phone: '',
+        Phone: '380',
         PhoneError: false,
         Email: '',
         EmailError: false,
@@ -141,6 +141,7 @@ class SurveyPage extends React.Component<WithStyles & SurveyPage.Props, SurveyPa
     }
 
     validate(event: any): boolean {
+        this.checkIfNotEmpty();
         let regex = new RegExp(this.validation[event.target.id]);
         let value = event.target.value;
         if ( value.length === 0) {
@@ -149,7 +150,7 @@ class SurveyPage extends React.Component<WithStyles & SurveyPage.Props, SurveyPa
         }
 
         if (regex.test(value)) {
-            if (event.target.id === 'Age' && ((event.target.value as number) < 15 || (event.target.value as number) > 80)) {
+            if (event.target.id === 'Age' && ((event.target.value as number) < 6 || (event.target.value as number) > 80)) {
                 this.setState({ [(event.target.id + 'Error') as any]: true });
                 return false;
             }
@@ -164,23 +165,24 @@ class SurveyPage extends React.Component<WithStyles & SurveyPage.Props, SurveyPa
         }
     }
 
-    checkIfNotEmpty() {
+    checkIfNotEmpty(): boolean {
         let result = false;
+        
         result = this.state.FirstName.trim().length > 0
               && this.state.LastName.trim().length > 0
               && this.state.Address.trim().length > 0
+              && this.state.Email.trim().length > 0 
               && (this.state.Phone.trim().length > 0
-                  || this.state.Email.trim().length > 0
                   || this.state.Skype.trim().length > 0);
-        if (this.state.IsEmployed) {
+        if (this.state.IsEmployed) {            
             result = result && this.state.CurrentPosition.trim().length > 0;
         }
 
         this.setState({isNotEmpty: result});
+        return result;
     }
 
     validateForm(): boolean {
-        this.checkIfNotEmpty();
         let isFormValid = (!this.state.AddressError
             && !this.state.AgeError
             && !this.state.CurrentPositionError
@@ -194,14 +196,12 @@ class SurveyPage extends React.Component<WithStyles & SurveyPage.Props, SurveyPa
             && !this.state.SpecialityError);
 
         this.setState({ isValid: isFormValid });
-
         return isFormValid;
     }
 
     handleChange = (event: any) => {
         if (this.validate(event)) {
             this.setState({ [event.target.id]: event.target.value });
-            this.checkIfNotEmpty();
         }
     };
 
@@ -268,7 +268,7 @@ class SurveyPage extends React.Component<WithStyles & SurveyPage.Props, SurveyPa
 
     handleSubmit() {
         let thisContext = this;
-
+        if (this.checkIfNotEmpty()) {
         axios.default.post(AppConfigration.BASE_API_URL + '/api/survey/survey',
             this.state,
             {
@@ -280,12 +280,12 @@ class SurveyPage extends React.Component<WithStyles & SurveyPage.Props, SurveyPa
             })
             .then(function (response: any) {
                 thisContext.setState({ isDone: true });
-                setTimeout(() => { thisContext.clearForm(); }, 2500);
             })
             .catch(function (error: any) {
                 // tslint:disable-next-line:no-console
                 console.error(error);
             });
+        }
     }
 
     handleKeyPress(e: any) {
@@ -349,13 +349,13 @@ class SurveyPage extends React.Component<WithStyles & SurveyPage.Props, SurveyPa
                                                 id="FirstName"
                                                 datatype={'text'}
                                                 onChange={e => this.handleChange(e)}
-                                                onBlur={e => this.validate(e)}
+                                                onBlur={e => this.validate(e)}                                                
                                             />
                                             <FormHelperText
                                                 id="FirstName-error-text"
                                                 className={this.state.FirstNameError ? '' : this.props.classes.none}
                                             >
-                                                Error
+                                                Required! Only lower/uppser case letters with length between 2 and 100 characters
                                             </FormHelperText>
                                         </FormControl>
                                     </Grid>
@@ -378,7 +378,7 @@ class SurveyPage extends React.Component<WithStyles & SurveyPage.Props, SurveyPa
                                                 id="LastName-error-text"
                                                 className={this.state.LastNameError ? '' : this.props.classes.none}
                                             >
-                                                Error
+                                                Required! Only lower/uppser case letters with length between 2 and 100 characters
                                             </FormHelperText>
                                         </FormControl>
                                     </Grid >
@@ -400,7 +400,7 @@ class SurveyPage extends React.Component<WithStyles & SurveyPage.Props, SurveyPa
                                                 id="Age-error-text"
                                                 className={this.state.AgeError ? '' : this.props.classes.none}
                                             >
-                                                Error! Must be number between 15 and 85
+                                                Error! Must be number between 6 and 99
                                             </FormHelperText>
                                         </FormControl>
                                     </Grid>
@@ -416,6 +416,7 @@ class SurveyPage extends React.Component<WithStyles & SurveyPage.Props, SurveyPa
                                             <Input
                                                 id="Address"
                                                 datatype={'text'}
+                                                defaultValue={'Ivano-Frankivsk'}
                                                 onChange={e => this.handleChange(e)}
                                                 onBlur={e => this.validate(e)}
                                             />
@@ -423,7 +424,7 @@ class SurveyPage extends React.Component<WithStyles & SurveyPage.Props, SurveyPa
                                                 id="Address-error-text"
                                                 className={this.state.AddressError ? '' : this.props.classes.none}
                                             >
-                                                Error
+                                                Only lower/uppser case letters and punctuation signs with length between 2 and 200 characters
                                             </FormHelperText>
                                         </FormControl>
                                     </Grid>
@@ -466,7 +467,7 @@ class SurveyPage extends React.Component<WithStyles & SurveyPage.Props, SurveyPa
                                                 id="CurrentPosition-error-text"
                                                 className={this.state.CurrentPositionError ? '' : this.props.classes.none}
                                             >
-                                                Error
+                                                Required! Only lower/uppser case letters and punctuation signs with length between 2 and 100 characters
                                             </FormHelperText>
                                         </FormControl>
                                     </Grid>
@@ -508,7 +509,7 @@ class SurveyPage extends React.Component<WithStyles & SurveyPage.Props, SurveyPa
                     </ExpansionPanel>
                     <ExpansionPanel defaultExpanded>
                         <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                            <Typography className={this.props.classes.heading}>Contact info *(only one is required)</Typography>
+                            <Typography className={this.props.classes.heading}>Contact info</Typography>
                         </ExpansionPanelSummary>
                         <ExpansionPanelDetails>
                             <Grid container>
@@ -519,9 +520,10 @@ class SurveyPage extends React.Component<WithStyles & SurveyPage.Props, SurveyPa
                                         error={this.state.PhoneError}
                                         aria-describedby="Phone-error-text"
                                     >
-                                        <InputLabel htmlFor="Phone">{'+380XXXXXXXXX'}</InputLabel>
+                                        <InputLabel htmlFor="Phone">{'+380123456789'}</InputLabel>
                                         <Input
                                             id="Phone"
+                                            defaultValue={'+380'}
                                             datatype={'text'}
                                             onChange={e => this.handleChange(e)}
                                             onBlur={e => this.validate(e)}
@@ -530,7 +532,7 @@ class SurveyPage extends React.Component<WithStyles & SurveyPage.Props, SurveyPa
                                             id="Phone-error-text"
                                             className={this.state.LastNameError ? '' : this.props.classes.none}
                                         >
-                                                Error
+                                                Must match with pattern in placeholder
                                         </FormHelperText>
                                     </FormControl>
                                 </Grid>
@@ -541,7 +543,7 @@ class SurveyPage extends React.Component<WithStyles & SurveyPage.Props, SurveyPa
                                         error={this.state.EmailError}
                                         aria-describedby="Email-error-text"
                                     >
-                                        <InputLabel htmlFor="Email">{'mail@domain.com'}</InputLabel>
+                                        <InputLabel htmlFor="Email">{'mail@domain.com*'}</InputLabel>
                                         <Input
                                             id="Email"
                                             datatype={'text'}
@@ -552,7 +554,7 @@ class SurveyPage extends React.Component<WithStyles & SurveyPage.Props, SurveyPa
                                             id="Email-error-text"
                                             className={this.state.EmailError ? '' : this.props.classes.none}
                                         >
-                                            Error
+                                            Enter a valid email address
                                         </FormHelperText>
                                     </FormControl>
                                 </Grid>
@@ -563,7 +565,7 @@ class SurveyPage extends React.Component<WithStyles & SurveyPage.Props, SurveyPa
                                         error={this.state.SkypeError}
                                         aria-describedby="Skype-error-text"
                                     >
-                                        <InputLabel htmlFor="Skype">Skype</InputLabel>
+                                        <InputLabel htmlFor="Skype">Skype name</InputLabel>
                                         <Input
                                             id="Skype"
                                             datatype={'number'}
@@ -574,7 +576,7 @@ class SurveyPage extends React.Component<WithStyles & SurveyPage.Props, SurveyPa
                                             id="Skype-error-text"
                                             className={this.state.SkypeError ? '' : this.props.classes.none}
                                         >
-                                            Error
+                                            Enter a valid skype name
                                         </FormHelperText>
                                     </FormControl>
                                 </Grid>
@@ -605,7 +607,7 @@ class SurveyPage extends React.Component<WithStyles & SurveyPage.Props, SurveyPa
                                             id="PlaceOfStudying-error-text"
                                             className={this.state.PlaceOfStudyingError ? '' : this.props.classes.none}
                                         >
-                                            Error
+                                            Only lower/uppser case letters with length between 2 and 100 characters
                                         </FormHelperText>
                                     </FormControl>
                                 </Grid>
@@ -627,7 +629,7 @@ class SurveyPage extends React.Component<WithStyles & SurveyPage.Props, SurveyPa
                                             id="Speciality-error-text"
                                             className={this.state.SpecialityError ? '' : this.props.classes.none}
                                         >
-                                            Error
+                                            Only lower/uppser case letters with length between 2 and 100 characters
                                         </FormHelperText>
                                     </FormControl>
                                 </Grid>
@@ -647,7 +649,7 @@ class SurveyPage extends React.Component<WithStyles & SurveyPage.Props, SurveyPa
                                         error={this.state.OtherError}
                                         aria-describedby="Other-error-text"
                                     >
-                                        <InputLabel htmlFor="Other">Other</InputLabel>
+                                        <InputLabel htmlFor="Other">Tell us something about yourself</InputLabel>
                                         <Input
                                             id="Other"
                                             datatype={'text'}
@@ -667,6 +669,7 @@ class SurveyPage extends React.Component<WithStyles & SurveyPage.Props, SurveyPa
                     </ExpansionPanel>
                     <Button
                         fullWidth
+                        className={this.props.classes.submitButton}
                         disabled={!this.state.isValid || !this.state.isNotEmpty}
                         onClick={e => this.handleSubmit()}
                     >
@@ -676,9 +679,17 @@ class SurveyPage extends React.Component<WithStyles & SurveyPage.Props, SurveyPa
             </Grid>;
         } else {
             // tslint:disable-next-line:jsx-wrap-multiline
-            return <Typography variant="display1" style={{textAlign: 'center', marginTop: '100px'}} gutterBottom>
-                    Thanks for Your patience!
-                </Typography>;
+            return <div>
+                <Typography variant="display1" style={{textAlign: 'center', marginTop: '100px'}} gutterBottom>
+                Thanks for patience {this.state.FirstName + ' ' + this.state.LastName}!
+                </Typography>
+                <Button     
+                        className={this.props.classes.centerButton}                   
+                        onClick={e => this.clearForm()}
+                >
+                        Next respondent
+                </Button>
+            </div>;        
         }
 
     }
@@ -707,6 +718,16 @@ const styles: StyleRulesCallback = theme => ({
     },
     fullwidth: {
         width: '100%',
+    },
+    submitButton: {
+        position: 'fixed',
+        bottom: '0px',
+        background: '#39a3dc',
+    },
+    centerButton: {
+        display: 'block',
+        marginRight: 'auto',
+        marginLeft: 'auto'
     }
 });
 

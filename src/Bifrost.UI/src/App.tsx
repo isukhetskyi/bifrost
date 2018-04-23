@@ -198,15 +198,15 @@ class App extends React.Component<WithStyles & App.Props, App.State> {
                                     color="inherit"
                                     aria-label="open drawer"
                                     onClick={this.handleDrawerToggle}
-                                    className={this.props.classes.navIconHide}
+                                    className={this.props.classes.none}
                                 >
-                                    <MenuIcon />
+                                    <MenuIcon className={this.props.classes.none}/>
                                 </IconButton>
                                 <Typography variant="title" color="inherit" noWrap>
-                                    Bifrost
+                                    NetLS Software Development
                             </Typography>
                             <Button
-                                className={this.props.classes.loginButton}
+                                className={this.props.classes.none}
                                 onClick={() => {history.push('/login'); this.setState({mobileOpen: false}); }}
                             >
                                     Login
